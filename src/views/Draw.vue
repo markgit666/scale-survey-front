@@ -66,7 +66,7 @@ export default {
       var x1 = ev.clientX - canvas.offsetLeft; //获取到的并不直接是canvas画布上的坐标，而是整个页面，所以需要减去canvas里页面左边的距离
       console("网页横坐标x1：", x1);
       var y1 = ev.pageY - canvas.offsetTop;
-      console("网页横坐标y1：", y1);
+      // console("网页横坐标y1：", y1);
       //绘制线
       //起点坐标
       this.context.beginPath();
