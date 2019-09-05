@@ -104,6 +104,7 @@ export default {
   methods: {
     confirm() {
       message.info("Clicked on Yes.");
+      console.log("a");
     },
     handleTableChange(pagination, filters, sorter) {
       pagination.pageSize = 3;
