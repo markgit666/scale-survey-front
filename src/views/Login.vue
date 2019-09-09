@@ -1,101 +1,134 @@
 <template>
   <div id="main">
     <a-card title="登录" hoverable style="width: 90vh">
-      <a-form
-        id="components-form-demo-normal-login"
-        :form="form"
-        class="login-form"
-        @submit="handleSubmit"
+      <el-form
+        :model="ruleForm"
+        :rules="rules"
+        ref="ruleForm"
+        label-width="70px"
+        class="demo-dynamic"
       >
-        <a-form-item label="用户名：" :label-col="{ span: 4}" :wrapper-col="{ span: 19 }">
-          <a-input
-            v-decorator="[
-          'userName',
-          { rules: [{ required: true, message: '用户名不能为空!' }] }
-        ]"
-            placeholder="请输入用户名"
-          >
-            <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
-          </a-input>
-        </a-form-item>
-        <a-form-item label="密码：" :label-col="{ span: 4}" :wrapper-col="{ span: 19 }">
-          <a-input
-            v-decorator="[
-          'password',
-          { rules: [{ required: true, message: '密码不能为空！' }] }
-        ]"
-            type="password"
-            placeholder="请输入密码"
-          >
-            <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
-          </a-input>
-        </a-form-item>
-        <a-form-item>
-          <div class="forgot-register">
-            <a class="login-form-forgot" @click="forget">忘记密码</a>
-            <a class="login-form-register" @click="register">马上注册</a>
-          </div>
+        <el-form-item prop="email" label="邮箱:">
+          <el-input v-model="ruleForm.email" size="medium" placeholder="请输入邮箱"></el-input>
+        </el-form-item>
 
-          <a-button
-            type="primary"
-            html-type="submit"
-            class="login-form-button"
-            :style="{width:'90%'}"
-          >登录</a-button>
-        </a-form-item>
-      </a-form>
+        <el-form-item label="密码:" prop="password">
+          <el-input
+            type="password"
+            v-model="ruleForm.password"
+            placeholder="请输入密码"
+            size="medium"
+            show-password
+          ></el-input>
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="primary" @click="login('ruleForm')" class="login-form-button">登录</el-button>
+        </el-form-item>
+      </el-form>
+
+      <div class="forgot-register">
+        <a class="login-form-forgot" @click="forget">忘记密码</a>
+        <a class="login-form-register" @click="register">马上注册</a>
+      </div>
     </a-card>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+import { log } from "util";
 export default {
-  beforeCreate() {
-    this.form = this.$form.createForm(this);
+  data() {
+    // 密码
+    var validatePass = (rule, value, callback) => {
+      if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,20}$/.test(value) == false) {
+        callback(new Error("请输入6-20位密码，必须包含大小写字母和数字!"));
+      } else {
+        callback();
+      }
+    };
+
+    return {
+      // 表单 邮箱校验
+      ruleForm: {
+        email: "",
+        password: ""
+      },
+
+      serverUrl: this.GLOBAL.serverUrl,
+      rules: {
+        email: [
+          { required: true, message: "邮箱不能为空!", trigger: "blur" },
+          {
+            type: "email",
+            message: "请输入正确的邮箱地址!",
+            trigger: ["blur", "change"]
+          }
+        ],
+
+        password: [
+          { required: true, message: "密码不能为空!", trigger: "blur" },
+          {
+            validator: validatePass,
+            trigger: "blur"
+          }
+        ]
+      }
+    };
+  },
+
+  // 创建表单
+  resetForm(formName) {
+    this.$refs[formName].resetFields();
   },
   methods: {
-    handleSubmit(e) {
-      e.preventDefault();
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log("Received values of form: ", values);
-          this.$router.push({ path: "/Home" });
+    //登录
+    login(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          // this.$router.push({ path: "/Home" });
+          // debugger;
+          axios
+            .post(this.serverUrl + "authc/login", {
+              loginName: this.ruleForm.email,
+              password: this.ruleForm.password
+            })
+            .then(response => {
+              debugger;
+              if (response.data.retCode === "000001") {
+                localStorage.setItem("Token", response.data.data);
+                this.$router.push({ path: "/Home" });
+              } else {
+                this.$message.warning("用户名或密码错误",5);
+              }
+
+              // console.log("response:", response);
+            });
+        } else {
+          alert("登录失败");
+          return false;
         }
       });
     },
 
+    // 注册
     register() {
       this.$router.push({ path: "/Register" });
       console.log("a");
     },
-
+    // 忘记密码
     forget() {
-      conslog.log("忘记密码");
+      console.log("忘记密码");
     }
   }
 };
 </script>
 <style>
-#components-form-demo-normal-login .login-form {
-  max-width: 300px;
-}
-
-#components-form-demo-normal-login .box {
-  width: 270px;
-}
-#components-form-demo-normal-login .login-form-forgot {
-  float: left;
-}
-#components-form-demo-normal-login .login-form-register {
-  float: right;
-}
-#components-form-demo-normal-login .login-form-button {
-  width: 100%;
-}
+/* card */
 #main {
   /* background-image: url(../assets/img/login.jpg); */
   background-size: cover;
-
   background-repeat: no-repeat;
   height: 100vh;
   padding-top: 25vh;
@@ -109,5 +142,30 @@ export default {
   width: 90%;
   align-items: center;
   margin: 0 auto;
+}
+/* 表单 */
+.demo-dynamic {
+  width: 90%;
+  align-items: center;
+  margin: 0 auto;
+  margin-left: 10px;
+}
+/* 忘记密码 */
+.login-form-register {
+  float: right;
+  /* margin-right: px; */
+  margin-right: 20px;
+}
+/* 马上注册 */
+.login-form-forgot {
+  float: left;
+  margin-left: 10px;
+}
+
+/* 登录按钮*/
+.login-form-button {
+  width: 113%;
+  margin-top: 10px;
+  margin-left: -45px;
 }
 </style>

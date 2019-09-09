@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import VueResource from 'vue-resource'
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 import Login from './views/Login.vue'
 import Register from './views/Register.vue'
 import Home from './views/Home.vue'
@@ -18,9 +20,12 @@ import Draw from './views/Draw.vue'
 import Draw1 from './views/Draw1.vue'
 import AnswerScale from './views/AnswerScale.vue'
 import Picture from './views/Picture.vue'
+import DataManage from './views/DataManage.vue'
 Vue.use(Router)
 Vue.use(Antd)
 Vue.use(VueResource);
+Vue.use(ElementUI);
+
 export default new Router({
 
   routes: [
@@ -35,10 +40,13 @@ export default new Router({
         { path: '/home/myScale', name: 'myScale', component: MyScale },
         { path: '/home/ShowAndEditScale', name: 'ShowAndEditScale', component: ShowAndEditScale },
         { path: '/home/showAndEditPatientInfo', name: 'showAndEditPatientInfo', component: ShowAndEditPatientInfo },
+        { path: '/home/dataManage', name: 'dataManage', component: DataManage },
       ]
     },
     { path: '/previewScale', name: 'previewScale', component: PreviewScale },
     { path: '/home/answer', name: 'answer', component: Answer },
+
+
     { path: '/home/answerScale', name: 'answerScale', component: AnswerScale },
     { path: '/home/draw', name: 'draw', component: Draw },
     { path: '/home/draw1', name: 'draw1', component: Draw1 },

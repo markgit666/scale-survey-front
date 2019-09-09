@@ -11,38 +11,23 @@
         bordered
       >
         <template slot="title">
-          <h3>量表</h3>
+          <h3>答卷</h3>
         </template>
         <!-- 操作 -->
         <template slot="operation" slot-scope="text, record, index">
           <div class="editable-row-operations">
             <span>
-              <a @click="() =>editScale(record.scaleId)">查看/编辑</a>
+              <a @click="() =>score(record.scaleId)">评分</a>
               <a-divider type="vertical" />
               <a-popconfirm
                 :style="{color:'red'}"
                 title="确定删除吗"
-                @confirm="delScaleInfo(record.scaleId)"
+                @confirm="delScaleAnswer(record.scaleId)"
                 okText="是"
                 cancelText="否"
               >
                 <a href="#">删除</a>
               </a-popconfirm>
-
-              <a-divider type="vertical" />
-
-              <a @click="() =>chooseSomeOneAnswer(record.scaleId)">答题</a>
-
-              <div v-if="qrCodeShowSwitch === record.scaleId ">
-                <a-modal title="请扫描下方二维码答题" v-model="visible" @ok="handleOk">
-                  <div class="img_box">
-                    <img
-                      v-bind:src="imgUrl + 'url=Home/Answer&scaleId=' + record.scaleId"
-                      class="img"
-                    />
-                  </div>
-                </a-modal>
-              </div>
             </span>
           </div>
         </template>
@@ -60,13 +45,27 @@ const columns = [
     title: "量表名称",
     dataIndex: "scaleName",
     // sorter: true,
-    width: "35%",
-    scopedSlots: { customRender: "scaleName" }
+    width: "30%"
+    // scopedSlots: { customRender: "scaleName" }
   },
 
   {
-    title: "创建时间",
-    dataIndex: "createTime"
+    title: "答题者",
+    dataIndex: "answerPerson",
+    // sorter: true,
+    width: "15%"
+    // scopedSlots: { customRender: "answerPerson" }
+  },
+  {
+    title: "答题时间",
+    dataIndex: "answerTime"
+  },
+  {
+    title: "是否已评分",
+    dataIndex: "isScore",
+    // sorter: true,
+    width: "15%"
+    // scopedSlots: { customRender: "isScore" }
   },
 
   {
@@ -84,7 +83,6 @@ export default {
     return {
       visible: false,
       serverUrl: this.GLOBAL.serverUrl,
-      imgUrl: this.GLOBAL.serverUrl + "file/qrCode/image/download?",
       data: [],
       pagination: {},
       loading: false,
@@ -97,10 +95,10 @@ export default {
     // 分页
     handleTableChange(pagination, filters, sorter) {
       pagination.pageSize = 3;
-      console.log("pagination=", pagination);
+      // console.log("pagination=", pagination);
       const pager = { ...this.pagination };
       pager.current = pagination.current;
-      console.log("current是：", pager.current);
+      // console.log("current是：", pager.current);
       this.pagination = pager;
       this.fetch({
         pageNo: pagination.current,
@@ -145,8 +143,8 @@ export default {
       });
     },
 
-    //编辑量表
-    editScale(scaleId) {
+    //评分
+    score(scaleId) {
       debugger;
       this.$router.push({
         path: "/Home/ShowAndEditScale",
@@ -155,8 +153,8 @@ export default {
       });
     },
 
-    //删除量表
-    delScaleInfo(scaleId) {
+    //删除答卷
+    delScaleAnswer(scaleId) {
       axios
         .post(
           this.serverUrl + "scale/info/remove",
@@ -171,24 +169,10 @@ export default {
         )
         .then(response => {
           console.log(response);
-          debugger;
-          if ((response.data.retCode = "000000")) {
-            this.fetch();
-            this.$message.success("删除成功！", 5);
-          } else {
-            this.$message.error("删除失败！", 5);
-          }
+          debugger
+          this.fetch();
+          this.$message.success("删除成功！",5);
         });
-    },
-
-    //答题
-    chooseSomeOneAnswer(scaleId) {
-      this.qrCodeShowSwitch = scaleId;
-      this.visible = true;
-    },
-    handleOk(e) {
-      // console.log(e);
-      this.visible = false;
     }
   }
 };
@@ -197,15 +181,5 @@ export default {
 <style scoped>
 .box {
   text-align: center;
-}
-
-.img_box {
-  display: flex;
-  justify-content: center;
-}
-
-.img {
-  width: 200px;
-  height: 200px;
 }
 </style>

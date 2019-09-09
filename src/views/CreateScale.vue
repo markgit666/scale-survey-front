@@ -284,10 +284,18 @@ export default {
     //保存
     submitScale() {
       this.$http
-        .post(this.serverUrl + "scale/info/add", this.oneScale)
+        .post(this.serverUrl + "scale/info/add", this.oneScale, {
+          headers: {
+            Token: localStorage.getItem("Token")
+          }
+        })
         .then(function(data) {
           console.log(data);
-          this.$message.success("保存成功！");
+          if ((data.body.retCode = "000000")) {
+            this.$message.success("保存成功！", 5);
+          } else {
+            this.$message.error("保存失败！", 5);
+          }
           this.$router.push({ path: "/home/myScale" });
         });
     },
@@ -398,17 +406,20 @@ export default {
       // You can use any AJAX library you like
       reqwest({
         url: this.serverUrl + "file/upload",
+        headers: {
+          Token: localStorage.getItem("Token")
+        },
         method: "post",
         processData: false,
         data: formData,
         success: () => {
           this.fileList = [];
           this.uploading = false;
-          this.$message.success("上传成功！");
+          this.$message.success("上传成功！", 5);
         },
         error: () => {
           this.uploading = false;
-          this.$message.error("上传失败！");
+          this.$message.error("上传失败！", 5);
         }
       }).then(values => {
         debugger;
@@ -457,59 +468,7 @@ export default {
     },
     //上传图片
     pictureHandleUpload(subjectId) {
-      // debugger;
-      // const { pictureFileList } = this;
-      // const formData = new FormData();
-      // pictureFileList.forEach(file => {
-      //   formData.append("file", file);
-      // });
-      // this.uploading = true;
-      // let that = this;
-      // // You can use any AJAX library you like
-      // reqwest({
-      //   url: this.serverUrl + "file/upload",
-      //   method: "post",
-      //   processData: false,
-      //   data: formData,
-      //   success: () => {
-      //     that.pictureFileList = [];
-
-      //     that.uploading = false;
-      //     that.$message.success("上传成功！");
-      //   },
-      //   error: () => {
-      //     this.uploading = false;
-      //     this.$message.error("上传失败！");
-      //   }
-      // }).then(values => {
-      //   debugger;
-      //   that.pictureFileList = values.data;
-      //   var pictureObject = {
-      //     questionType: "picture",
-      //     show: true,
-      //     title: "",
-      //     markSubjectId: subjectId,
-      //     attachmentList: this.pictureFileNoList
-      //   };
-      //   var list = that.oneScale.questionList;
-      //   for (var i = 0; i < list.length; i++) {
-      //     if (list[i].status === "noNeed") {
-      //       list.splice(i, 1);
-      //     }
-      //   }
-      //   for (var i = 0; i < list.length; i++) {
-      //     if (
-      //       list.length > 0 &&
-      //       list[i].questionType === "picture" &&
-      //       list[i].markSubjectId === subjectId
-      //     ) {
-      //       list.splice(i, 1);
-      //     }
-      //   }
-      //   that.oneScale.questionList.push(pictureObject);
-      //   console.log(values.data);
-      // });
-            debugger;
+      debugger;
       const { pictureFileList } = this;
       const formData = new FormData();
       pictureFileList.forEach(file => {
@@ -520,17 +479,20 @@ export default {
       // You can use any AJAX library you like
       reqwest({
         url: this.serverUrl + "file/upload",
+        headers: {
+          Token: localStorage.getItem("Token")
+        },
         method: "post",
         processData: false,
         data: formData,
         success: () => {
           this.pictureFileList = [];
           this.uploading = false;
-          this.$message.success("上传成功！");
+          this.$message.success("上传成功！", 5);
         },
         error: () => {
           this.uploading = false;
-          this.$message.error("上传失败！");
+          this.$message.error("上传失败！", 5);
         }
       }).then(values => {
         debugger;
@@ -581,7 +543,7 @@ export default {
         items = items.push(newitems);
         console.log(this.oneScale.questionList[subjectId].items);
       } else {
-        this.$message.warning("选项不允许超过6个！");
+        this.$message.warning("选项不允许超过6个！", 5);
       }
     },
 

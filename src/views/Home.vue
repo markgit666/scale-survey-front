@@ -53,7 +53,7 @@
           </a-sub-menu>
 
           <a-menu-item key="5">
-            <router-link to="/Home/Answer">数据管理</router-link>
+            <router-link to="/Home/dataManage">数据管理</router-link>
           </a-menu-item>
 
           <a-menu-item key="7">
@@ -64,11 +64,24 @@
             <router-link to="/home/picture">上传图片</router-link>
           </a-menu-item>
 
-          <a-menu-item key="6" :style="{float:'right'}" @click="exit">
+          <a-menu-item key="6" :style="{float:'right'}" @click="dialogVisible = true">
             <a-icon type="user-delete" />安全退出
           </a-menu-item>
         </a-menu>
       </a-layout-header>
+
+      <el-dialog
+        title="确定退出吗？"
+        :visible.sync="dialogVisible"
+        width="30%"
+        :before-close="handleClose"
+      >
+        <!-- <span>这是一段信息</span> -->
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="exit">确 定</el-button>
+        </span>
+      </el-dialog>
 
       <a-layout-content :style="{ padding: '0 50px', marginTop: '64px',background: '#F0F2F5'}">
         <!-- <a-breadcrumb :style="{ margin: '16px 0' }">
@@ -88,20 +101,52 @@
 </template>
 
 <script>
+import axios from "axios";
+import Antd from "ant-design-vue";
+import "ant-design-vue/dist/antd.css";
 export default {
+  data() {
+    return {
+      dialogVisible: false,
+      serverUrl: this.GLOBAL.serverUrl
+    };
+  },
   methods: {
+    // exit() {
+    //   this.$confirm({
+    //     title: "确定退出吗?",
+    //     onOk() {
+    //       axios.post(this.serverUrl + "authc/logout").then(response => {
+    //         debugger;
+    //         if (response.data.retCode === "000000") {
+    //           localStorage.clear();
+    //           this.$router.push({ path: "/login" });
+    //         }
+    //       });
+    //     },
+    //     onCancel() {
+    //       console.log("Cancel");
+    //     },
+    //     class: "test"
+    //   });
+    // },
     exit() {
-      this.$confirm({
-        title: "确定退出吗?",
-        onOk() {
-          // this.$router.push({ path: "/" });
+      axios.post(this.serverUrl + "authc/logout").then(response => {
+        debugger;
+        if (response.data.retCode === "000000") {
+          localStorage.clear();
           this.$router.push({ path: "/login" });
-        },
-        onCancel() {
-          console.log("Cancel");
-        },
-        class: "test"
+        }
       });
+    },
+
+    //退出
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {});
     }
   }
 };

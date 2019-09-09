@@ -37,7 +37,7 @@
                 <!-- 单选题选项 -->
                 <a-radio-group name="radioGroup" :style="{marginTop:'2vh'}">
                   <div v-for="(item,optionId) in value.items" :key="optionId" class="radio">
-                    <a-radio :value="item.option">{{item.option}}</a-radio>
+                    <a-radio :value="item.option" v-model="item.option">{{item.option}}</a-radio>
                   </div>
                 </a-radio-group>
               </div>
@@ -47,16 +47,25 @@
             <!-- 2.多选 -->
             <div v-if=" value.questionType==='checkBox'">
               <a-divider />
-              <div class="singleChoice">
-                <!-- 标题 -->
-                <strong>{{value.title}}&nbsp;&nbsp;&nbsp;(多选)</strong>
+              <div v-for="(one, index) in answer.answerList" :key="index">
+                <div v-if="value.questionId === one.questionId">
+                  <div class="singleChoice">
+                    <!-- 标题 -->
+                    <strong>{{value.title}}&nbsp;&nbsp;&nbsp;(多选)</strong>
 
-                <!--选项 -->
-                <a-radio-group name="radioGroup" :style="{marginTop:'2vh'}">
-                  <div v-for="(item,optionId) in value.items" :key="optionId" class="radio">
-                    <a-checkbox>{{item.option}}</a-checkbox>
+                    <!--选项 -->
+                    <div v-for="(item,optionId) in value.items" :key="optionId" class="radio">
+                      <a-checkbox-group
+                        name="radioGroup"
+                        :style="{marginTop:'2vh'}"
+                        v-model="item.option"
+                        @change="change"
+                      >
+                        <a-checkbox value="item.option">{{item.option}}</a-checkbox>
+                      </a-checkbox-group>
+                    </div>
                   </div>
-                </a-radio-group>
+                </div>
               </div>
             </div>
             <!-- 多选结束 -->
@@ -82,32 +91,21 @@
             <!-- 4.问答题 -->
             <div v-if="value.questionType==='QandA'">
               <a-divider />
-              <div class="question">
-                <strong>问题：</strong>
-                {{value.title}}
-              </div>
-              <div class="input">
-                <!-- <a-form>
-              <a-form-item :label-col="{ span: 5 }" :wrapper-col="{ span: 20 }">
-                <a-input placeholder="请输入回答内容！"></a-input>
-              </a-form-item>
-                </a-form>-->
-                <div :style="{width:'65%'}">
-                  <a-input placeholder="请输入回答内容！"></a-input>
-                </div>
-
-                <div :style="{display:'flex',flexDirection:'row',marginLeft:'6vh'}">
-                  <div :style="{width:'25%',marginTop:'0.5vh'}">
-                    <h4>计分：</h4>
+              <div v-for="(one, index) in answer.answerList" :key="index">
+                <div v-if="value.questionId === one.questionId">
+                  <!-- 问题 -->
+                  <div class="question">
+                    <strong>问题：</strong>
+                    {{value.title}}
                   </div>
-                  <a-input placeholder="请输入回答内容！"></a-input>
+                  <!-- 答案 -->
+                  <div class="input">
+                    <div :style="{width:'65%'}">
+                      <a-input placeholder="请输入回答内容！" v-model="one.content"></a-input>
+                    </div>
+                  </div>
+                  <!-- <a-input placeholder="请输入回答内容！" v-model></a-input> -->
                 </div>
-
-                <!-- <a-form>
-              <a-form-item label="计分：" :label-col="{ span: 7}" :wrapper-col="{ span: 14}">
-                <a-input placeholder="请输入您要给的分数"></a-input>
-              </a-form-item>
-                </a-form>-->
               </div>
             </div>
             <!-- 5.画图 -->
@@ -143,17 +141,23 @@
                       <a-button type="primary" @click="eraser">橡皮擦</a-button>
                     </div>
                   </div>
-                  <!-- 撤回 -->
+                  <!-- 清空 -->
                   <div>
                     <div class="box_box3">
                       <a-button type="primary" @click="clearAll">清除</a-button>
                     </div>
                   </div>
-                  <!-- 清空 -->
+                  <!-- 保存图片 -->
+
                   <div>
                     <div class="box_box4">
-                      <a-button type="primary" @click="save">生成图片</a-button>
+                      <a-button type="primary" @click="handleChangeImage">保存图片</a-button>
+                      <!-- <a-button type="primary" @click="save">生成图片</a-button> -->
                     </div>
+                    <form id="myForm" action="http://192.168.1.143:8082/file/upload" method="post">
+                      <input type="hidden" name="imageData" value />
+                      <a-button type="primary" @click="handleChangeImage">保存图片</a-button>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -180,6 +184,9 @@
               </div>
             </div>
           </div>
+          <center>
+            <a-button @click="submitScale" type="primary">提交</a-button>
+          </center>
           <!-- 一个量表的里所有题目 结束 -->
         </a-card>
       </div>
@@ -190,9 +197,14 @@
 
 <script>
 import axios from "axios";
+import $ from "jquery";
+import { debuglog } from "util";
+
 export default {
   data() {
     return {
+      imageData: "",
+      serverUrl: this.GLOBAL.serverUrl,
       patientIdShow: true,
       // 画图题所用到的变量
       context: {},
@@ -204,56 +216,94 @@ export default {
       show: false,
       patientId: "",
       serverUrl: this.GLOBAL.serverUrl,
-      oneScale: {}
+      oneScale: {},
+      patientInfo: {},
+      startTime: "",
+      endTime: "",
+      // 答案
+      answer: {
+        scaleId: "",
+        patientId: "",
+        useTime: "",
+        answerList: []
+      },
+      imageUrl: ""
     };
   },
 
-  mounted() {
-    debugger;
-    // JSON.parse()用于从一个字符串中解析出json对象
-    this.oneScale = JSON.parse(this.$route.query.oneScale);
-    // this.oneScale = this.$route.query.oneScale;
-    // var a = this.$route.query.oneScale;
-    // this.oneScale = a;
-    this.oneImg = this.oneScale.questionList.attachmentList;
-    console.log(this.oneScale, this.oneImg);
-  },
-  updated() {
-    // debugger;
-    const canvas = document.querySelector("#mycanvas");
-    this.context = canvas.getContext("2d"); //使用渲染上下文来绘制和处理要展示的内容,2D 渲染上下文
-  },
+  // activated() {
+  //   debugger;
+  //   const canvas = document.querySelector("#mycanvas");
+  //   this.context = canvas.getContext("2d"); //使用渲染上下文来绘制和处理要展示的内容,2D 渲染上下文
+  // },
   methods: {
     // 确定 提交病人Id，同时传scaleId
     conform() {
-      
+      debugger;
+      this.startTime = new Date().getTime();
+      // console.log(this.startTime);
       let that = this;
-      
       axios
-        .post(this.serverUrl + "scale/paper/info/get", {
-          scaleId: this.$route.query.scaleId,
-          patientId: this.patientId
-        })
+        .post(
+          this.serverUrl + "paper/blank/get",
+          {
+            scaleId: this.$route.query.scaleId,
+            patientId: this.patientId
+          },
+          {
+            headers: {
+              Token: localStorage.getItem("Token")
+            }
+          }
+        )
         .then(response => {
-          // debugger;
+          debugger;
           if (response.data.retCode === "000000") {
-            that.oneScale = response.data.data;
+            that.oneScale = response.data.data.scaleInfo;
+            that.patientInfo = response.data.data.patientInfo;
             this.show = true;
             this.patientIdShow = false;
-            // this.$router.push({
-            //   path: "/home/answerScale",
-            //   // patients:patientId
-            //   // query: { oneScale: response.data.data }
-            // });
+            var questionList = [];
+            questionList = that.oneScale.questionList;
+            for (var i = 0; i < questionList.length; i++) {
+              var question = {
+                questionId: questionList[i].questionId,
+                content: "",
+                chooseAnswerList: []
+              };
+              that.answer.answerList.push(question);
+            }
           } else {
             this.$message.warning("不存在该病人Id");
           }
         });
     },
+
+    change(e) {
+      console.log("a");
+      debugger
+      // console.log("checked = ", checkedValues);
+      console.log(`checked = ${e.target.checked}`);
+    },
+
+    //交卷
+    submitScale() {
+      console.log(this.answer.answerList);
+      this.endTime = new Date().getTime();
+      this.answer.useTime = Math.round((this.endTime - this.startTime) / 1000);
+      this.answer.patientId = this.patientId;
+      axios.post(this.serverUrl + "paper/answer/commit", this.answer, {
+        headers: {
+          Token: localStorage.getItem("Token")
+        }
+      });
+      debugger;
+    },
+
     // 画图题开始
     //鼠标按下
     mousedown(e) {
-      debugger;
+      // debugger;
       const canvas = document.querySelector("#mycanvas");
       // this.context = canvas.getContext("2d");
       e.preventDefault();
@@ -351,6 +401,8 @@ export default {
     //移动端绘图, touchstart对应movedown
     touchstart(e) {
       const canvas = document.querySelector("#mycanvas");
+      this.context = canvas.getContext("2d"); //使用渲染上下文来绘制和处理要展示的内容,2D 渲染上下文
+      // const canvas = document.querySelector("#mycanvas");
       e.preventDefault();
       this.running = "draw"; //鼠标按下后，赋值为draw，表示要画线了
       // debugger;
@@ -381,12 +433,30 @@ export default {
         this.context.stroke(); //画线
       }
     },
-    save() {
+
+    handleChangeImage() {
       debugger;
+      //导出base64格式的图片数据
       const canvas = document.querySelector("#mycanvas");
       const src = canvas.toDataURL("image/png");
       this.canvasImgUrls.pop(src);
       this.canvasImgUrls.push(src);
+      var b64 = canvas.toDataURL("image/png").substring(22);
+      this.imageData = b64;
+      var form = document.querySelector("#myForm");
+      form.submit();
+    },
+
+    //保存canvas图片
+    save() {
+      // debugger;
+      const canvas = document.querySelector("#mycanvas");
+      const src = canvas.toDataURL("image/png");
+      this.canvasImgUrls.pop(src);
+      this.canvasImgUrls.push(src);
+
+      var b64 = src.substring(22);
+      // this.$http.post(this.serverUrl+"file/upload");
     }
     // 画图题结束
   }

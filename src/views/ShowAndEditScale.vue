@@ -7,8 +7,8 @@
         <a-select-option value="radio">单选题</a-select-option>
         <a-select-option value="checkBox">多选题</a-select-option>
         <a-select-option value="QandA">问答题</a-select-option>
-        <a-select-option value="draw">画图题</a-select-option>
-        <a-select-option value="picture">图片题</a-select-option>
+        <!-- <a-select-option value="draw">画图题</a-select-option>
+        <a-select-option value="picture">图片题</a-select-option> -->
       </a-select>
 
       <!-- <a href="#" slot="extra" @click="toggle" :style="{marginLeft:'10px'}">编辑</a> -->
@@ -51,7 +51,7 @@
 
             <!-- 3.单选 -->
             <div v-if=" value.questionType==='radio'">
-              <a-divider  />
+              <a-divider />
               <a-form>
                 <a-form-item label="（单选）标题：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }">
                   <a-input placeholder="请输入标题！" v-model="value.title" />
@@ -205,6 +205,7 @@
 <script>
 import reqwest from "reqwest";
 import axios from "axios";
+import { debuglog } from "util";
 export default {
   data() {
     return {
@@ -240,7 +241,11 @@ export default {
       debugger;
       let that = this;
       axios
-        .post(this.serverUrl + "/scale/info/get", this.$route.query)
+        .post(this.serverUrl + "/scale/info/get", this.$route.query, {
+          headers: {
+            Token: localStorage.getItem("Token")
+          }
+        })
         .then(response => {
           console.log(response);
           that.oneScale = response.data.data;
@@ -268,7 +273,7 @@ export default {
         items = items.push(newitems);
         console.log(this.oneScale.questionList[subjectId].items);
       } else {
-        this.$message.warning("选项不允许超过6个！");
+        this.$message.warning("选项不允许超过6个！", 5);
       }
     },
 
@@ -352,17 +357,20 @@ export default {
       // You can use any AJAX library you like
       reqwest({
         url: this.serverUrl + "file/upload",
+        headers: {
+          Token: localStorage.getItem("Token")
+        },
         method: "post",
         processData: false,
         data: formData,
         success: () => {
           this.fileList = [];
           this.uploading = false;
-          this.$message.success("上传成功！");
+          this.$message.success("上传成功！", 5);
         },
         error: () => {
           this.uploading = false;
-          this.$message.error("上传失败！");
+          this.$message.error("上传失败！", 5);
         }
       }).then(values => {
         debugger;
@@ -389,10 +397,19 @@ export default {
     updataScale() {
       // this.oneScale.questionList.pop();
       this.$http
-        .post(this.serverUrl + "scale/info/add", this.oneScale)
+        .post(this.serverUrl + "scale/info/add", this.oneScale, {
+          headers: {
+            Token: localStorage.getItem("Token")
+          }
+        })
         .then(function(data) {
           console.log(data);
-          this.$message.success("更新成功！");
+          debugger;
+          if ((data.body.retCode = "000000")) {
+            this.$message.success("更新成功！", 5);
+          } else {
+            this.$message.error("更新失败！", 5);
+          }
           this.$router.push({ path: "/home/myScale" });
         });
     },

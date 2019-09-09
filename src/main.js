@@ -6,7 +6,11 @@ import global from './views/Global'//引用文件
 Vue.prototype.GLOBAL = global//挂载到Vue实例上面
 // import $ from 'jquery'
 Vue.config.productionTip = false
+import Validate from './assets/lib/rules.js'
+// import { $axios } from './assets/lib/util.js'
+// Vue.prototype.$http = $axios
 // Vue.use($)
+Vue.use(Validate)
 new Vue({
   router,
   store,

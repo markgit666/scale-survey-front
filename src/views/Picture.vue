@@ -47,17 +47,20 @@ export default {
       // You can use any AJAX library you like
       reqwest({
         url: this.serverUrl + "file/upload",
+        headers: {
+          Token: localStorage.getItem("Token")
+        },
         method: "post",
         processData: false,
         data: formData,
         success: () => {
           this.fileList = [];
           this.uploading = false;
-          this.$message.success("上传成功！");
+          this.$message.success("上传成功！",5);
         },
         error: () => {
           this.uploading = false;
-          this.$message.error("上传失败！");
+          this.$message.error("上传失败！",5);
         }
       });
     }

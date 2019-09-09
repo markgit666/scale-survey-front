@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <a-card title="病人临床基本资料">
+    <a-card>
       <a-table
         :columns="columns"
         :rowKey="record => record.patientId"
@@ -8,6 +8,7 @@
         :pagination="pagination"
         :loading="loading"
         @change="handleTableChange"
+        bordered
       >
         <!-- <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template> -->
         <template slot="gender" slot-scope="gender">{{gender}}男</template>
@@ -17,11 +18,14 @@
       <div v-else>女</div>
         </template>-->
 
+        <template slot="title">
+          <h3>病人临床基本资料</h3>
+        </template>
         <!-- 操作 -->
         <template slot="operation" slot-scope="text, record">
           <div class="editable-row-operations">
             <span>
-              <a @click="() =>editInfo(record.patientId)">查看</a>
+              <a @click="() =>editInfo(record.patientId)">查看/编辑</a>
               <a-divider type="vertical" />
 
               <a-popconfirm
@@ -102,10 +106,12 @@ export default {
     };
   },
   methods: {
+    //确认删除
     confirm() {
       message.info("Clicked on Yes.");
       console.log("a");
     },
+    //翻页
     handleTableChange(pagination, filters, sorter) {
       pagination.pageSize = 3;
       console.log("pagination=", pagination);
@@ -120,10 +126,15 @@ export default {
         ...filters
       });
     },
+
+    // 更新
     fetch(params = {}) {
       this.loading = true;
       reqwest({
         url: this.serverUrl + "patient/info/getList",
+        headers: {
+          Token: localStorage.getItem("Token")
+        },
         method: "post",
         data: JSON.stringify({
           pageNo: 1,
@@ -133,21 +144,24 @@ export default {
         type: "json",
         contentType: "application/json"
       }).then(values => {
-        const pagination = { ...this.pagination };
-        // Read total count from server
-        // pagination.total = data.totalCount;
-        console.log(values.data.totalNum);
-        var page;
-        if (values.data.totalNum % 5 === 0) {
-          page = values.data.totalNum / 5;
+        debugger;
+        if (values.retCode === "000000") {
+          const pagination = { ...this.pagination };
+          var page;
+          if (values.data.totalNum % 5 === 0) {
+            page = values.data.totalNum / 5;
+          } else {
+            page = Math.floor(values.data.totalNum / 5 + 1);
+          }
+          pagination.total = page * 10;
+          // console.log("total=", pagination.total);
+          this.loading = false;
+          this.data = values.data.list;
+          this.pagination = pagination;
         } else {
-          page = Math.floor(values.data.totalNum / 5 + 1);
+          this.$message.warning("未登录，即将跳转至登录页面", 5);
+          this.$router.push({ path: "/login" });
         }
-        pagination.total = page * 10;
-        // console.log("total=", pagination.total);
-        this.loading = false;
-        this.data = values.data.list;
-        this.pagination = pagination;
       });
     },
 
@@ -163,13 +177,21 @@ export default {
     //删除某条病人信息
     delPatientInfo(patientId) {
       axios
-        .post(this.serverUrl + "patient/info/remove", {
-          patientId: patientId
-        })
+        .post(
+          this.serverUrl + "patient/info/remove",
+          {
+            patientId: patientId
+          },
+          {
+            headers: {
+              Token: localStorage.getItem("Token")
+            }
+          }
+        )
         .then(response => {
           console.log(response);
           this.fetch();
-          this.$message.success("删除成功！");
+          this.$message.success("删除成功！", 5);
         });
     }
   }
