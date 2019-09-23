@@ -10,7 +10,7 @@
           :style="{ lineHeight: '64px' }"
         >
           <a-menu-item key="1">
-            <router-link to="/Home">我的问卷</router-link>
+            <router-link to="/Home/MyScale">首页</router-link>
           </a-menu-item>
 
           <!-- <a-menu-item key="2">
@@ -30,7 +30,7 @@
             </span>
             <a-menu-item-group>
               <a-menu-item key="setting:1">
-                <router-link to="/Home/AddPatientInfo">添加病人信息</router-link>
+                <router-link to="/Home/AddPatientInfo">添加被试者信息</router-link>
               </a-menu-item>
               <a-menu-item key="setting:2">
                 <router-link to="/Home/CreateScale">创建量表</router-link>
@@ -44,7 +44,7 @@
             </span>
             <a-menu-item-group>
               <a-menu-item key="setting:3">
-                <router-link to="/Home/MyPatients">我的病人信息</router-link>
+                <router-link to="/Home/MyPatients">我的被试者信息</router-link>
               </a-menu-item>
               <a-menu-item key="setting:4">
                 <router-link to="/Home/MyScale">我的量表</router-link>
@@ -53,15 +53,7 @@
           </a-sub-menu>
 
           <a-menu-item key="5">
-            <router-link to="/Home/dataManage">数据管理</router-link>
-          </a-menu-item>
-
-          <a-menu-item key="7">
-            <router-link to="/Home/Draw">画图</router-link>
-          </a-menu-item>
-
-          <a-menu-item key="8">
-            <router-link to="/home/picture">上传图片</router-link>
+            <router-link to="/Home/MyAnswer">查看答案</router-link>
           </a-menu-item>
 
           <a-menu-item key="6" :style="{float:'right'}" @click="dialogVisible = true">

@@ -11,7 +11,7 @@
         bordered
       >
         <template slot="title">
-          <h3>量表</h3>
+          <h3>已添加的量表</h3>
         </template>
         <!-- 操作 -->
         <template slot="operation" slot-scope="text, record, index">
@@ -59,8 +59,7 @@ const columns = [
   {
     title: "量表名称",
     dataIndex: "scaleName",
-    // sorter: true,
-    width: "35%",
+    width: "45%",
     scopedSlots: { customRender: "scaleName" }
   },
 
@@ -127,21 +126,24 @@ export default {
         type: "json",
         contentType: "application/json"
       }).then(values => {
-        const pagination = { ...this.pagination };
-        // Read total count from server
-        // pagination.total = data.totalCount;
-        console.log(values.data.totalNum);
-        var page;
-        if (values.data.totalNum % 5 === 0) {
-          page = values.data.totalNum / 5;
+        debugger;
+        if ((values.retCode = "000000")) {
+          const pagination = { ...this.pagination };
+          var page;
+          if (values.data.totalNum % 5 === 0) {
+            page = values.data.totalNum / 5;
+          } else {
+            page = Math.floor(values.data.totalNum / 5 + 1);
+          }
+          pagination.total = page * 10;
+          console.log("total=", pagination.total);
+          this.loading = false;
+          this.data = values.data.list;
+          this.pagination = pagination;
         } else {
-          page = Math.floor(values.data.totalNum / 5 + 1);
+          this.$message.erroe("未登录，即将跳转至登录页面", 5);
+          this.$router.push({ path: "/login" });
         }
-        pagination.total = page * 10;
-        console.log("total=", pagination.total);
-        this.loading = false;
-        this.data = values.data.list;
-        this.pagination = pagination;
       });
     },
 

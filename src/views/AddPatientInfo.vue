@@ -1,7 +1,7 @@
 
 <template>
   <div class="info_box">
-    <a-card title="添加临床基本信息">
+    <a-card title="添加基本信息">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="175px" class="form-div">
         <!-- 姓名 -->
         <el-form-item label="姓名 :" class="form-item-div" prop="name">

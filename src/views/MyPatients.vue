@@ -19,7 +19,7 @@
         </template>-->
 
         <template slot="title">
-          <h3>病人临床基本资料</h3>
+          <h3>被试者基本资料</h3>
         </template>
         <!-- 操作 -->
         <template slot="operation" slot-scope="text, record">
@@ -157,9 +157,16 @@ export default {
           // console.log("total=", pagination.total);
           this.loading = false;
           this.data = values.data.list;
+          for (var i = 0; i < values.data.list.length; i++) {
+            if (values.data.list[i].gender === "1") {
+              values.data.list[i].gender = "女";
+            } else {
+              values.data.list[i].gender = "男";
+            }
+          }
           this.pagination = pagination;
         } else {
-          this.$message.warning("未登录，即将跳转至登录页面", 5);
+          this.$message.error("未登录，即将跳转至登录页面", 5);
           this.$router.push({ path: "/login" });
         }
       });

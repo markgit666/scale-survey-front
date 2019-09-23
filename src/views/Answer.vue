@@ -4,7 +4,7 @@
     <a-card v-if="patientIdShow">
       <div class="box">
         <a-form layout="inline">
-          <a-form-item label="病人Id：">
+          <a-form-item label="被试者Id：">
             <a-input placeholder="请输入病人Id" v-model="patientId"></a-input>
           </a-form-item>
 
@@ -23,23 +23,32 @@
           <center>
             <h3>{{oneScale.scaleName}}</h3>
           </center>
+          <div>
+            <a-divider />
+            <strong>答题人：</strong>
+            {{patientInfo.name}}
+          </div>
 
           <!-- 一个量表里的各种题目 -->
           <div v-for="(value,subjectId) in oneScale.questionList" :key="subjectId">
             <!-- 1.单选 -->
             <div v-if=" value.questionType==='radio'">
               <a-divider />
-              <div class="singleChoice">
-                <!-- 单选题标题 -->
+              <div v-for="(one, index) in answer.answerList" :key="index">
+                <div v-if="value.questionId === one.questionId">
+                  <div class="singleChoice">
+                    <!-- 单选题标题 -->
+                    <strong>{{value.title}}&nbsp;&nbsp;&nbsp;(单选)</strong>
+                    <!-- 选项 -->
+                    <el-radio-group v-model="one.content">
+                      <div v-for="(item,optionId) in value.items" :key="optionId" class="radio-div">
+                        <el-radio :label="item.option">{{item.option}}</el-radio>
+                      </div>
+                    </el-radio-group>
 
-                <strong>{{value.title}}&nbsp;&nbsp;&nbsp;(单选)</strong>
-
-                <!-- 单选题选项 -->
-                <a-radio-group name="radioGroup" :style="{marginTop:'2vh'}">
-                  <div v-for="(item,optionId) in value.items" :key="optionId" class="radio">
-                    <a-radio :value="item.option" v-model="item.option">{{item.option}}</a-radio>
+                    <!-- <div>你已选中：{{one.content}}</div> -->
                   </div>
-                </a-radio-group>
+                </div>
               </div>
             </div>
             <!-- 单选结束 -->
@@ -47,23 +56,23 @@
             <!-- 2.多选 -->
             <div v-if=" value.questionType==='checkBox'">
               <a-divider />
-              <div v-for="(one, index) in answer.answerList" :key="index">
+              <div v-for="(one, aindex) in answer.answerList" :key="aindex">
                 <div v-if="value.questionId === one.questionId">
                   <div class="singleChoice">
                     <!-- 标题 -->
                     <strong>{{value.title}}&nbsp;&nbsp;&nbsp;(多选)</strong>
 
                     <!--选项 -->
-                    <div v-for="(item,optionId) in value.items" :key="optionId" class="radio">
-                      <a-checkbox-group
-                        name="radioGroup"
-                        :style="{marginTop:'2vh'}"
-                        v-model="item.option"
-                        @change="change"
-                      >
-                        <a-checkbox value="item.option">{{item.option}}</a-checkbox>
-                      </a-checkbox-group>
-                    </div>
+
+                    <el-checkbox-group v-model="one.chooseAnswerList">
+                      <div v-for="(item,optionId) in value.items" :key="optionId" class="radio-div">
+                        <!-- <el-radio :label="item.option">{{item.option}}</el-radio> -->
+                        <el-checkbox :label="item.option">{{item.option}}</el-checkbox>
+                      </div>
+                    </el-checkbox-group>
+
+                    <!-- <div>你已选中：{{one.chooseAnswerList}}</div> -->
+                    <!-- </form> -->
                   </div>
                 </div>
               </div>
@@ -99,76 +108,79 @@
                     {{value.title}}
                   </div>
                   <!-- 答案 -->
-                  <div class="input">
+                  <div class="QAndA-input">
                     <div :style="{width:'65%'}">
                       <a-input placeholder="请输入回答内容！" v-model="one.content"></a-input>
                     </div>
                   </div>
-                  <!-- <a-input placeholder="请输入回答内容！" v-model></a-input> -->
                 </div>
               </div>
             </div>
             <!-- 5.画图 -->
             <div v-if="value.questionType ==='draw'">
               <a-divider dashed />
-              <div class="img-box-preview">
-                <div v-for="(oneImg,imgId) in value.attachmentList" :key="imgId" class="image-div">
-                  <img v-bind:src="imgUrl + oneImg" />
-                </div>
-              </div>
-              <!-- <Draw :oneImg="oneImg" /> -->
-              <div class="box">
-                <canvas
-                  id="mycanvas"
-                  @touchstart="touchstart"
-                  @touchmove="touchmove"
-                  @mousedown="mousedown"
-                  @mousemove="mousemove"
-                  @mouseup="mouseup"
-                  width="500"
-                  height="400"
-                >您的浏览器不支持canvas，请更换浏览器！</canvas>
-                <div class="tools">
-                  <!-- 画笔 -->
-                  <div>
-                    <div class="box_box1">
-                      <a-button type="primary" @click="pen">画笔</a-button>
+              <div v-for="(one, index) in answer.answerList" :key="index">
+                <div v-if="value.questionId === one.questionId">
+                  <div class="img-box-preview">
+                    <div
+                      v-for="(oneImg,imgId) in value.attachmentList"
+                      :key="imgId"
+                      class="image-div"
+                    >
+                      <img v-bind:src="imgUrl + oneImg" />
                     </div>
                   </div>
-                  <!-- 橡皮擦 -->
-                  <div>
-                    <div class="box_box2">
-                      <a-button type="primary" @click="eraser">橡皮擦</a-button>
-                    </div>
-                  </div>
-                  <!-- 清空 -->
-                  <div>
-                    <div class="box_box3">
-                      <a-button type="primary" @click="clearAll">清除</a-button>
-                    </div>
-                  </div>
-                  <!-- 保存图片 -->
+                  <!-- <Draw :oneImg="oneImg" /> -->
+                  <div class="box">
+                    <canvas
+                      id="mycanvas"
+                      @touchstart="touchstart"
+                      @touchmove="touchmove"
+                      @mousedown="mousedown"
+                      @mousemove="mousemove"
+                      @mouseup="mouseup"
+                      width="500"
+                      height="400"
+                    >您的浏览器不支持canvas，请更换浏览器！</canvas>
+                    <div class="tools">
+                      <!-- 画笔 -->
+                      <div>
+                        <div class="box_box1">
+                          <a-button type="primary" @click="pen">画笔</a-button>
+                        </div>
+                      </div>
+                      <!-- 橡皮擦 -->
+                      <div>
+                        <div class="box_box2">
+                          <a-button type="primary" @click="eraser">橡皮擦</a-button>
+                        </div>
+                      </div>
+                      <!-- 清空 -->
+                      <div>
+                        <div class="box_box3">
+                          <a-button type="primary" @click="clearAll">清除</a-button>
+                        </div>
+                      </div>
+                      <!-- 保存图片 -->
 
-                  <div>
-                    <div class="box_box4">
-                      <a-button type="primary" @click="handleChangeImage">保存图片</a-button>
-                      <!-- <a-button type="primary" @click="save">生成图片</a-button> -->
+                      <div>
+                        <div class="box_box4">
+                          <a-button type="primary" @click="handleChangeImage(value.questionId)">保存图片</a-button>
+                        </div>
+                      </div>
                     </div>
-                    <form id="myForm" action="http://192.168.1.143:8082/file/upload" method="post">
-                      <input type="hidden" name="imageData" value />
-                      <a-button type="primary" @click="handleChangeImage">保存图片</a-button>
-                    </form>
                   </div>
-                </div>
-              </div>
-              <!-- 存放画完图生成图片的div -->
-              <div id="img-box" v-show="canvasImgUrls.length">
+                  <!-- 存放画完图生成图片的div -->
+                  <!-- <div id="img-box" v-show="canvasImgUrls.length">
                 <div
                   v-for="(canvasImgUrl,canvasImgUrlId ) in canvasImgUrls"
                   :key="canvasImgUrlId"
                   class="canvasImg-box"
                 >
                   <img :src="canvasImgUrl" />
+                </div>
+                  </div>-->
+                  <!-- <input type="hidden" v-model="one.content" @change="canvasImgGenerate" /> -->
                 </div>
               </div>
             </div>
@@ -177,13 +189,31 @@
             <!-- 图片题 -->
             <div v-if="value.questionType ==='picture'">
               <a-divider dashed />
-              <div class="img-box-preview">
-                <div v-for="(oneImg,imgId) in value.attachmentList" :key="imgId" class="image-div">
-                  <img v-bind:src="imgUrl + oneImg" />
+              <div v-for="(one, index) in answer.answerList" :key="index">
+                <div v-if="value.questionId === one.questionId">
+                  <div class="img-box-preview">
+                    <div
+                      v-for="(oneImg,imgId) in value.attachmentList"
+                      :key="imgId"
+                      class="image-div"
+                    >
+                      <img v-bind:src="imgUrl + oneImg" />
+                    </div>
+                  </div>
+                  <el-form label-width="250px">
+                    <!-- 填写答案 -->
+                    <el-form-item label="请填写答案 :" class="draw-input">
+                      <el-input v-model="one.content" size="medium" placeholder="请填写"></el-input>
+                    </el-form-item>
+                  </el-form>
                 </div>
               </div>
             </div>
+            <!-- 图片题结束 -->
           </div>
+          <!-- 所有题目结束 -->
+
+          <!-- 提交 -->
           <center>
             <a-button @click="submitScale" type="primary">提交</a-button>
           </center>
@@ -227,15 +257,16 @@ export default {
         useTime: "",
         answerList: []
       },
-      imageUrl: ""
+      imageUrl: "",
+      form: {
+        is_promoted: false,
+        is_adv: false
+      },
+      //存放canvas生成的图片的base64码
+      imgDataURL: ""
     };
   },
 
-  // activated() {
-  //   debugger;
-  //   const canvas = document.querySelector("#mycanvas");
-  //   this.context = canvas.getContext("2d"); //使用渲染上下文来绘制和处理要展示的内容,2D 渲染上下文
-  // },
   methods: {
     // 确定 提交病人Id，同时传scaleId
     conform() {
@@ -279,25 +310,26 @@ export default {
         });
     },
 
-    change(e) {
-      console.log("a");
-      debugger
-      // console.log("checked = ", checkedValues);
-      console.log(`checked = ${e.target.checked}`);
-    },
-
-    //交卷
+    //交卷 - 提交
     submitScale() {
       console.log(this.answer.answerList);
       this.endTime = new Date().getTime();
       this.answer.useTime = Math.round((this.endTime - this.startTime) / 1000);
       this.answer.patientId = this.patientId;
-      axios.post(this.serverUrl + "paper/answer/commit", this.answer, {
-        headers: {
-          Token: localStorage.getItem("Token")
-        }
-      });
-      debugger;
+      this.answer.scaleId = this.$route.query.scaleId;
+      axios
+        .post(this.serverUrl + "paper/answer/commit", this.answer, {
+          headers: {
+            Token: localStorage.getItem("Token")
+          }
+        })
+        .then(response => {
+          if ((response.data.retCode = "000000")) {
+            this.$router.push({ path: "/home/answerSubmitSuccess" });
+          } else {
+            this.$message.error("提交失败", 5);
+          }
+        });
     },
 
     // 画图题开始
@@ -433,30 +465,34 @@ export default {
         this.context.stroke(); //画线
       }
     },
-
-    handleChangeImage() {
+    // 保存图片
+    handleChangeImage(questionId) {
       debugger;
       //导出base64格式的图片数据
       const canvas = document.querySelector("#mycanvas");
       const src = canvas.toDataURL("image/png");
       this.canvasImgUrls.pop(src);
       this.canvasImgUrls.push(src);
-      var b64 = canvas.toDataURL("image/png").substring(22);
-      this.imageData = b64;
-      var form = document.querySelector("#myForm");
-      form.submit();
-    },
-
-    //保存canvas图片
-    save() {
-      // debugger;
-      const canvas = document.querySelector("#mycanvas");
-      const src = canvas.toDataURL("image/png");
-      this.canvasImgUrls.pop(src);
-      this.canvasImgUrls.push(src);
-
-      var b64 = src.substring(22);
-      // this.$http.post(this.serverUrl+"file/upload");
+      this.imgDataURL = src.substring(22);
+      axios
+        .post(this.serverUrl + "file/base64/upload", {
+          base64Image: this.imgDataURL
+        })
+        .then(response => {
+          debugger;
+          console.log(response);
+          if (response.data.retCode === "100000") {
+            this.$message.error("保存图片失败", 4);
+          } else {
+            // response.data.data;
+            for (var i = 0; i < this.answer.answerList.length; i++) {
+              if (questionId === this.answer.answerList[i].questionId) {
+                this.answer.answerList[i].content = response.data.data;
+              }
+            }
+            this.$message.success("保存成功", 4);
+          }
+        });
     }
     // 画图题结束
   }
@@ -545,5 +581,131 @@ export default {
   align-items: center;
   margin: 0 auto;
 }
-/* 画图题样式 结束 */
+
+/* 多选题样式 */
+input[type="checkbox"] {
+  /*同样，首先去除浏览器默认样式*/
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /*编辑我们自己的样式*/
+  position: relative;
+  vertical-align: top;
+  width: 18px;
+  height: 18px;
+  background: transparent;
+  border: 1px solid #2d8cf0;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+input[type="checkbox"]:after {
+  content: "√";
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #2d8cf0;
+  color: #fff;
+  text-align: center;
+  line-height: 18px;
+  /*增加动画*/
+  -webkit-transition: all ease-in-out 300ms;
+  -moz-transition: all ease-in-out 300ms;
+  transition: all ease-in-out 300ms;
+  /*利用border-radius和opacity达到填充的假象，首先隐藏此元素*/
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  opacity: 0;
+}
+input[type="checkbox"]:checked:after {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  opacity: 1;
+}
+
+/* 单选题样式 */
+input[type="radio"] {
+  /*去除浏览器默认样式*/
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /*自定义样式*/
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #2d8cf0;
+  outline: none;
+  cursor: pointer;
+  /*设置为圆形，看起来是个单选框*/
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+}
+
+/**
+    * 单选框 选中之后的样式
+    **/
+input[type="radio"]:after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  display: block;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  background: #2d8cf0;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  border-radius: 12px;
+  -webkit-transform: scale(0);
+  -moz-transform: scale(0);
+  transform: scale(0);
+  /*增加一些动画*/
+  -webkit-transition: all ease-in-out 300ms;
+  -moz-transition: all ease-in-out 300ms;
+  transition: all ease-in-out 300ms;
+}
+input[type="radio"]:checked:after {
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  transform: scale(1);
+}
+
+.checkbox-div {
+  margin-top: 15px;
+}
+
+.radio-div {
+  margin-top: 15px;
+}
+
+.radio-text {
+  margin-left: 10px;
+}
+
+.checkbox-text {
+  margin-left: 10px;
+  /* margin-top: -20px; */
+}
+
+.QAndA-input {
+  margin-top: 20px;
+  /* margin-left: 10px; */
+}
+
+.draw-input {
+  float: left;
+  /* margin-left: 30px; */
+  width: 70%;
+}
 </style>

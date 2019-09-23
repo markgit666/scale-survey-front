@@ -7,14 +7,14 @@
         <a-select-option value="radio">单选题</a-select-option>
         <a-select-option value="checkBox">多选题</a-select-option>
         <a-select-option value="QandA">问答题</a-select-option>
-        <!-- <a-select-option value="draw">画图题</a-select-option>
-        <a-select-option value="picture">图片题</a-select-option> -->
+        <a-select-option value="draw">画图题</a-select-option>
+        <a-select-option value="picture">图片题</a-select-option>
       </a-select>
 
       <!-- <a href="#" slot="extra" @click="toggle" :style="{marginLeft:'10px'}">编辑</a> -->
     </a>
 
-    <!-- 右边内容 -->
+    <!-- 所有题目 -->
     <div>
       <div :style="{ overflow: 'initial' }">
         <router-view></router-view>
@@ -153,12 +153,12 @@
             <!-- 画图结束 -->
 
             <!-- 7.图片题 -->
-            <div v-if="value.questionType ==='picture'">
+            <div v-if="value.questionType ==='picture'" @click="display(subjectId)">
               <a-divider />
               <h4>（图片题）请点击下方"开始上传"进行上传：</h4>
               <div class="clearfix">
                 <a-upload
-                  :pictureFileList="pictureFileList"
+                  :fileList="pictureFileList"
                   :remove="pictureHandleRemove"
                   :beforeUpload="pictureBeforeUpload"
                 >
@@ -168,7 +168,7 @@
                 </a-upload>
                 <a-button
                   type="primary"
-                  @click="pictureHandleUpload"
+                  @click="pictureHandleUpload(subjectId)"
                   :disabled="pictureFileList.length === 0"
                   :loading="uploading"
                   style="margin-top: 16px"
@@ -198,8 +198,9 @@
         <!-- <button @click.prevent="post" class="save_button">保存</button> -->
       </div>
     </div>
+    <!-- 所有题目结束 -->
   </a-card>
-  <!-- 以上右边内容结束位置 -->
+  <!-- 所有题目结束 -->
 </template>
 
 <script>
@@ -211,7 +212,8 @@ export default {
     return {
       fileNoList: [], //存放画图题上传的图片
       fileList: [],
-
+      pictureFileNoList: [], //存放图片题上传的图片
+      pictureFileList: [], //图片题，for循环内
       uploading: false,
       serverUrl: this.GLOBAL.serverUrl,
 
@@ -232,11 +234,11 @@ export default {
     this.fetch();
   },
   methods: {
-    toggle() {
-      this.disabled = !this.disabled;
-    },
+    // toggle() {
+    //   this.disabled = !this.disabled;
+    // },
 
-    //更新 查看量表
+    //查看量表------接口
     fetch() {
       debugger;
       let that = this;
@@ -393,7 +395,80 @@ export default {
     },
     //画图题方法 ————上传图片结束
 
-    //更新 有问题修改中
+    //图片题 ———— 上传图片开始
+    //删除上传的图片
+    pictureHandleRemove(file) {
+      const index = this.pictureFileList.indexOf(file);
+      const newPictureFileList = this.pictureFileList.slice();
+      newPictureFileList.splice(index, 1);
+      this.pictureFileList = newPictureFileList;
+    },
+    //选择图片
+    pictureBeforeUpload(file) {
+      this.pictureFileList = [...this.pictureFileList, file];
+      return false;
+    },
+    //上传图片
+    pictureHandleUpload(subjectId) {
+      debugger;
+      const { pictureFileList } = this;
+      const formData = new FormData();
+      pictureFileList.forEach(file => {
+        formData.append("file", file);
+      });
+      this.uploading = true;
+      let that = this;
+      // You can use any AJAX library you like
+      reqwest({
+        url: this.serverUrl + "file/upload",
+        headers: {
+          Token: localStorage.getItem("Token")
+        },
+        method: "post",
+        processData: false,
+        data: formData,
+        success: () => {
+          this.pictureFileList = [];
+          this.uploading = false;
+          this.$message.success("上传成功！", 5);
+        },
+        error: () => {
+          this.uploading = false;
+          this.$message.error("上传失败！", 5);
+        }
+      }).then(values => {
+        debugger;
+        that.pictureFileNoList = values.data;
+        var pictureObject = {
+          questionType: "picture",
+          show: true,
+          title: "",
+          markSubjectId: subjectId,
+          attachmentList: this.pictureFileNoList
+        };
+        var list = that.oneScale.questionList;
+        debugger;
+        for (var i = 0; i < list.length; i++) {
+          if (list[i].status === "noNeed") {
+            list.splice(i, 1);
+          }
+        }
+        for (var i = 0; i < list.length; i++) {
+          if (
+            list.length > 0 &&
+            list[i].questionType === "picture" &&
+            list[i].markSubjectId === subjectId
+          ) {
+            list.splice(i, 1);
+          }
+        }
+        that.oneScale.questionList.push(pictureObject);
+        console.log(values.data);
+      });
+    },
+    //图片题 ————上传图片结束
+
+    //更新 有问题修改中,20190912已解决
     updataScale() {
       // this.oneScale.questionList.pop();
       this.$http
