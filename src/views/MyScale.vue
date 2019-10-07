@@ -141,7 +141,7 @@ export default {
           this.data = values.data.list;
           this.pagination = pagination;
         } else {
-          this.$message.erroe("未登录，即将跳转至登录页面", 5);
+          this.$message.error("未登录，即将跳转至登录页面", 5);
           this.$router.push({ path: "/login" });
         }
       });

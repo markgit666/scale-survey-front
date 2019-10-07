@@ -22,6 +22,13 @@
           ></el-input>
         </el-form-item>
 
+        <el-form-item prop="verificationCode" label="验证码:" >
+          <div class="verifyCode">
+            <el-input v-model="ruleForm.verificationCode" size="medium" placeholder="请输入验证码" class="verifyCode-input"></el-input>
+            <el-image class="verifyCode-image" :src="imageCode"></el-image>
+          </div>
+        </el-form-item>
+
         <el-form-item>
           <el-button type="primary" @click="login('ruleForm')" class="login-form-button">登录</el-button>
         </el-form-item>
@@ -36,95 +43,117 @@
 </template>
 
 <script>
-import axios from "axios";
-import { log } from "util";
+import axios from 'axios'
+import { log } from 'util'
 export default {
-  data() {
+  data () {
     // 密码
     var validatePass = (rule, value, callback) => {
       if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,20}$/.test(value) == false) {
-        callback(new Error("请输入6-20位密码，必须包含大小写字母和数字!"));
+        callback(new Error('请输入6-20位密码，必须包含大小写字母和数字!'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
 
     return {
       // 表单 邮箱校验
       ruleForm: {
-        email: "",
-        password: ""
+        email: '',
+        password: '',
+        verificationCode: ''
       },
-
+      base64Code: '',
+      imageCode: '',
+      captchaToken: '',
       serverUrl: this.GLOBAL.serverUrl,
       rules: {
         email: [
-          { required: true, message: "邮箱不能为空!", trigger: "blur" },
+          { required: true, message: '邮箱不能为空!', trigger: 'blur' },
           {
-            type: "email",
-            message: "请输入正确的邮箱地址!",
-            trigger: ["blur", "change"]
+            type: 'email',
+            message: '请输入正确的邮箱地址!',
+            trigger: ['blur', 'change']
           }
         ],
 
         password: [
-          { required: true, message: "密码不能为空!", trigger: "blur" },
+          { required: true, message: '密码不能为空!', trigger: 'blur' },
           {
             validator: validatePass,
-            trigger: "blur"
+            trigger: 'blur'
           }
+        ],
+        verificationCode: [
+          { required: true, message: '验证码不能为空!', trigger: 'blur' }
         ]
       }
-    };
+    }
   },
 
   // 创建表单
-  resetForm(formName) {
-    this.$refs[formName].resetFields();
+  resetForm (formName) {
+    this.$refs[formName].resetFields()
+  },
+
+  mounted () {
+    this.fetchCaptchaCode()
   },
   methods: {
-    //登录
-    login(formName) {
+
+    fetchCaptchaCode () {
+      axios.post(this.serverUrl + 'authc/captcha/get').then(response => {
+        this.base64Code = response.data.data.captchaImg
+        this.imageCode = 'data:image/jpeg;base64,' + this.base64Code
+        this.captchaToken = response.data.data.captchaToken
+        console.log(response)
+      })
+    },
+
+    // 登录
+    login (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          // this.$router.push({ path: "/Home" });
-          // debugger;
           axios
-            .post(this.serverUrl + "authc/login", {
+            .post(this.serverUrl + 'authc/login', {
               loginName: this.ruleForm.email,
-              password: this.ruleForm.password
+              password: this.ruleForm.password,
+              captchaToken: this.captchaToken,
+              captcha: this.ruleForm.verificationCode
             })
             .then(response => {
-              debugger;
-              if (response.data.retCode === "000001") {
-                localStorage.setItem("Token", response.data.data);
-                this.$router.push({ path: "/Home" });
+              debugger
+              if (response.data.retCode === '000001') {
+                localStorage.setItem('Token', response.data.data)
+                this.$router.push({ path: '/Home' })
+              } else if (response.data.retCode === '100008') {
+                this.$message.error('验证码错误', 5)
               } else {
-                this.$message.warning("用户名或密码错误",5);
+                this.$message.error('用户名或密码错误', 5)
               }
 
               // console.log("response:", response);
-            });
+            })
         } else {
-          alert("登录失败");
-          return false;
+          alert('登录失败')
+          return false
         }
-      });
+      })
+      this.fetchCaptchaCode()
     },
 
     // 注册
-    register() {
-      this.$router.push({ path: "/Register" });
-      console.log("a");
+    register () {
+      this.$router.push({ path: '/Register' })
     },
     // 忘记密码
-    forget() {
-      console.log("忘记密码");
+    forget () {
+      this.$router.push({ path: '/findPassword' })
     }
   }
-};
+}
 </script>
-<style>
+<style scoped>
 /* card */
 #main {
   /* background-image: url(../assets/img/login.jpg); */
@@ -168,4 +197,21 @@ export default {
   margin-top: 10px;
   margin-left: -45px;
 }
+.verifyCode{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+
+  /*border: 1px solid red;*/
+}
+.verifyCode-input{
+  width:75%;
+}
+.verifyCode-image{
+  width:25%;
+  height: 33px;
+  margin-top: 3px;
+  margin-left: 10px;
+}
+
 </style>

@@ -20,6 +20,8 @@ import AnswerScale from './views/AnswerScale.vue'
 import MyAnswer from './views/MyAnswer.vue'
 import AnswerSubmitSuccess from './views/AnswerSubmitSuccess.vue'
 import Judge from './views/Judge.vue'
+import FindPassword from './views/FindPassword.vue'
+import ChangePassword from './views/ChangePassword.vue'
 
 Vue.use(Router)
 Vue.use(Antd)
@@ -68,6 +70,16 @@ export default new Router({
       name: 'Register',
       component: Register
     },
+    {
+      path: '/findPassword',
+      name: 'FindPassword',
+      component: FindPassword
+    },
+    {
+      path: '/changePassword',
+      name: 'ChangePassword',
+      component: ChangePassword
+    }
     // {
     //   path: '/about',
     //   name: 'about',
