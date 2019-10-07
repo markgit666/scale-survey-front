@@ -33,6 +33,11 @@
         </el-form-item>
 
         <el-form-item>
+          <el-input v-model="ruleForm.verifyCode" placeholder="请输入验证码"></el-input>
+          <el-button type="primary" @click="getVerifyCode('ruleForm')">邮箱验证</el-button>
+        </el-form-item>
+
+        <el-form-item>
           <el-button type="primary" @click="register('ruleForm')" class="login-form-button">注册</el-button>
         </el-form-item>
       </el-form>
@@ -86,73 +91,100 @@ export default {
       }
     };
 
-    return {
-      serverUrl: this.GLOBAL.serverUrl,
-      // 表单 邮箱校验
-      ruleForm: {
-        email: "",
-        password1: "",
-        password2: ""
-      },
-      rules: {
-        email: [
-          { required: true, message: "邮箱不能为空!", trigger: "blur" },
-          {
-            type: "email",
-            message: "请输入正确的邮箱地址",
-            trigger: ["blur", "change"]
-          }
-        ],
-        password1: [
-          { required: true, message: "密码不能为空!", trigger: "blur" },
-          { validator: validatePass1, trigger: "blur" }
-        ],
-        password2: [
-          { required: true, message: "密码不能为空!", trigger: "blur" },
-          { validator: validatePass2, trigger: "blur" }
-        ]
-      }
-    };
-  },
-  resetForm(formName) {
-    this.$refs[formName].resetFields();
-  },
-  methods: {
-    //取消注册
-    backLogin() {
-      this.$router.push({ path: "/Login" });
+      return {
+        serverUrl: this.GLOBAL.serverUrl,
+        // 表单 邮箱校验
+        ruleForm: {
+          email: "",
+          password1: "",
+          password2: "",
+          verifyCode: ""
+        },
+        rules: {
+          email: [
+            {required: true, message: "邮箱不能为空!", trigger: "blur"},
+            {
+              type: "email",
+              message: "请输入正确的邮箱地址",
+              trigger: ["blur", "change"]
+            }
+          ],
+          password1: [
+            {required: true, message: "密码不能为空!", trigger: "blur"},
+            {validator: validatePass1, trigger: "blur"}
+          ],
+          password2: [
+            {required: true, message: "密码不能为空!", trigger: "blur"},
+            {validator: validatePass2, trigger: "blur"}
+          ],
+          verifyCode: [
+            {required: true, message: "验证码不能为空", trigger: "blur"},
+          ]
+        }
+      };
     },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    methods: {
+      //取消注册
+      backLogin() {
+        this.$router.push({path: "/Login"});
+      },
 
-    //点击"确定"按钮, 同时会获取到表单提交的数据
-    register(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          debugger;
-          axios
-            .post(this.serverUrl + "authc/register", {
-              loginName: this.ruleForm.email,
-              password: this.ruleForm.password1,
-              confirmPassword: this.ruleForm.password2
-            })
-            .then(response => {
-              debugger;
-              if (response.data.retCode === "100004") {
-                this.$message.error("用户名已被注册！",5);
-              } else if (response.data.retCode === "000002") {
-                this.$message.success("注册成功！",5);
-                this.$router.push({ path: "/Login" });
+      /**
+       * 获取验证码
+       */
+      getVerifyCode(formName) {
+        this.$refs[formName].validate(valid => {
+          if (valid) {
+            axios.post(this.serverUrl + "authc/verifyCode/get",
+              {
+                emailAddress: this.ruleForm.email,
+              }).then(response => {
+              if (response.data.retCode = "00003") {
+                this.$message.success(response.data.retMsg, 5);
               } else {
-                this.$message.error("注册失败！",5);
+                this.$message.error("获取验证码失败，请稍后重试", 5);
               }
             });
-        } else {
-          this.$message.error("注册失败！",5);
-          return false;
-        }
-      });
+          } else {
+            this.$message.error("请填写邮箱地址！", 5);
+          }
+        })
+      },
+
+      //点击"确定"按钮, 同时会获取到表单提交的数据
+      register(formName) {
+        this.$refs[formName].validate(valid => {
+          if (valid) {
+            debugger;
+            axios
+              .post(this.serverUrl + "authc/register", {
+                loginName: this.ruleForm.email,
+                password: this.ruleForm.password1,
+                confirmPassword: this.ruleForm.password2,
+                verifyCode: this.ruleForm.verifyCode
+              })
+              .then(response => {
+                debugger;
+                if (response.data.retCode === "100004") {
+                  this.$message.error("用户名已被注册！", 5);
+                } else if (response.data.retCode === "000002") {
+                  this.$message.success("注册成功！", 5);
+                  this.$router.push({path: "/Login"});
+                } else {
+                  this.$message.error("注册失败！", 5);
+                }
+              });
+          } else {
+            this.$message.error("注册失败！", 5);
+            return false;
+          }
+        });
+      }
     }
-  }
-};
+  };
 </script>
 
 <style>
