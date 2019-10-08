@@ -15,7 +15,7 @@
         <el-form-item prop="verificationCode" label="验证码:" >
           <div class="verifyCode">
             <el-input v-model="ruleForm.verificationCode" size="medium" placeholder="请输入验证码" class="verifyCode-input"></el-input>
-            <el-image class="verifyCode-image" :src="imageCode"></el-image>
+            <el-image class="verifyCode-image" :src="imageCode" @click="fetchVertifyCode"></el-image>
           </div>
         </el-form-item>
 
@@ -76,6 +76,9 @@ export default {
         this.captchaToken = response.data.data.captchaToken
         console.log(response)
       })
+    },
+    fetchVertifyCode(){
+      this.fetchCaptchaCode()
     },
 
     // 下一步

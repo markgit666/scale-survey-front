@@ -25,7 +25,7 @@
         <el-form-item prop="verificationCode" label="验证码:" >
           <div class="verifyCode">
             <el-input v-model="ruleForm.verificationCode" size="medium" placeholder="请输入验证码" class="verifyCode-input"></el-input>
-            <el-image class="verifyCode-image" :src="imageCode"></el-image>
+            <el-image class="verifyCode-image" :src="imageCode" @click="fetchVertifyCode"></el-image>
           </div>
         </el-form-item>
 
@@ -109,6 +109,9 @@ export default {
         console.log(response)
       })
     },
+    fetchVertifyCode () {
+      this.fetchCaptchaCode()
+    },
 
     // 登录
     login (formName) {
@@ -160,7 +163,7 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
   height: 100vh;
-  padding-top: 25vh;
+  padding-top: 15vh;
   text-align: center;
   display: flex;
   flex-direction: column;

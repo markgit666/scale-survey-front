@@ -37,49 +37,49 @@
   </div>
 </template>
 <script>
-import reqwest from "reqwest";
-import axios from "axios";
-import { debuglog } from "util";
+import reqwest from 'reqwest'
+import axios from 'axios'
+import { debuglog } from 'util'
 const columns = [
   {
-    title: "量表名称",
-    dataIndex: "scaleInfo.scaleName",
+    title: '量表名称',
+    dataIndex: 'scaleInfo.scaleName',
     // sorter: true,
-    width: "30%"
+    width: '30%'
     // scopedSlots: { customRender: "scaleName" }
   },
 
   {
-    title: "答题者",
-    dataIndex: "patientInfo.name",
+    title: '答题者',
+    dataIndex: 'patientInfo.name',
     // sorter: true,
-    width: "15%"
+    width: '15%'
     // scopedSlots: { customRender: "answerPerson" }
   },
   {
-    title: "答题时间",
-    dataIndex: "useTime"
+    title: '答题时间',
+    dataIndex: 'useTime'
   },
   {
-    title: "是否已评分",
-    dataIndex: "judgeInfo",
+    title: '是否已评分',
+    dataIndex: 'judgeInfo',
     // sorter: true,
-    width: "15%"
+    width: '15%'
     // scopedSlots: { customRender: "isScore" }
   },
 
   {
-    title: "操作",
-    dataIndex: "operation",
-    scopedSlots: { customRender: "operation" }
+    title: '操作',
+    dataIndex: 'operation',
+    scopedSlots: { customRender: 'operation' }
   }
-];
+]
 
 export default {
-  mounted() {
-    this.fetch();
+  mounted () {
+    this.fetch()
   },
-  data() {
+  data () {
     return {
       visible: false,
       serverUrl: this.GLOBAL.serverUrl,
@@ -88,90 +88,93 @@ export default {
       loading: false,
       columns,
       id: 0,
-      qrCodeShowSwitch: ""
-    };
+      qrCodeShowSwitch: ''
+    }
   },
   methods: {
     // 分页
-    handleTableChange(pagination, filters, sorter) {
-      pagination.pageSize = 3;
-      const pager = { ...this.pagination };
-      pager.current = pagination.current;
-      this.pagination = pager;
+    handleTableChange (pagination, filters, sorter) {
+      pagination.pageSize = 3
+      const pager = { ...this.pagination }
+      pager.current = pagination.current
+      this.pagination = pager
       this.fetch({
         pageNo: pagination.current,
         sortField: sorter.field,
         sortOrder: sorter.order,
         ...filters
-      });
+      })
     },
-    fetch(params = {}) {
-      console.log("params:", params);
-      console.log("fetch pagination=", this.pagination);
-      this.loading = true;
-      debugger;
+    fetch (params = {}) {
+      console.log('params:', params)
+      console.log('fetch pagination=', this.pagination)
+      this.loading = true
+      debugger
       reqwest({
-        url: this.serverUrl + "paper/info/get",
+        url: this.serverUrl + 'paper/info/get',
 
         headers: {
-          Token: localStorage.getItem("Token")
+          Token: localStorage.getItem('Token')
         },
-        method: "post",
+        method: 'post',
         data: JSON.stringify({
           pageNo: 1,
           pageSize: 5,
           ...params
         }),
-        type: "json",
-        contentType: "application/json"
+        type: 'json',
+        contentType: 'application/json'
       }).then(values => {
-        debugger;
-        if ((values.retCode = "000000")) {
-          const pagination = { ...this.pagination };
-          var page;
+        debugger
+        if ((values.retCode = '000000')) {
+          const pagination = { ...this.pagination }
+          var page
           if (values.data.totalNum % 5 === 0) {
-            page = values.data.totalNum / 5;
+            page = values.data.totalNum / 5
           } else {
-            page = Math.floor(values.data.totalNum / 5 + 1);
+            page = Math.floor(values.data.totalNum / 5 + 1)
           }
-          pagination.total = page * 10;
-          console.log("total=", pagination.total);
-          this.loading = false;
-          this.data = values.data.list;
-          debugger;
-          //当null时，显示未评定
+          pagination.total = page * 10
+          console.log('total=', pagination.total)
+          this.loading = false
+          this.data = values.data.list
+          debugger
+          // 当null时，显示未评定
           for (var i = 0; i < values.data.list.length; i++) {
             if (values.data.list[i].judgeInfo === null) {
-              values.data.list[i].judgeInfo = "未评分";
+              values.data.list[i].judgeInfo = '未评分'
             } else {
-              values.data.list[i].judgeInfo = "已评分";
+              values.data.list[i].judgeInfo = '已评分'
             }
-              //将秒数变成分钟
+            // 将秒数变成分钟
             values.data.list[i].useTime = Math.round(
               values.data.list[i].useTime / 60
-            );
+            )
 
-            values.data.list[i].useTime = values.data.list[i].useTime + "分钟";
+            values.data.list[i].useTime = values.data.list[i].useTime + '分钟'
           }
 
-          this.pagination = pagination;
+          this.pagination = pagination
+        } else if (values.retCode = '100001') {
+          this.$message.error('未登录，即将跳转至登录页面', 5)
+          this.$router.push({ path: '/login' })
         } else {
-          this.$message.error("错误");
+          this.$message.error('系统繁忙', 5)
         }
-      });
+      })
     },
 
-    //评分
-    score(examinationPaperId) {
-      debugger;
+    // 评分
+    score (examinationPaperId) {
+      debugger
       this.$router.push({
-        path: "/Home/myAnswer/judge",
+        path: '/Home/myAnswer/judge',
         // patients:patientId
         query: { examinationPaperId: examinationPaperId }
-      });
-    },
+      })
+    }
 
-    //删除答卷
+    // 删除答卷
     // delScaleAnswer(examinationPaperId) {
     //   axios
     //     .post(
@@ -193,7 +196,7 @@ export default {
     //     });
     // }
   }
-};
+}
 </script>
 
 <style scoped>
