@@ -81,7 +81,7 @@
         <!-- 职业 -->
         <el-form-item label="职业 :" class="form-item-div">
           <el-select
-            v-model="ruleForm.jobType"
+            v-model="ruleForm.workStatus"
             placeholder="请选择"
             style="width: 100%;"
             size="medium"
@@ -380,39 +380,39 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios'
 export default {
-  data() {
-    //手机号
+  data () {
+    // 手机号
     var validatePhone = (rule, value, callback) => {
       if (/^1[34578]{1}\d{9}$/.test(value) == false) {
-        callback(new Error("请输入正确的手机号"));
+        callback(new Error('请输入正确的手机号'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
 
     return {
       ruleForm: {},
       rules: {
-        name: [{ required: true, message: "不能为空！", trigger: "blur" }],
-        birthday: [{ required: true, message: "不能为空！", trigger: "blur" }],
-        gender: [{ required: true, message: "不能为空！", trigger: "blur" }],
+        name: [{ required: true, message: '不能为空！', trigger: 'blur' }],
+        birthday: [{ required: true, message: '不能为空！', trigger: 'blur' }],
+        gender: [{ required: true, message: '不能为空！', trigger: 'blur' }],
         familyAddress: [
-          { required: true, message: "不能为空！", trigger: "blur" }
+          { required: true, message: '不能为空！', trigger: 'blur' }
         ],
         telephoneNumber: [
-          { required: true, message: "不能为空！", trigger: "blur" },
-          { validator: validatePhone, trigger: "blur" }
+          { required: true, message: '不能为空！', trigger: 'blur' },
+          { validator: validatePhone, trigger: 'blur' }
         ],
-        educationYears: [{ type: "number", message: "必须为数字值" }],
-        smokingNumEachDay: [{ type: "number", message: "必须为数字值" }],
-        smokingYears: [{ type: "number", message: "必须为数字值" }],
-        drinkingNumEachDay: [{ type: "number", message: "必须为数字值" }],
-        drinkingYears: [{ type: "number", message: "必须为数字值" }],
-        drugsDosage: [{ type: "number", message: "必须为数字值" }]
+        educationYears: [{ type: 'number', message: '必须为数字值' }],
+        smokingNumEachDay: [{ type: 'number', message: '必须为数字值' }],
+        smokingYears: [{ type: 'number', message: '必须为数字值' }],
+        drinkingNumEachDay: [{ type: 'number', message: '必须为数字值' }],
+        drinkingYears: [{ type: 'number', message: '必须为数字值' }],
+        drugsDosage: [{ type: 'number', message: '必须为数字值' }]
       },
-      //服务器地址
+      // 服务器地址
       serverUrl: this.GLOBAL.serverUrl,
       showJob: false,
       showDisease: false,
@@ -422,139 +422,144 @@ export default {
       showOtherMentalDisease: false,
       showMemory: false,
       showCognitiveDrug: false,
-      //个人信息
-      name: "zoujiem",
+      // 个人信息
+      name: 'zoujiem',
       birthday: null,
-      educationYears: "",
-      gender: "",
+      educationYears: '',
+      gender: '',
       config: {
         rules: [
-          { type: "object", required: true, message: "Please select time!" }
+          { type: 'object', required: true, message: 'Please select time!' }
         ]
       }
-    };
+    }
   },
 
-  mounted() {
-    this.fetch();
+  mounted () {
+    this.fetch()
   },
-  resetForm(formName) {
-    this.$refs[formName].resetFields();
+  resetForm (formName) {
+    this.$refs[formName].resetFields()
   },
 
   methods: {
-    handleChange() {},
+    handleChange () {},
     //   如果是在职，输入职业
-    jobChange(value) {
-      if (value == "在职") {
-        this.showJob = true;
+    jobChange (value) {
+      if (value == '在职') {
+        this.showJob = true
       } else {
-        this.showJob = false;
+        this.showJob = false
       }
     },
-    diseaseChange(value) {
-      if (value == "其他疾病") {
-        this.showDisease = true;
+    diseaseChange (value) {
+      if (value == '其他疾病') {
+        this.showDisease = true
       } else {
-        this.showDisease = false;
+        this.showDisease = false
       }
     },
-    smokingChange(value) {
-      if (value == "仍在吸") {
-        this.showSmoke = true;
+    smokingChange (value) {
+      if (value == '仍在吸') {
+        this.showSmoke = true
       } else {
-        this.showSmoke = false;
+        this.showSmoke = false
       }
     },
-    drinkingChange(value) {
-      if (value == "仍在喝") {
-        this.showDrink = true;
+    drinkingChange (value) {
+      if (value == '仍在喝') {
+        this.showDrink = true
       } else {
-        this.showDrink = false;
+        this.showDrink = false
       }
     },
-    mentalDiseaseChange(value) {
-      if (value == "有") {
-        this.showMentalDisease = true;
+    mentalDiseaseChange (value) {
+      if (value == '有') {
+        this.showMentalDisease = true
       } else {
-        this.showMentalDisease = false;
-        this.showOtherMentalDisease = false;
+        this.showMentalDisease = false
+        this.showOtherMentalDisease = false
       }
     },
-    otherMentalDiseaseChange(value) {
-      if (value == "其他精神病史") {
-        this.showOtherMentalDisease = true;
+    otherMentalDiseaseChange (value) {
+      if (value == '其他精神病史') {
+        this.showOtherMentalDisease = true
       } else {
-        this.showOtherMentalDisease = false;
+        this.showOtherMentalDisease = false
       }
     },
-    memoryChange(value) {
-      if (value == "有记忆力下降") {
-        this.showMemory = true;
+    memoryChange (value) {
+      if (value == '有记忆力下降') {
+        this.showMemory = true
       } else {
-        this.showMemory = false;
+        this.showMemory = false
       }
     },
-    cognitiveDrugChange(value) {
-      if (value == "有合并使用促认知药物") {
-        this.showCognitiveDrug = true;
+    cognitiveDrugChange (value) {
+      if (value == '有合并使用促认知药物') {
+        this.showCognitiveDrug = true
       } else {
-        this.showCognitiveDrug = false;
+        this.showCognitiveDrug = false
       }
     },
 
-    toggle() {
-      this.disabled = !this.disabled;
+    toggle () {
+      this.disabled = !this.disabled
     },
-    //更新
-    fetch() {
-      let that = this;
-      debugger;
+    // 更新
+    fetch () {
+      let that = this
+      debugger
       axios
-        .post(this.serverUrl + "/patient/info/get", this.$route.query, {
+        .post(this.serverUrl + '/patient/info/get', this.$route.query, {
           headers: {
-            Token: localStorage.getItem("Token")
+            Token: localStorage.getItem('Token')
           }
         })
         .then(response => {
-          debugger;
-          if ((response.data.retCode = "000000")) {
-            console.log(response);
-            that.ruleForm = response.data.data;
+          debugger
+          if ((response.data.retCode = '000000')) {
+            console.log(response)
+            that.ruleForm = response.data.data
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           // 请求失败处理
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
 
     // 更新
-    updateInfo(formName) {
+    updateInfo (formName) {
       this.$refs[formName].validate(valid => {
         // debugger;
         if (valid) {
+          debugger
           this.$http
-            .post(this.serverUrl + "/patient/info/save", this.ruleForm, {
+            .post(this.serverUrl + '/patient/info/save', this.ruleForm, {
               headers: {
-                Token: localStorage.getItem("Token")
+                Token: localStorage.getItem('Token')
               }
             })
-            .then(function(data) {
-              console.log(data);
-              this.$message.success("更新成功", 5);
-              this.$router.push({ path: "/Home/MyPatients" });
-            });
+            .then(function (data) {
+              debugger
+              if (data.data.retCode === '000000') {
+                console.log(data)
+                this.$message.success('更新成功', 5)
+                this.$router.push({ path: '/Home/MyPatients' })
+              } else {
+                this.$message.error('更新失败', 5)
+              }
+            })
         } else {
-          alert("格式错误！请检查");
-          return false;
+          alert('格式错误！请检查')
+          return false
         }
-      });
+      })
     }
   }
-};
+}
 </script>
-
 
 <style scoped>
 .info_box {
@@ -591,4 +596,3 @@ export default {
   width: 200px;
 }
 </style>
-

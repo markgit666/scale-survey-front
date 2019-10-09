@@ -174,7 +174,7 @@ export default {
       })
     },
 
-    // 查看病人信息
+    // 查看，编辑病人信息
     editInfo (patientId) {
       this.$router.push({
         path: '/home/showAndEditPatientInfo',

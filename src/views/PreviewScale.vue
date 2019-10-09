@@ -197,7 +197,7 @@ export default {
       imgUrl: this.GLOBAL.serverUrl + "file/download?fileNo=",
       canvasImgUrls: [],
       oneScale: {
-        doctorId: "yinxt_001",
+        doctorId: "",
         //量表名称
         scaleName: "",
         //量表内容

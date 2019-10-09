@@ -82,7 +82,7 @@
         <!-- 职业 -->
         <el-form-item label="职业 :" class="form-item-div">
           <el-select
-            v-model="ruleForm.jobType"
+            v-model="ruleForm.workStatus"
             placeholder="请选择"
             style="width: 100%;"
             size="medium"
@@ -382,118 +382,118 @@
 
 <script>
 export default {
-  data() {
-    //手机号
+  data () {
+    // 手机号
     var validatePhone = (rule, value, callback) => {
       if (/^1[34578]{1}\d{9}$/.test(value) == false) {
-        callback(new Error("请输入正确的手机号"));
+        callback(new Error('请输入正确的手机号'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     var validateEducationYears = (rule, value, callback) => {
-      if (value != "") {
+      if (value != '') {
         if (/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/.test(value) == false) {
-          callback(new Error("请填写大于0的数字"));
+          callback(new Error('请填写大于0的数字'))
         } else {
-          callback();
+          callback()
         }
       } else {
-        callback();
+        callback()
       }
-    };
+    }
 
     return {
       ruleForm: {
-        name: "",
-        birthday: "",
-        gender: "",
-        familyAddress: "",
-        telephoneNumber: "",
-        hand: "",
-        nation: "",
-        marriageStatus: "",
-        jobType: "",
-        inServiceJob: "", //在职职业
-        educationLevel: "",
-        educationYears: "",
-        isSnoring: "",
-        livingWay: "",
-        medicalHistory: "",
-        otherMedicalHistory: "",
-        smokingHistory: "",
-        smokingNumEachDay: "",
-        smokingYears: "",
-        isMentalDiseaseFamilyHistory: "",
-        mentalDiseaseFamilyHistory: "",
-        otherMentalDiseaseFamilyHistory: "",
-        currentMedicalHistory_memoryLoss: "",
-        memoryLossTime: "",
-        physicalExamination: "",
-        isUseCognitiveDrugs: "",
-        drugsDosage: "",
-        drugsType: "",
-        drinkingHistory: "",
-        drinkingType: "",
-        drinkingNumEachDay: "",
-        drinkingYears: ""
+        name: '',
+        birthday: '',
+        gender: '',
+        familyAddress: '',
+        telephoneNumber: '',
+        hand: '',
+        nation: '',
+        marriageStatus: '',
+        workStatus: '', // 职业
+        inServiceJob: '', // 在职职业
+        educationLevel: '',
+        educationYears: '',
+        isSnoring: '',
+        livingWay: '',
+        medicalHistory: '',
+        otherMedicalHistory: '',
+        smokingHistory: '',
+        smokingNumEachDay: '',
+        smokingYears: '',
+        isMentalDiseaseFamilyHistory: '',
+        mentalDiseaseFamilyHistory: '',
+        otherMentalDiseaseFamilyHistory: '',
+        currentMedicalHistory_memoryLoss: '',
+        memoryLossTime: '',
+        physicalExamination: '',
+        isUseCognitiveDrugs: '',
+        drugsDosage: '',
+        drugsType: '',
+        drinkingHistory: '',
+        drinkingType: '',
+        drinkingNumEachDay: '',
+        drinkingYears: ''
       },
       rules: {
-        name: [{ required: true, message: "不能为空！", trigger: "blur" }],
-        birthday: [{ required: true, message: "不能为空！", trigger: "blur" }],
-        gender: [{ required: true, message: "不能为空！", trigger: "blur" }],
+        name: [{ required: true, message: '不能为空！', trigger: 'blur' }],
+        birthday: [{ required: true, message: '不能为空！', trigger: 'blur' }],
+        gender: [{ required: true, message: '不能为空！', trigger: 'blur' }],
         familyAddress: [
-          { required: true, message: "不能为空！", trigger: "blur" }
+          { required: true, message: '不能为空！', trigger: 'blur' }
         ],
         telephoneNumber: [
-          { required: true, message: "不能为空！", trigger: "blur" },
-          { validator: validatePhone, trigger: "blur" }
+          { required: true, message: '不能为空！', trigger: 'blur' },
+          { validator: validatePhone, trigger: 'blur' }
         ],
         educationYears: [
           // { type: "number", message: "必须为数字值" },
           {
             required: false,
             validator: validateEducationYears,
-            trigger: "change"
+            trigger: 'change'
           }
         ],
         smokingNumEachDay: [
           {
             required: false,
             validator: validateEducationYears,
-            trigger: "change"
+            trigger: 'change'
           }
         ],
         smokingYears: [
           {
             required: false,
             validator: validateEducationYears,
-            trigger: "change"
+            trigger: 'change'
           }
         ],
         drinkingNumEachDay: [
           {
             required: false,
             validator: validateEducationYears,
-            trigger: "change"
+            trigger: 'change'
           }
         ],
         drinkingYears: [
           {
             required: false,
             validator: validateEducationYears,
-            trigger: "change"
+            trigger: 'change'
           }
         ],
         drugsDosage: [
           {
             required: false,
             validator: validateEducationYears,
-            trigger: "change"
+            trigger: 'change'
           }
         ]
       },
-      //服务器地址
+      // 服务器地址
       serverUrl: this.GLOBAL.serverUrl,
       showJob: false,
       showDisease: false,
@@ -503,112 +503,112 @@ export default {
       showOtherMentalDisease: false,
       showMemory: false,
       showCognitiveDrug: false,
-      //个人信息
-      name: "zoujiem",
+      // 个人信息
+      name: 'zoujiem',
       birthday: null,
-      educationYears: "",
-      gender: "",
+      educationYears: '',
+      gender: '',
       config: {
         rules: [
-          { type: "object", required: true, message: "Please select time!" }
+          { type: 'object', required: true, message: 'Please select time!' }
         ]
       }
-    };
+    }
   },
 
-  resetForm(formName) {
-    this.$refs[formName].resetFields();
+  resetForm (formName) {
+    this.$refs[formName].resetFields()
   },
 
   methods: {
-    handleChange() {},
+    handleChange () {},
     //   如果是在职，输入职业
-    jobChange(value) {
-      if (value == "在职") {
-        this.showJob = true;
+    jobChange (value) {
+      if (value == '在职') {
+        this.showJob = true
       } else {
-        this.showJob = false;
+        this.showJob = false
       }
     },
-    diseaseChange(value) {
-      if (value == "其他疾病") {
-        this.showDisease = true;
+    diseaseChange (value) {
+      if (value == '其他疾病') {
+        this.showDisease = true
       } else {
-        this.showDisease = false;
+        this.showDisease = false
       }
     },
-    smokingChange(value) {
-      if (value == "仍在吸") {
-        this.showSmoke = true;
+    smokingChange (value) {
+      if (value == '仍在吸') {
+        this.showSmoke = true
       } else {
-        this.showSmoke = false;
+        this.showSmoke = false
       }
     },
-    drinkingChange(value) {
-      if (value == "仍在喝") {
-        this.showDrink = true;
+    drinkingChange (value) {
+      if (value == '仍在喝') {
+        this.showDrink = true
       } else {
-        this.showDrink = false;
+        this.showDrink = false
       }
     },
-    mentalDiseaseChange(value) {
-      if (value == "有") {
-        this.showMentalDisease = true;
+    mentalDiseaseChange (value) {
+      if (value == '有') {
+        this.showMentalDisease = true
       } else {
-        this.showMentalDisease = false;
-        this.showOtherMentalDisease = false;
+        this.showMentalDisease = false
+        this.showOtherMentalDisease = false
       }
     },
-    otherMentalDiseaseChange(value) {
-      if (value == "其他精神病史") {
-        this.showOtherMentalDisease = true;
+    otherMentalDiseaseChange (value) {
+      if (value == '其他精神病史') {
+        this.showOtherMentalDisease = true
       } else {
-        this.showOtherMentalDisease = false;
+        this.showOtherMentalDisease = false
       }
     },
-    memoryChange(value) {
-      if (value == "有记忆力下降") {
-        this.showMemory = true;
+    memoryChange (value) {
+      if (value == '有记忆力下降') {
+        this.showMemory = true
       } else {
-        this.showMemory = false;
+        this.showMemory = false
       }
     },
-    cognitiveDrugChange(value) {
-      if (value == "有合并使用促认知药物") {
-        this.showCognitiveDrug = true;
+    cognitiveDrugChange (value) {
+      if (value == '有合并使用促认知药物') {
+        this.showCognitiveDrug = true
       } else {
-        this.showCognitiveDrug = false;
+        this.showCognitiveDrug = false
       }
     },
 
-    saveInfo(formName) {
-      console.log(this.ruleForm);
+    saveInfo (formName) {
+      console.log(this.ruleForm)
       this.$refs[formName].validate(valid => {
         // debugger;
         if (valid) {
           this.$http
-            .post(this.serverUrl + "patient/info/save", this.ruleForm, {
+            .post(this.serverUrl + 'patient/info/save', this.ruleForm, {
               headers: {
-                Token: localStorage.getItem("Token")
+                Token: localStorage.getItem('Token')
               }
             })
-            .then(function(data) {
-              if ((data.body.retCode = "000000")) {
-                debugger;
-                console.log(data);
-                this.$router.push({ path: "/home/myPatients" });
-                this.$message.success("保存成功！", 5);
+            .then(function (data) {
+              if ((data.body.retCode = '000000')) {
+                debugger
+                console.log(data)
+                this.$router.push({ path: '/home/myPatients' })
+                this.$message.success('保存成功！', 5)
               } else {
-                this.$message.error("保存失败",5);
+                this.$message.error('保存失败', 5)
               }
-            });
+            })
         } else {
-          alert("格式错误！请检查");
-          return false;
+          alert('格式错误！请检查')
+          return false
         }
-      });
+      })
     }
-    //保存数据到数据库
+    // 保存数据到数据库
     // submitInfo(e) {
     //   debugger;
     //   e.preventDefault();
@@ -631,9 +631,8 @@ export default {
     //   });
     // }
   }
-};
+}
 </script>
-
 
 <style scoped>
 .info_box {
@@ -670,5 +669,3 @@ export default {
   width: 200px;
 }
 </style>
-
-

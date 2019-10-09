@@ -263,10 +263,10 @@ export default {
       // optionText: "",
       show: true,
       previewVisible: false,
-      previewImage: "", 
+      previewImage: "",
       //存放题目的数组
       oneScale: {
-        doctorId: "yinxt_001",
+        doctorId: "",
         //量表名称
         scaleName: "",
         //量表内容
