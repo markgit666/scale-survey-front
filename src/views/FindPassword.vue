@@ -100,14 +100,14 @@ export default {
             }
           })
 
-          // debugger;
+          ;
           // axios
           //   .post(this.serverUrl + "authc/login", {
           //     loginName: this.ruleForm.email,
           //     password: this.ruleForm.password
           //   })
           //   .then(response => {
-          //     debugger;
+          //     ;
           //     if (response.data.retCode === "000001") {
           //       localStorage.setItem("Token", response.data.data);
           //       this.$router.push({ path: "/Home" });

@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     sendMessage () {
-      debugger
+
       if (this.ruleForm.email !== '') {
         if (this.btnDisabled) {
           return
@@ -90,7 +90,7 @@ export default {
     },
 
     getSecond (wait) {
-      // debugger
+
       let _this = this
       let _wait = wait
       if (wait === 0) {
@@ -117,7 +117,7 @@ export default {
     submit (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          debugger
+
           axios.post(this.serverUrl +'authc/password/modify',{
             emailAddress:this.$route.query.email,
             verifyCode:this.ruleForm.verificationCode,

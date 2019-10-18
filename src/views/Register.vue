@@ -1,6 +1,6 @@
 <template>
   <div id="register">
-    <a-card title="注册" hoverable  style="width: 90vh;" >
+    <a-card title="注册" hoverable style="width: 90vh;">
       <el-form
         :model="ruleForm"
         :rules="rules"
@@ -32,17 +32,18 @@
           ></el-input>
         </el-form-item>
 
-        <el-form-item prop="verifyCode" label="验证码:" >
+        <el-form-item prop="verifyCode" label="验证码:">
           <div class="verifyCode">
-            <el-input v-model="ruleForm.verifyCode" size="medium" placeholder="请输入验证码" class="verifyCode-input"></el-input>
+            <el-input v-model="ruleForm.verifyCode" size="medium" placeholder="请输入验证码"
+                      class="verifyCode-input"></el-input>
             <a @click="sendMessage" class="verifyCode-a">{{verifyCodeText}}</a>
           </div>
         </el-form-item>
 
-<!--        <el-form-item>-->
-<!--          <el-input v-model="ruleForm.verifyCode" placeholder="请输入验证码"></el-input>-->
-<!--          <el-button type="primary" @click="getVerifyCode('ruleForm')">邮箱验证</el-button>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item>-->
+        <!--          <el-input v-model="ruleForm.verifyCode" placeholder="请输入验证码"></el-input>-->
+        <!--          <el-button type="primary" @click="getVerifyCode('ruleForm')">邮箱验证</el-button>-->
+        <!--        </el-form-item>-->
 
         <el-form-item>
           <el-button type="primary" @click="register('ruleForm')" class="login-form-button">注册</el-button>
@@ -57,6 +58,7 @@
 
 <script>
 import axios from 'axios'
+
 export default {
   data () {
     // 密码
@@ -125,7 +127,7 @@ export default {
 
     // 验证码
     sendMessage () {
-      debugger
+
       if (this.ruleForm.email !== '') {
         if (this.btnDisabled) {
           return
@@ -138,7 +140,7 @@ export default {
     },
 
     getSecond (wait) {
-      // debugger
+
       let _this = this
       let _wait = wait
       if (wait === 0) {
@@ -160,7 +162,7 @@ export default {
        * 获取验证码
        */
     getVerifyCode () {
-      debugger
+
       // 对电子邮件的验证
       var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
       if (!myreg.test(this.ruleForm.email)) {
@@ -216,7 +218,7 @@ export default {
     register (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          debugger
+
           axios
             .post(this.serverUrl + 'authc/register', {
               loginName: this.ruleForm.email,
@@ -225,7 +227,7 @@ export default {
               verifyCode: this.ruleForm.verifyCode
             })
             .then(response => {
-              debugger
+
               if (response.data.retCode === '100004') {
                 this.$message.error('用户名已被注册！', 5)
               } else if (response.data.retCode === '000002') {
@@ -246,29 +248,31 @@ export default {
 </script>
 
 <style scoped>
-#register {
-  /* background-image: url(../assets/img/login.jpg); */
-  background-size: cover;
-  background-repeat: no-repeat;
-  height: 100vh;
-  padding-top: 15vh;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+  #register {
+    /* background-image: url(../assets/img/login.jpg); */
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    padding-top: 15vh;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-.verifyCode{
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  /*border: 1px solid red;*/
-}
-.verifyCode-input{
-  width:75%;
-}
-  .verifyCode-a{
-    width:25%;
+  .verifyCode {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    /*border: 1px solid red;*/
+  }
+
+  .verifyCode-input {
+    width: 75%;
+  }
+
+  .verifyCode-a {
+    width: 25%;
   }
 
 </style>

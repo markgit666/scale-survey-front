@@ -190,7 +190,7 @@ export default {
   },
 
   mounted() {
-    // debugger;
+    ;
     // this.oneScale = JSON.parse(this.$route.query.oneScale);
 
     var a = this.$route.query.oneScale;
@@ -198,7 +198,7 @@ export default {
     this.oneImg = this.oneScale.questionList[0].attachmentList;
   },
   updated() {
-    // debugger;
+    ;
     const canvas = document.querySelector("#mycanvas");
     this.context = canvas.getContext("2d"); //使用渲染上下文来绘制和处理要展示的内容,2D 渲染上下文
   },
@@ -206,7 +206,7 @@ export default {
     // 画图题开始
     //鼠标按下
     mousedown(e) {
-      debugger;
+      ;
       const canvas = document.querySelector("#mycanvas");
       // this.context = canvas.getContext("2d");
       e.preventDefault();
@@ -269,7 +269,7 @@ export default {
       const canvas = document.querySelector("#mycanvas");
       e.preventDefault();
       this.running = "draw"; //鼠标按下后，赋值为draw，表示要画线了
-      // debugger;
+      ;
       var ev = e || window.event;
       var x3 = ev.clientX - canvas.offsetLeft; //获取到的并不直接是canvas画布上的坐标，而是整个页面，所以需要减去canvas里页面左边的距离
       var y3 = ev.pageY - canvas.offsetTop;
@@ -306,7 +306,7 @@ export default {
       const canvas = document.querySelector("#mycanvas");
       e.preventDefault();
       this.running = "draw"; //鼠标按下后，赋值为draw，表示要画线了
-      // debugger;
+      ;
       var ev = e || window.event;
       var x1 = ev.touches[0].clientX - canvas.offsetLeft; //获取到的并不直接是canvas画布上的坐标，而是整个页面，所以需要减去canvas里页面左边的距离
       // console.log("移动端横坐标x1：", x1);
@@ -335,7 +335,7 @@ export default {
       }
     },
     save() {
-      debugger;
+      ;
       const canvas = document.querySelector("#mycanvas");
       const src = canvas.toDataURL("image/png");
       this.canvasImgUrls.pop(src);

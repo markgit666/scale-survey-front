@@ -10,7 +10,7 @@ export const $axios = axios.create({ // 这里是配置项
 $axios.interceptors.request.use(
     config => {
         console.log(config);
-        debugger
+
         let t = localStorage.getItem('token')
         if (t) {
             config.headers.t = t

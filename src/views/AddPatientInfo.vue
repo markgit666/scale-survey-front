@@ -1,4 +1,3 @@
-
 <template>
   <div class="info_box">
     <a-card title="添加基本信息">
@@ -119,14 +118,8 @@
         </el-form-item>
 
         <!-- 受教育年数 -->
-        <el-form-item label="受教育年数 :" class="form-item-div" prop="educationYears">
-          <el-input
-            type="age"
-            v-model.number="ruleForm.educationYears"
-            size="medium"
-            placeholder="请输入"
-            autocomplete="off"
-          ></el-input>
+        <el-form-item label="受教育年数 :" class="form-item-div">
+          <a-input-number v-model="ruleForm.educationYears" placeholder="请输入数字值（单位：年）" :style="{width:'100%'}"/>
         </el-form-item>
 
         <!-- 是否打呼噜 -->
@@ -202,28 +195,21 @@
           label="一天抽几支 :"
           class="form-item-div"
           v-if="showSmoke"
-          prop="smokingNumEachDay"
+
         >
-          <el-input
-            v-model.number="ruleForm.smokingNumEachDay"
-            size="medium"
-            placeholder="请输入"
-            autocomplete="off"
-          ></el-input>
+          <a-input-number v-model="ruleForm.smokingNumEachDay" placeholder="请输入数字值（单位：支）" :style="{width:'100%'}"/>
+
         </el-form-item>
 
         <!-- 吸烟年数 -->
-        <el-form-item label="吸烟年数 :" class="form-item-div" prop="smokingYears" v-if="showSmoke">
-          <el-input
-            v-model.number="ruleForm.smokingYears"
-            size="medium"
-            placeholder="请输入"
-            autocomplete="off"
-          ></el-input>
+        <el-form-item label="吸烟年数 :" class="form-item-div" v-if="showSmoke">
+          <a-input-number v-model="ruleForm.smokingYears" placeholder="请输入数字值（单位：年）" :style="{width:'100%'}"/>
+
         </el-form-item>
 
         <!-- 饮酒史 -->
         <el-form-item label="饮酒史 :" class="form-item-div">
+
           <el-select
             v-model="ruleForm.drinkingHistory"
             placeholder="请选择"
@@ -239,7 +225,6 @@
 
         <el-form-item label="饮酒类型 :" class="form-item-div" v-if="showDrink">
           <el-select
-            multiple
             v-model="ruleForm.drinkingType"
             placeholder="请选择"
             style="width: 100%;"
@@ -257,24 +242,16 @@
           label="一天几两 :"
           class="form-item-div"
           v-if="showDrink"
-          prop="drinkingNumEachDay"
+
         >
-          <el-input
-            v-model.number="ruleForm.drinkingNumEachDay"
-            size="medium"
-            placeholder="请输入"
-            autocomplete="off"
-          ></el-input>
+          <a-input-number v-model="ruleForm.drinkingNumEachDay" placeholder="请输入数字值（单位：两）" :style="{width:'100%'}"/>
+
         </el-form-item>
 
         <!-- 喝酒年数 -->
-        <el-form-item label="喝酒年数 :" class="form-item-div" prop="drinkingYears" v-if="showDrink">
-          <el-input
-            v-model.number="ruleForm.drinkingYears"
-            size="medium"
-            placeholder="请输入"
-            autocomplete="off"
-          ></el-input>
+        <el-form-item label="喝酒年数 :" class="form-item-div" v-if="showDrink">
+          <a-input-number v-model="ruleForm.drinkingYears" placeholder="请输入数字值（单位：年）" :style="{width:'100%'}"/>
+
         </el-form-item>
 
         <!-- 精神疾病家族史 -->
@@ -318,7 +295,7 @@
         <!-- 现病史 -->
         <el-form-item label="现病史（有无记忆下降）:" class="form-item-div">
           <el-select
-            v-model="ruleForm.currentMedicalHistory_memoryLoss"
+            v-model="ruleForm.currentMedicalHistoryMemoryLoss"
             placeholder="请选择"
             style="width: 100%;"
             size="medium"
@@ -360,14 +337,16 @@
           label="具体药物的剂量 :"
           class="form-item-div"
           v-if="showCognitiveDrug"
-          prop="drugsDosage"
+
         >
-          <el-input
-            v-model.number="ruleForm.drugsDosage"
-            size="medium"
-            placeholder="请输入"
-            autocomplete="off"
-          ></el-input>
+          <a-input-number v-model="ruleForm.drugsDosage" placeholder="请输入数字值" :style="{width:'100%'}"/>
+
+          <!--          <el-input-->
+          <!--            v-model.number="ruleForm.drugsDosage"-->
+          <!--            size="medium"-->
+          <!--            placeholder="请输入"-->
+          <!--            autocomplete="off"-->
+          <!--          ></el-input>-->
         </el-form-item>
 
         <!-- 保存按钮 -->
@@ -387,17 +366,6 @@ export default {
     var validatePhone = (rule, value, callback) => {
       if (/^1[34578]{1}\d{9}$/.test(value) == false) {
         callback(new Error('请输入正确的手机号'))
-      } else {
-        callback()
-      }
-    }
-    var validateEducationYears = (rule, value, callback) => {
-      if (value != '') {
-        if (/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/.test(value) == false) {
-          callback(new Error('请填写大于0的数字'))
-        } else {
-          callback()
-        }
       } else {
         callback()
       }
@@ -427,7 +395,7 @@ export default {
         isMentalDiseaseFamilyHistory: '',
         mentalDiseaseFamilyHistory: '',
         otherMentalDiseaseFamilyHistory: '',
-        currentMedicalHistory_memoryLoss: '',
+        currentMedicalHistoryMemoryLoss: '', // 现病史（有无记忆下降）
         memoryLossTime: '',
         physicalExamination: '',
         isUseCognitiveDrugs: '',
@@ -448,50 +416,8 @@ export default {
         telephoneNumber: [
           { required: true, message: '不能为空！', trigger: 'blur' },
           { validator: validatePhone, trigger: 'blur' }
-        ],
-        educationYears: [
-          // { type: "number", message: "必须为数字值" },
-          {
-            required: false,
-            validator: validateEducationYears,
-            trigger: 'change'
-          }
-        ],
-        smokingNumEachDay: [
-          {
-            required: false,
-            validator: validateEducationYears,
-            trigger: 'change'
-          }
-        ],
-        smokingYears: [
-          {
-            required: false,
-            validator: validateEducationYears,
-            trigger: 'change'
-          }
-        ],
-        drinkingNumEachDay: [
-          {
-            required: false,
-            validator: validateEducationYears,
-            trigger: 'change'
-          }
-        ],
-        drinkingYears: [
-          {
-            required: false,
-            validator: validateEducationYears,
-            trigger: 'change'
-          }
-        ],
-        drugsDosage: [
-          {
-            required: false,
-            validator: validateEducationYears,
-            trigger: 'change'
-          }
         ]
+
       },
       // 服务器地址
       serverUrl: this.GLOBAL.serverUrl,
@@ -521,7 +447,8 @@ export default {
   },
 
   methods: {
-    handleChange () {},
+    handleChange () {
+    },
     //   如果是在职，输入职业
     jobChange (value) {
       if (value == '在职') {
@@ -581,10 +508,12 @@ export default {
       }
     },
 
+    // 保存个人信息
     saveInfo (formName) {
       console.log(this.ruleForm)
       this.$refs[formName].validate(valid => {
-        // debugger;
+
+        var reg = /^[1-9]+[0-9]*]*$/
         if (valid) {
           this.$http
             .post(this.serverUrl + 'patient/info/save', this.ruleForm, {
@@ -594,7 +523,7 @@ export default {
             })
             .then(function (data) {
               if ((data.body.retCode = '000000')) {
-                debugger
+
                 console.log(data)
                 this.$router.push({ path: '/home/myPatients' })
                 this.$message.success('保存成功！', 5)
@@ -610,10 +539,10 @@ export default {
     }
     // 保存数据到数据库
     // submitInfo(e) {
-    //   debugger;
+    //   ;
     //   e.preventDefault();
     //   this.form.validateFields((err, values) => {
-    //     debugger;
+    //     ;
     //     if (!err) {
     //       values.birthday = values.birthday.format("YYYY-MM-DD");
     //       this.$http
@@ -635,37 +564,38 @@ export default {
 </script>
 
 <style scoped>
-.info_box {
-  /* border: 1px solid saddlebrown; */
-  /* width: 100%; */
-  text-align: center;
-}
+  .info_box {
+    /* border: 1px solid saddlebrown; */
+    /* width: 100%; */
+    text-align: center;
+  }
 
-.form {
-  border: 1px solid springgreen;
-}
-.text {
-  color: #2d8cf0;
-  font-size: 2.5vh;
-}
+  .form {
+    border: 1px solid springgreen;
+  }
 
-.form-div {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* border: 1px solid saddlebrown; */
-  /* margin-left: -90px; */
-  width: 100%;
-}
+  .text {
+    color: #2d8cf0;
+    font-size: 2.5vh;
+  }
 
-.form-item-div {
-  width: 80%;
-  margin-left: -120px;
-}
+  .form-div {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* border: 1px solid saddlebrown; */
+    /* margin-left: -90px; */
+    width: 100%;
+  }
 
-.saveButton {
-  margin-left: -200px;
-  width: 200px;
-}
+  .form-item-div {
+    width: 80%;
+    margin-left: -120px;
+  }
+
+  .saveButton {
+    margin-left: -200px;
+    width: 200px;
+  }
 </style>

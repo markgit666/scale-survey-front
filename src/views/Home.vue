@@ -10,7 +10,12 @@
           :style="{ lineHeight: '64px' }"
         >
           <a-menu-item key="1">
-            <router-link to="/Home/MyScale">首页</router-link>
+
+            <router-link to="/Home/CreateScale"> <a-icon type="form" />创建量表</router-link>
+          </a-menu-item>
+
+          <a-menu-item key="2">
+            <router-link to="/Home/AddPatientInfo"><a-icon type="usergroup-add" />添加个人信息</router-link>
           </a-menu-item>
 
           <!-- <a-menu-item key="2">
@@ -24,19 +29,19 @@
             <router-link to="/Home/AddPatientInfo">添加病人信息</router-link>
           </a-menu-item>-->
 
-          <a-sub-menu>
-            <span slot="title" class="submenu-title-wrapper">
-              <a-icon type="form" />创建
-            </span>
-            <a-menu-item-group>
-              <a-menu-item key="setting:1">
-                <router-link to="/Home/AddPatientInfo">添加被试者信息</router-link>
-              </a-menu-item>
-              <a-menu-item key="setting:2">
-                <router-link to="/Home/CreateScale">创建量表</router-link>
-              </a-menu-item>
-            </a-menu-item-group>
-          </a-sub-menu>
+<!--          <a-sub-menu>-->
+<!--            <span slot="title" class="submenu-title-wrapper">-->
+<!--              <a-icon type="form" />创建-->
+<!--            </span>-->
+<!--            <a-menu-item-group>-->
+<!--              <a-menu-item key="setting:1">-->
+<!--                <router-link to="/Home/AddPatientInfo">添加被试者信息</router-link>-->
+<!--              </a-menu-item>-->
+<!--              <a-menu-item key="setting:2">-->
+<!--                <router-link to="/Home/CreateScale">创建量表</router-link>-->
+<!--              </a-menu-item>-->
+<!--            </a-menu-item-group>-->
+<!--          </a-sub-menu>-->
 
           <a-sub-menu>
             <span slot="title" class="submenu-title-wrapper">
@@ -53,7 +58,7 @@
           </a-sub-menu>
 
           <a-menu-item key="5">
-            <router-link to="/Home/MyAnswer">查看答案</router-link>
+            <router-link to="/Home/MyAnswer"><a-icon type="eye" />查看答案</router-link>
           </a-menu-item>
 
           <a-menu-item key="6" :style="{float:'right'}" @click="dialogVisible = true">
@@ -75,16 +80,21 @@
         </span>
       </el-dialog>
 
+<!--内容-->
       <a-layout-content :style="{ padding: '0 50px', marginTop: '64px',background: '#F0F2F5'}">
-        <!-- <a-breadcrumb :style="{ margin: '16px 0' }">
-          <a-breadcrumb-item>Home</a-breadcrumb-item>
-          <a-breadcrumb-item>List</a-breadcrumb-item>
-          <a-breadcrumb-item>App</a-breadcrumb-item>
-        </a-breadcrumb>-->
+<!--      <a-breadcrumb :style="{ margin: '16px 0' }">-->
+<!--          <a-breadcrumb-item>Home</a-breadcrumb-item>-->
+<!--          <a-breadcrumb-item>List</a-breadcrumb-item>-->
+<!--          <a-breadcrumb-item>App</a-breadcrumb-item>-->
+<!--        </a-breadcrumb>-->
+
         <div :style="{ background: '#F0F2F5', padding: '24px', minHeight: '380px' }">
           <router-view></router-view>
+
         </div>
       </a-layout-content>
+
+<!--      尾部-->
       <a-layout-footer
         :style="{ textAlign: 'center', background: '#F0F2F5', padding:'24px 10px' }"
       >中国科学院深圳先进技术研究院脑所 ©2019</a-layout-footer>
@@ -93,23 +103,26 @@
 </template>
 
 <script>
-import axios from "axios";
-import Antd from "ant-design-vue";
-import "ant-design-vue/dist/antd.css";
+import axios from 'axios'
+import Antd from 'ant-design-vue'
+import 'ant-design-vue/dist/antd.css'
 export default {
-  data() {
+  data () {
     return {
+
       dialogVisible: false,
       serverUrl: this.GLOBAL.serverUrl
-    };
+    }
   },
   methods: {
+
+
     // exit() {
     //   this.$confirm({
     //     title: "确定退出吗?",
     //     onOk() {
     //       axios.post(this.serverUrl + "authc/logout").then(response => {
-    //         debugger;
+    //         ;
     //         if (response.data.retCode === "000000") {
     //           localStorage.clear();
     //           this.$router.push({ path: "/login" });
@@ -122,26 +135,26 @@ export default {
     //     class: "test"
     //   });
     // },
-    exit() {
-      axios.post(this.serverUrl + "authc/logout").then(response => {
-        debugger;
-        if (response.data.retCode === "000000") {
-          localStorage.clear();
-          this.$router.push({ path: "/login" });
+    exit () {
+      axios.post(this.serverUrl + 'authc/logout').then(response => {
+
+        if (response.data.retCode === '000000') {
+          localStorage.clear()
+          this.$router.push({ path: '/login' })
         }
-      });
+      })
     },
 
-    //退出
-    handleClose(done) {
-      this.$confirm("确认关闭？")
+    // 退出
+    handleClose (done) {
+      this.$confirm('确认关闭？')
         .then(_ => {
-          done();
+          done()
         })
-        .catch(_ => {});
+        .catch(_ => {})
     }
   }
-};
+}
 </script>
 <style>
 #components-layout-demo-fixed {
@@ -154,11 +167,13 @@ export default {
   margin: 16px 24px 16px 0;
   float: left;
 }
-/* 
-.box8{
-  background:red;
-} */
+
 body {
   background: #f0f2f5;
 }
+
+/*.noCreateButton{*/
+/*  margin-top: 250px;*/
+/*  }*/
+
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <a-card>
+    <a-card :hoverable="true" :bordered="false">
       <a-table
         :columns="columns"
         :rowKey="record => record.patientId"
@@ -13,11 +13,6 @@
         <!-- <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template> -->
         <template slot="gender" slot-scope="gender">{{gender}}男</template>
 
-        <!-- <template slot="gender" slot-scope="gender">
-      <div v-if="gender === 1">男</div>
-      <div v-else>女</div>
-        </template>-->
-
         <template slot="title">
           <h3>被试者基本资料</h3>
         </template>
@@ -25,8 +20,8 @@
         <template slot="operation" slot-scope="text, record">
           <div class="editable-row-operations">
             <span>
-              <a @click="() =>editInfo(record.patientId)">查看/编辑</a>
-              <a-divider type="vertical" />
+              <a @click="() =>editInfo(record.patientId)">查看详情/编辑</a>
+              <a-divider type="vertical"/>
 
               <a-popconfirm
                 :style="{color:'red'}"
@@ -51,7 +46,7 @@ import reqwest from 'reqwest'
 // import { debuglog } from "util";
 const columns = [
   {
-    title: '病人Id号',
+    title: '被试Id号',
     dataIndex: 'patientId',
     // sorter: true,
     width: '10%',
@@ -67,7 +62,7 @@ const columns = [
   {
     title: '性别',
     dataIndex: 'gender',
-    width: '10%'
+    width: '7%'
     // filters: [
     //   { text: "Male", value: "male" },
     //   { text: "Female", value: "female" }
@@ -75,14 +70,29 @@ const columns = [
   },
   {
     title: '出生日期',
-    width: '10%',
+    width: '12%',
     dataIndex: 'birthday'
   },
   {
     title: '联系方式',
-    width: '20%',
+    width: '15%',
     dataIndex: 'telephoneNumber'
   },
+  {
+    title: '家庭地址',
+    width: '20%',
+    dataIndex: 'familyAddress'
+  },
+  // {
+  //   title:'添加时间',
+  //   width:'10%',
+  //   dataIndex:'createTime'
+  // },
+  // {
+  //   title:'更新时间',
+  //   width:'10%',
+  //   dataIndex:'updateTime'
+  // },
   {
     title: '操作',
     width: '20%',
@@ -144,7 +154,7 @@ export default {
         type: 'json',
         contentType: 'application/json'
       }).then(values => {
-        debugger
+
         if (values.retCode === '000000') {
           const pagination = { ...this.pagination }
           var page
@@ -208,7 +218,7 @@ export default {
 </script>
 
 <style scoped>
-.box {
-  text-align: center;
-}
+  .box {
+    text-align: center;
+  }
 </style>

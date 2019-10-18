@@ -125,10 +125,10 @@ export default {
               captcha: this.ruleForm.verificationCode
             })
             .then(response => {
-              debugger
+
               if (response.data.retCode === '000001') {
                 localStorage.setItem('Token', response.data.data)
-                this.$router.push({ path: '/Home' })
+                this.$router.push({ path: '/home/noCreate' })
               } else if (response.data.retCode === '100008') {
                 this.$message.error('验证码错误', 5)
               } else {

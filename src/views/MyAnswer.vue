@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <a-card>
+    <a-card :bordered="false" :hoverable="true">
       <a-table
         :columns="columns"
         :rowKey="record => record.examinationPaperId"
@@ -45,31 +45,41 @@ const columns = [
     title: '量表名称',
     dataIndex: 'scaleInfo.scaleName',
     // sorter: true,
-    width: '30%'
+    width: '40%'
     // scopedSlots: { customRender: "scaleName" }
+  },
+
+  {
+    title: '创建时间',
+    dataIndex: 'createTime',
+    // sorter: true,
+    width: '16%'
+    // scopedSlots: { customRender: "answerPerson" }
   },
 
   {
     title: '答题者',
     dataIndex: 'patientInfo.name',
     // sorter: true,
-    width: '15%'
+    width: '13%'
     // scopedSlots: { customRender: "answerPerson" }
   },
   {
-    title: '答题时间',
+    title: '答题所花时间',
+    width: '13%',
     dataIndex: 'useTime'
   },
   {
-    title: '是否已评分',
+    title: '评分状态',
     dataIndex: 'judgeInfo',
     // sorter: true,
-    width: '15%'
+    width: '10%'
     // scopedSlots: { customRender: "isScore" }
   },
 
   {
     title: '操作',
+    width: '20%',
     dataIndex: 'operation',
     scopedSlots: { customRender: 'operation' }
   }
@@ -109,7 +119,7 @@ export default {
       console.log('params:', params)
       console.log('fetch pagination=', this.pagination)
       this.loading = true
-      debugger
+
       reqwest({
         url: this.serverUrl + 'paper/info/get',
 
@@ -125,7 +135,7 @@ export default {
         type: 'json',
         contentType: 'application/json'
       }).then(values => {
-        debugger
+
         if ((values.retCode = '000000')) {
           const pagination = { ...this.pagination }
           var page
@@ -138,7 +148,7 @@ export default {
           console.log('total=', pagination.total)
           this.loading = false
           this.data = values.data.list
-          debugger
+
           // 当null时，显示未评定
           for (var i = 0; i < values.data.list.length; i++) {
             if (values.data.list[i].judgeInfo === null) {
@@ -166,7 +176,7 @@ export default {
 
     // 评分
     score (examinationPaperId) {
-      debugger
+
       this.$router.push({
         path: '/Home/myAnswer/judge',
         // patients:patientId
@@ -190,7 +200,7 @@ export default {
     //     )
     //     .then(response => {
     //       console.log(response);
-    //       debugger;
+    //       ;
     //       this.fetch();
     //       this.$message.success("删除成功！", 5);
     //     });

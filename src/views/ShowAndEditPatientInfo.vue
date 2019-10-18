@@ -94,7 +94,7 @@
         </el-form-item>
 
         <!-- 如果是在职，输入职业 -->
-        <el-form-item label="在职职业 :" class="form-item-div" v-if="showJob">
+        <el-form-item label="在职职业 :" class="form-item-div" v-if="ruleForm.workStatus==='在职'">
           <el-input v-model="ruleForm.inServiceJob" size="medium" placeholder="请输入"></el-input>
         </el-form-item>
 
@@ -118,14 +118,8 @@
         </el-form-item>
 
         <!-- 受教育年数 -->
-        <el-form-item label="受教育年数 :" class="form-item-div" prop="educationYears">
-          <el-input
-            type="age"
-            v-model.number="ruleForm.educationYears"
-            size="medium"
-            placeholder="请输入"
-            autocomplete="off"
-          ></el-input>
+        <el-form-item label="受教育年数 :" class="form-item-div" >
+          <a-input-number v-model="ruleForm.educationYears"  placeholder="请输入数字值（单位：年）" :style="{width:'100%'}" />
         </el-form-item>
 
         <!-- 是否打呼噜 -->
@@ -177,7 +171,7 @@
         </el-form-item>
 
         <!-- 如果是其他病史，输入其他病史  -->
-        <el-form-item label="其他病史 :" class="form-item-div" v-if="showDisease">
+        <el-form-item label="其他病史 :" class="form-item-div" v-if="ruleForm.medicalHistory==='其他疾病'">
           <el-input v-model="ruleForm.otherMedicalHistory" size="medium" placeholder="请输入"></el-input>
         </el-form-item>
 
@@ -200,25 +194,19 @@
         <el-form-item
           label="一天抽几支 :"
           class="form-item-div"
-          v-if="showSmoke"
-          prop="smokingNumEachDay"
+          v-if="ruleForm.smokingHistory==='仍在吸'"
+
         >
-          <el-input
-            v-model.number="ruleForm.smokingNumEachDay"
-            size="medium"
-            placeholder="请输入"
-            autocomplete="off"
-          ></el-input>
+          <a-input-number v-model="ruleForm.smokingNumEachDay"  placeholder="请输入数字值（单位：支）" :style="{width:'100%'}" />
+
+
         </el-form-item>
 
         <!-- 吸烟年数 -->
-        <el-form-item label="吸烟年数 :" class="form-item-div" prop="smokingYears" v-if="showSmoke">
-          <el-input
-            v-model.number="ruleForm.smokingYears"
-            size="medium"
-            placeholder="请输入"
-            autocomplete="off"
-          ></el-input>
+        <el-form-item label="吸烟年数 :" class="form-item-div"  v-if="ruleForm.smokingHistory==='仍在吸'">
+          <a-input-number v-model="ruleForm.smokingYears"  placeholder="请输入数字值（单位：年）" :style="{width:'100%'}" />
+
+
         </el-form-item>
 
         <!-- 饮酒史 -->
@@ -236,9 +224,8 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="饮酒类型 :" class="form-item-div" v-if="showDrink">
+        <el-form-item label="饮酒类型 :" class="form-item-div" v-show="ruleForm.drinkingHistory==='仍在喝'" >
           <el-select
-            multiple
             v-model="ruleForm.drinkingType"
             placeholder="请选择"
             style="width: 100%;"
@@ -255,25 +242,19 @@
         <el-form-item
           label="一天几两 :"
           class="form-item-div"
-          v-if="showDrink"
-          prop="drinkingNumEachDay"
+          v-show="ruleForm.drinkingHistory==='仍在喝'"
+
         >
-          <el-input
-            v-model.number="ruleForm.drinkingNumEachDay"
-            size="medium"
-            placeholder="请输入"
-            autocomplete="off"
-          ></el-input>
+          <a-input-number v-model="ruleForm.drinkingNumEachDay"  placeholder="请输入数字值（单位：两）" :style="{width:'100%'}" />
+
+
         </el-form-item>
 
         <!-- 喝酒年数 -->
-        <el-form-item label="喝酒年数 :" class="form-item-div" prop="drinkingYears" v-if="showDrink">
-          <el-input
-            v-model.number="ruleForm.drinkingYears"
-            size="medium"
-            placeholder="请输入"
-            autocomplete="off"
-          ></el-input>
+        <el-form-item label="喝酒年数 :" class="form-item-div"  v-show="ruleForm.drinkingHistory==='仍在喝'">
+          <a-input-number v-model="ruleForm.drinkingYears"  placeholder="请输入数字值（单位：年）" :style="{width:'100%'}" />
+
+
         </el-form-item>
 
         <!-- 精神疾病家族史 -->
@@ -291,7 +272,7 @@
         </el-form-item>
 
         <!-- 如果有 精神疾病家族史 -->
-        <el-form-item label="精神疾病家族史 :" class="form-item-div" v-if="showMentalDisease">
+        <el-form-item label="精神疾病家族史 :" class="form-item-div" v-if="ruleForm.isMentalDiseaseFamilyHistory==='有'">
           <el-select
             v-model="ruleForm.mentalDiseaseFamilyHistory"
             placeholder="请选择"
@@ -307,7 +288,7 @@
         </el-form-item>
 
         <!-- 如果是其他精神病史，输入其他精神病史 -->
-        <el-form-item label="其他精神病史 :" class="form-item-div" v-if="showOtherMentalDisease">
+        <el-form-item label="其他精神病史 :" class="form-item-div" v-if="ruleForm.mentalDiseaseFamilyHistory==='其他精神病史'">
           <el-input
             v-model="ruleForm.otherMentalDiseaseFamilyHistory"
             size="medium"
@@ -317,7 +298,7 @@
         <!-- 现病史 -->
         <el-form-item label="现病史（有无记忆下降）:" class="form-item-div">
           <el-select
-            v-model="ruleForm.currentMedicalHistory_memoryLoss"
+            v-model="ruleForm.currentMedicalHistoryMemoryLoss"
             placeholder="请选择"
             style="width: 100%;"
             size="medium"
@@ -328,7 +309,8 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="记忆力下降多久 :" class="form-item-div" v-if="showMemory">
+<!--如果有记忆力下降-->
+        <el-form-item label="记忆力下降多久 :" class="form-item-div" v-if="ruleForm.currentMedicalHistoryMemoryLoss==='有记忆力下降'">
           <el-input v-model="ruleForm.memoryLossTime" size="medium" placeholder="请输入"></el-input>
         </el-form-item>
 
@@ -350,23 +332,20 @@
             <el-option label="有" value="有合并使用促认知药物"></el-option>
           </el-select>
         </el-form-item>
-
-        <el-form-item label="具体促认知药物 :" class="form-item-div" v-if="showCognitiveDrug">
+        <!--如果有合并使用促认知药物-->
+        <el-form-item label="具体促认知药物 :" class="form-item-div" v-if="ruleForm.isUseCognitiveDrugs==='有合并使用促认知药物'">
           <el-input v-model="ruleForm.drugsType " size="medium" placeholder="请输入"></el-input>
         </el-form-item>
 
+        <!--如果有合并使用促认知药物-->
         <el-form-item
           label="具体药物的剂量 :"
           class="form-item-div"
-          v-if="showCognitiveDrug"
-          prop="drugsDosage"
+          v-if="ruleForm.isUseCognitiveDrugs==='有合并使用促认知药物'"
+
         >
-          <el-input
-            v-model.number="ruleForm.drugsDosage"
-            size="medium"
-            placeholder="请输入"
-            autocomplete="off"
-          ></el-input>
+          <a-input-number v-model="ruleForm.drugsDosage"  placeholder="请输入数字值" :style="{width:'100%'}" />
+
         </el-form-item>
 
         <!-- 保存按钮 -->
@@ -392,6 +371,7 @@ export default {
       }
     }
 
+
     return {
       ruleForm: {},
       rules: {
@@ -405,23 +385,19 @@ export default {
           { required: true, message: '不能为空！', trigger: 'blur' },
           { validator: validatePhone, trigger: 'blur' }
         ],
-        educationYears: [{ type: 'number', message: '必须为数字值' }],
-        smokingNumEachDay: [{ type: 'number', message: '必须为数字值' }],
-        smokingYears: [{ type: 'number', message: '必须为数字值' }],
-        drinkingNumEachDay: [{ type: 'number', message: '必须为数字值' }],
-        drinkingYears: [{ type: 'number', message: '必须为数字值' }],
-        drugsDosage: [{ type: 'number', message: '必须为数字值' }]
+
+
       },
       // 服务器地址
       serverUrl: this.GLOBAL.serverUrl,
-      showJob: false,
-      showDisease: false,
-      showSmoke: false,
-      showDrink: false,
-      showMentalDisease: false,
-      showOtherMentalDisease: false,
-      showMemory: false,
-      showCognitiveDrug: false,
+      // showJob: false,
+      // showDisease: false,
+      // showSmoke: false,
+      // showDrink: false,
+      // showMentalDisease: false,
+      // showOtherMentalDisease: false,
+      // showMemory: false,
+      // showCognitiveDrug: false,
       // 个人信息
       name: 'zoujiem',
       birthday: null,
@@ -509,7 +485,7 @@ export default {
     // 更新
     fetch () {
       let that = this
-      debugger
+
       axios
         .post(this.serverUrl + '/patient/info/get', this.$route.query, {
           headers: {
@@ -517,7 +493,7 @@ export default {
           }
         })
         .then(response => {
-          debugger
+
           if ((response.data.retCode = '000000')) {
             console.log(response)
             that.ruleForm = response.data.data
@@ -532,9 +508,9 @@ export default {
     // 更新
     updateInfo (formName) {
       this.$refs[formName].validate(valid => {
-        // debugger;
+
         if (valid) {
-          debugger
+
           this.$http
             .post(this.serverUrl + '/patient/info/save', this.ruleForm, {
               headers: {
@@ -542,7 +518,7 @@ export default {
               }
             })
             .then(function (data) {
-              debugger
+
               if (data.data.retCode === '000000') {
                 console.log(data)
                 this.$message.success('更新成功', 5)
@@ -552,7 +528,7 @@ export default {
               }
             })
         } else {
-          alert('格式错误！请检查')
+          alert('格式错误！检查一下是不是有没填完的表单')
           return false
         }
       })

@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <a-card>
+    <a-card :hoverable="true" :bordered="false">
       <a-table
         :columns="columns"
         :rowKey="record => record.scaleId"
@@ -56,10 +56,17 @@ import reqwest from "reqwest";
 import axios from "axios";
 import { debuglog } from "util";
 const columns = [
+
+  {
+    title: "量表Id",
+    dataIndex: "scaleId",
+    width: "20%",
+    scopedSlots: { customRender: "scaleName" }
+  },
   {
     title: "量表名称",
     dataIndex: "scaleName",
-    width: "45%",
+    width: "30%",
     scopedSlots: { customRender: "scaleName" }
   },
 
@@ -126,7 +133,7 @@ export default {
         type: "json",
         contentType: "application/json"
       }).then(values => {
-        debugger;
+
         if ((values.retCode = "000000")) {
           const pagination = { ...this.pagination };
           var page;
@@ -149,7 +156,7 @@ export default {
 
     //编辑量表
     editScale(scaleId) {
-      debugger;
+      ;
       this.$router.push({
         path: "/Home/ShowAndEditScale",
         // patients:patientId
@@ -173,7 +180,7 @@ export default {
         )
         .then(response => {
           console.log(response);
-          debugger;
+          ;
           if ((response.data.retCode = "000000")) {
             this.fetch();
             this.$message.success("删除成功！", 5);
