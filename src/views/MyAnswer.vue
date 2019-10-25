@@ -1,6 +1,38 @@
 <template>
   <div class="box">
     <a-card :bordered="false" :hoverable="true">
+      <a-row>
+<a-col :span="7">
+  <label>量表名称：</label>
+  <el-input :style="{width:'70%'}" size="small" v-model="answerResearchData.scaleName"></el-input>
+</a-col>
+        <a-col :span="5">
+          <label>答题者：</label>
+          <el-input :style="{width:'60%'}" size="small" v-model="answerResearchData.name"></el-input>
+        </a-col>
+
+        <a-col :span="5">
+          <label>用时：</label>
+          <el-input :style="{width:'60%'}" size="small" v-model="answerResearchData.useTime"></el-input>
+        </a-col>
+
+        <a-col :span="5">
+          <label>是否评分：</label>
+          <el-select
+            v-model="answerResearchData.judgeInfo"
+            style="width:60%;"
+            size="small"
+          >
+            <el-option label="已评分" value="1"></el-option>
+            <el-option label="未评分" value="2"></el-option>
+          </el-select>
+
+        </a-col>
+        <a-col :span="2">
+          <a-button type="primary" icon="search">查找</a-button>
+        </a-col>
+      </a-row>
+      <br/>
       <a-table
         :columns="columns"
         :rowKey="record => record.examinationPaperId"
@@ -8,11 +40,11 @@
         :pagination="pagination"
         :loading="loading"
         @change="handleTableChange"
-        bordered
+
       >
-        <template slot="title">
-          <h3>答卷</h3>
-        </template>
+<!--        <template slot="title">-->
+<!--          <h3>答案</h3>-->
+<!--        </template>-->
         <!-- 操作 -->
         <template slot="operation" slot-scope="text, record, index">
           <div class="editable-row-operations">
@@ -40,6 +72,7 @@
 import reqwest from 'reqwest'
 import axios from 'axios'
 import { debuglog } from 'util'
+import ACol from 'ant-design-vue/es/grid/Col'
 const columns = [
   {
     title: '量表名称',
@@ -50,7 +83,7 @@ const columns = [
   },
 
   {
-    title: '创建时间',
+    title: '答题时间',
     dataIndex: 'createTime',
     // sorter: true,
     width: '16%'
@@ -65,7 +98,7 @@ const columns = [
     // scopedSlots: { customRender: "answerPerson" }
   },
   {
-    title: '答题所花时间',
+    title: '用时',
     width: '13%',
     dataIndex: 'useTime'
   },
@@ -86,6 +119,7 @@ const columns = [
 ]
 
 export default {
+  components: { ACol },
   mounted () {
     this.fetch()
   },
@@ -98,7 +132,13 @@ export default {
       loading: false,
       columns,
       id: 0,
-      qrCodeShowSwitch: ''
+      qrCodeShowSwitch: '',
+      answerResearchData:{
+        scaleName:'',
+        name:'',
+        useTime:'',
+        judgeInfo:''
+      }
     }
   },
   methods: {
@@ -182,6 +222,11 @@ export default {
         // patients:patientId
         query: { examinationPaperId: examinationPaperId }
       })
+    },
+
+    //根据答题者姓名搜索
+    onSearch (value) {
+      console.log(value)
     }
 
     // 删除答卷

@@ -112,7 +112,7 @@
                 </a-form>
 
                 <div v-for="(item,optionId) in value.items" :key="optionId"  class="singleChoice-option">
-                  <a-form  :style="{marginLeft:'60px',width:'70%'}">
+                  <a-form  :style="{marginLeft:'20vh',width:'65%'}">
                     <a-form-item  :label-col="{ span: 5 }" :wrapper-col="{ span:49 }">
                       <div class="singleChoice">
                         <a-radio :style="{width:'100%'}" :defaultChecked="false" disabled>
@@ -199,7 +199,12 @@
                   <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="del(subjectId)">删除</a>
                   <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="down(subjectId)">下移&nbsp&nbsp|&nbsp&nbsp</a>
                   <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="up(subjectId)">上移&nbsp&nbsp|&nbsp&nbsp</a>
-                  <h4>（画图题）</h4>
+                  <h4 :style="{color:'#2d8cf0'}"><strong>（画图题）</strong></h4>
+                  <a-form  :style="{marginTop:'10px',marginLeft:'-130px'}">
+                    <a-form-item label="作答要求：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" >
+                      <a-input placeholder="请输入作答要求！" v-model="value.title"  />
+                    </a-form-item>
+                  </a-form>
                   <strong :style="{marginTop:'10px'}">注意：一定要点击"开始上传"，才能上传成功!</strong>
 
                   <div class="clearfix" :style="{marginTop:'10px'}">
@@ -226,7 +231,12 @@
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="del(subjectId)">删除</a>
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="down(subjectId)">下移&nbsp&nbsp|&nbsp&nbsp</a>
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="up(subjectId)">上移&nbsp&nbsp|&nbsp&nbsp</a>
-                <h4>（图片题）</h4>
+                <h4 :style="{color:'#2d8cf0'}"><strong>（图片题）</strong></h4>
+                <a-form  :style="{marginTop:'10px',marginLeft:'-130px'}">
+                  <a-form-item label="作答要求：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" >
+                    <a-input placeholder="请输入作答要求！" v-model="value.title"  />
+                  </a-form-item>
+                </a-form>
                 <strong :style="{marginTop:'10px'}">注意：一定要点击"开始上传"，才能上传成功!</strong>
               <div class="clearfix" :style="{marginTop:'10px'}">
                 <a-upload
@@ -362,6 +372,7 @@ export default {
           }
         })
         .then(function (data) {
+          debugger
           console.log(data)
           if ((data.body.retCode = '000000')) {
             this.$message.success('保存成功！', 5)
@@ -373,7 +384,6 @@ export default {
     },
     // 预览
     preview () {
-
 
       let oneScale = JSON.stringify(this.oneScale)
       let routeData = this.$router.resolve({
@@ -500,7 +510,7 @@ export default {
         var drawObject = {
           questionType: 'draw',
           show: true,
-          title: '',
+          title: that.oneScale.questionList[subjectId].title,
           markSubjectId: subjectId,
           attachmentList: this.fileNoList
         }
@@ -573,7 +583,7 @@ export default {
         var pictureObject = {
           questionType: 'picture',
           show: true,
-          title: '',
+          title: that.oneScale.questionList[subjectId].title,
           markSubjectId: subjectId,
           attachmentList: this.pictureFileNoList
         }
@@ -611,12 +621,12 @@ export default {
     addOption (subjectId) {
       console.log(subjectId)
       var items = this.oneScale.questionList[subjectId].items
-      if (items.length <= 5) {
+      if (items.length <= 20) {
         var newitems = {}
         items = items.push(newitems)
         console.log(this.oneScale.questionList[subjectId].items)
       } else {
-        this.$message.warning('选项不允许超过6个！', 5)
+        this.$message.warning('选项不允许超过20个！', 5)
       }
     },
 
@@ -796,12 +806,10 @@ body {
     margin-top: 15px;
     border: 1px dashed #2d8cf0;
     width: 100%;
-    height: 280px;
+    height: 45vh;
     text-align: center;        /*文字水平居中对齐*/
     line-height: 280px;        /*设置文字行距等于div的高度*/
     overflow:hidden;
   }
-
-
 
 </style>

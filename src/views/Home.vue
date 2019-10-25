@@ -6,7 +6,7 @@
         <a-menu
           theme="dark"
           mode="horizontal"
-          :defaultSelectedKeys="['1']"
+
           :style="{ lineHeight: '64px' }"
         >
           <a-menu-item key="1">
@@ -15,7 +15,7 @@
           </a-menu-item>
 
           <a-menu-item key="2">
-            <router-link to="/Home/AddPatientInfo"><a-icon type="usergroup-add" />添加个人信息</router-link>
+            <router-link to="/Home/AddPatientInfo"><a-icon type="usergroup-add" />新增被试者</router-link>
           </a-menu-item>
 
           <!-- <a-menu-item key="2">
@@ -49,7 +49,7 @@
             </span>
             <a-menu-item-group>
               <a-menu-item key="setting:3">
-                <router-link to="/Home/MyPatients">我的被试者信息</router-link>
+                <router-link to="/Home/MyPatients">我的被试者</router-link>
               </a-menu-item>
               <a-menu-item key="setting:4">
                 <router-link to="/Home/MyScale">我的量表</router-link>
@@ -60,6 +60,10 @@
           <a-menu-item key="5">
             <router-link to="/Home/MyAnswer"><a-icon type="eye" />查看答案</router-link>
           </a-menu-item>
+
+<!--          <a-menu-item key="5">-->
+<!--            <router-link to="/Home/test"><a-icon type="eye" />查看答案</router-link>-->
+<!--          </a-menu-item>-->
 
           <a-menu-item key="6" :style="{float:'right'}" @click="dialogVisible = true">
             <a-icon type="user-delete" />安全退出

@@ -1,20 +1,47 @@
 <template>
   <div class="answerBox">
     <div>
-      <!-- 输入病人Id -->
-      <a-card v-if="patientIdShow" :bordered="false">
-        <div class="box">
-          <a-form layout="inline">
-            <a-form-item label="被试者Id：">
-              <a-input placeholder="请输入病人Id" v-model="patientId"></a-input>
-            </a-form-item>
 
-            <a-form-item>
-              <a-button type="primary" @click="conform">确定</a-button>
-            </a-form-item>
-          </a-form>
-        </div>
-      </a-card>
+
+      <a-row>
+        <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="6">xxxx</a-col>
+        <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="12">
+
+          <a-card v-if="patientIdShow" :bordered="false">
+            <label>被试者Id：</label>
+            <a-input placeholder="请输入病人Id" v-model="patientId"></a-input>
+            <a-button type="primary" @click="conform">确定</a-button>
+          </a-card>
+
+        </a-col>
+        <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="6">xxxx</a-col>
+      </a-row>
+
+
+<!--      <el-row :gutter="10">-->
+<!--        <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1"></el-col>-->
+<!--        <el-col :xs="8" :sm="12" :md="16" :lg="18" :xl="22">-->
+          <!-- 输入病人Id -->
+<!--          <a-card v-if="patientIdShow" :bordered="false">-->
+<!--            <label>被试者Id：</label>-->
+<!--            <a-input placeholder="请输入病人Id" v-model="patientId"></a-input>-->
+<!--            <a-button type="primary" @click="conform">确定</a-button>-->
+<!--            <div class="box">-->
+<!--              <a-form layout="inline">-->
+<!--&lt;!&ndash;                <a-form-item label="被试者Id：">&ndash;&gt;-->
+<!--&lt;!&ndash;                  <a-input placeholder="请输入病人Id" v-model="patientId"></a-input>&ndash;&gt;-->
+<!--&lt;!&ndash;                </a-form-item>&ndash;&gt;-->
+
+<!--                <a-form-item>-->
+<!--                  <a-button type="primary" @click="conform">确定</a-button>-->
+<!--                </a-form-item>-->
+<!--              </a-form>-->
+<!--            </div>-->
+<!--          </a-card>-->
+<!--        </el-col>-->
+<!--        <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1"></el-col>-->
+<!--      </el-row>-->
+
 
       <!-- 答题界面 -->
       <div v-show="show">
@@ -28,7 +55,7 @@
               </h3>
             </div>
           </center>
-          <a-card :style="{height:'100%',marginTop:'15px',width:'900px'}" :bordered="false">
+          <a-card :style="{height:'100%',marginTop:'15px',width:'400px'}" :bordered="false">
             <div>
               <strong>答题人：</strong>
               {{patientInfo.name}}
@@ -39,7 +66,7 @@
           <div v-for="(value,subjectId) in oneScale.questionList" :key="subjectId">
             <!-- 1.单选 -->
             <div v-if=" value.questionType==='radio'">
-              <a-card :style="{height:'100%',marginTop:'15px',width:'900px'}" :bordered="false">
+              <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
                 <div v-for="(one, index) in answer.answerList" :key="index">
                   <div v-if="value.questionId === one.questionId">
                     <div class="singleChoice">
@@ -62,7 +89,7 @@
 
             <!-- 2.多选 -->
             <div v-if=" value.questionType==='checkBox'">
-              <a-card :style="{height:'100%',marginTop:'15px',width:'900px'}" :bordered="false">
+              <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
                 <div v-for="(one, aindex) in answer.answerList" :key="aindex">
                   <div v-if="value.questionId === one.questionId">
                     <div class="singleChoice">
@@ -88,7 +115,7 @@
             <!-- 多选结束 -->
 
             <!-- 2.指导语 -->
-            <div v-if="value.questionType==='direction'" :style="{marginTop:'30px',width:'900px'}">
+            <div v-if="value.questionType==='direction'" :style="{marginTop:'30px'}">
               <!--              <a-divider />-->
               <div class="direct">
                 <strong>指导语：</strong>
@@ -106,14 +133,14 @@
 
             <!-- 4.问答题 -->
             <div v-if="value.questionType==='QandA'">
-              <a-card :style="{height:'100%',marginTop:'15px',width:'900px'}" :bordered="false">
+              <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
                 <div v-for="(one, index) in answer.answerList" :key="index">
                   <div v-if="value.questionId === one.questionId">
                     <!-- 问题 -->
                     <div>
                       <strong>问题：</strong>
                       {{value.title}}
-                      <a-form :style="{marginTop:'20px',marginLeft:'-105px'}">
+                      <a-form :style="{marginTop:'20px'}">
                         <a-form-item label="请记录答案：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }">
                           <a-input placeholder="请记录答案" v-model="one.content"/>
                         </a-form-item>
@@ -130,7 +157,7 @@
               <!--              <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">-->
               <div v-for="(one, index) in answer.answerList" :key="index">
                 <div v-if="value.questionId === one.questionId">
-                  <a-card :style="{height:'100%',marginTop:'15px',width:'900px'}" :bordered="false">
+                  <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
                     <div class="img-box-preview">
                       <div
                         v-for="(oneImg,imgId) in value.attachmentList"
@@ -202,7 +229,7 @@
 
             <!-- 图片题 -->
             <div v-if="value.questionType ==='picture'">
-              <a-card :style="{height:'100%',marginTop:'15px',width:'900px'}" :bordered="false">
+              <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
                 <div v-for="(one, index) in answer.answerList" :key="index">
                   <div v-if="value.questionId === one.questionId">
                     <div class="img-box-preview">
@@ -214,7 +241,7 @@
                         <img v-bind:src="imgUrl + oneImg"/>
                       </div>
                     </div>
-                    <a-form :style="{marginTop:'20px',marginLeft:'-105px'}">
+                    <a-form :style="{marginTop:'20px'}">
                       <a-form-item label="请记录答案：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }">
                         <a-input placeholder="请记录答案" v-model="one.content"/>
                       </a-form-item>
@@ -228,7 +255,7 @@
           <!-- 所有题目结束 -->
 
           <!-- 提交 -->
-          <a-card :style="{height:'100%',marginTop:'15px',width:'900px'}" :bordered="false">
+          <a-card :style="{height:'100%',marginTop:'15px',marginBottom:'20px'}" :bordered="false">
             <center><h3><strong>您已完成此量表，请保存！</strong></h3></center>
             <center>
               <a-button @click="submitScale" type="primary"
@@ -289,8 +316,6 @@ export default {
   },
 
   methods: {
-
-
     // 确定 提交病人Id，同时传scaleId
     conform () {
       this.startTime = new Date().getTime()
@@ -523,12 +548,15 @@ export default {
   }
 
   .answerBox {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-    background-color: #f8f8f9;
+    /*display: flex;*/
+    /*flex-direction: row;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    /*margin: 0 auto;*/
+    /*border: 1px solid red;*/
+    /*width: 50rem;*/
+    /*background-color: #f8f8f9;*/
+    /*margin-left: 30px;*/
   }
 
   .singleChoice {
@@ -597,9 +625,9 @@ export default {
   /* 图片 */
   .image-div img {
     margin-bottom: 3vh;
-    margin-left: 2vh;
-    width: 40vh;
-    height: 40vh;
+    /*margin-left: 2vh;*/
+    width: 15rem;
+    height: 15rem;
     border: 1px solid #2d8cf0;
   }
 
@@ -740,4 +768,26 @@ export default {
     /* margin-left: 30px; */
     width: 100%;
   }
+
+  /*html {font-size: 625%; !*100 ÷ 16 × 100% = 625%*!}*/
+
+  /*@media screen and (min-width:360px) and (max-width:374px) and (orientation:portrait) {*/
+  /*  html { font-size: 703%; }*/
+  /*}*/
+  /*@media screen and (min-width:375px) and (max-width:383px) and (orientation:portrait) {*/
+  /*  html { font-size: 732.4%; }*/
+  /*}*/
+  /*@media screen and (min-width:384px) and (max-width:399px) and (orientation:portrait) {*/
+  /*  html { font-size: 750%; }*/
+  /*}*/
+  /*@media screen and (min-width:400px) and (max-width:413px) and (orientation:portrait) {*/
+  /*  html { font-size: 781.25%; }*/
+  /*}*/
+  /*@media screen and (min-width:414px) and (max-width:431px) and (orientation:portrait){*/
+  /*  html { font-size: 808.6%; }*/
+  /*}*/
+  /*@media screen and (min-width:432px) and (max-width:479px) and (orientation:portrait){*/
+  /*  html { font-size: 843.75%; }*/
+  /*}*/
+
 </style>

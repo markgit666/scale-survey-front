@@ -94,13 +94,12 @@ export default {
             captchaToken: this.captchaToken
           }).then(response => {
             if (response.data.retCode === '000003') {
+              this.$message.success('验证码已发送到您的邮箱，请等待几秒')
               this.$router.push({ path: '/changePassword', query: { email: this.ruleForm.email } })
             } else {
               this.$message.error(response.data.retMsg, 5)
             }
-          })
-
-          ;
+          });
           // axios
           //   .post(this.serverUrl + "authc/login", {
           //     loginName: this.ruleForm.email,

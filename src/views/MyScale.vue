@@ -1,6 +1,8 @@
 <template>
   <div class="box">
     <a-card :hoverable="true" :bordered="false">
+      <a-input-search placeholder="根据量表名称搜索..." @search="onSearch" enterButton :style="{width:'30%',float:'right'}"/>
+      <br /><br />
       <a-table
         :columns="columns"
         :rowKey="record => record.scaleId"
@@ -8,11 +10,11 @@
         :pagination="pagination"
         :loading="loading"
         @change="handleTableChange"
-        bordered
+
       >
-        <template slot="title">
-          <h3>已添加的量表</h3>
-        </template>
+<!--        <template slot="title">-->
+<!--          <h3>已添加的量表</h3>-->
+<!--        </template>-->
         <!-- 操作 -->
         <template slot="operation" slot-scope="text, record, index">
           <div class="editable-row-operations">
@@ -60,24 +62,26 @@ const columns = [
   {
     title: "量表Id",
     dataIndex: "scaleId",
-    width: "20%",
+    width: "10%",
     scopedSlots: { customRender: "scaleName" }
   },
   {
     title: "量表名称",
     dataIndex: "scaleName",
-    width: "30%",
+    width: "40%",
     scopedSlots: { customRender: "scaleName" }
   },
 
   {
     title: "创建时间",
+    width: "20%",
     dataIndex: "createTime"
   },
 
   {
     title: "操作",
     dataIndex: "operation",
+    width: "20%",
     scopedSlots: { customRender: "operation" }
   }
 ];
@@ -198,6 +202,10 @@ export default {
     handleOk(e) {
       // console.log(e);
       this.visible = false;
+    },
+//根据量表名称搜索
+    onSearch (value) {
+      console.log(value)
     }
   }
 };

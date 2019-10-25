@@ -250,7 +250,8 @@ export default {
   // },
   data() {
     return {
-      fileNoList: [], //存放画图题上传的图片
+      <!-- 存放画图题上传的图片 -->
+      fileNoList: [],
       fileList: [], // 画图题，for循环中使用
       pictureFileNoList: [], //存放图片题上传的图片
       pictureFileList: [], //图片题，for循环内

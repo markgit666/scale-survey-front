@@ -1,6 +1,68 @@
 <template>
   <div class="box">
     <a-card :hoverable="true" :bordered="false">
+      <a-row>
+
+        <a-col :span="8">
+          <label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp姓名：</label>
+            <el-input :style="{width:'60%'}" size="small " v-model="searchData.name"></el-input>
+        </a-col>
+
+        <a-col :span="8">
+          <label>出生日期：</label>
+          <el-date-picker
+            size="small"
+            type="date"
+            placeholder="选择日期"
+            v-model="searchData.birthday"
+            style="width: 70%;"
+            format="yyyy 年 MM 月 dd 日"
+            value-format="yyyy-MM-dd"
+          ></el-date-picker>
+        </a-col>
+        <a-col :span="6">
+          <label>性别：</label>
+          <el-select
+            v-model="searchData.gender"
+            style="width:70%;"
+            size="small"
+          >
+            <el-option label="男" value="1"></el-option>
+            <el-option label="女" value="2"></el-option>
+          </el-select>
+
+        </a-col>
+      </a-row>
+      &nbsp&nbsp
+<a-row>
+        <a-col :span="8">
+          <label>联系方式：</label>
+          <el-input :style="{width:'60%'}" size="small "  v-model="searchData.telephoneNumber"></el-input>
+        </a-col>
+
+  <a-col :span="8">
+    <label>家庭地址：</label>
+    <el-input :style="{width:'70%'}" size="small "  v-model="searchData.familyAddress"></el-input>
+  </a-col>
+  <a-col :span="6">
+    <label>民族：</label>
+    <el-select
+      v-model="searchData.nation"
+      style="width:70%;"
+      size="small"
+    >
+      <el-option label="汉族" value="汉族"></el-option>
+      <el-option label="其他" value="其他"></el-option>
+    </el-select>
+  </a-col>
+
+
+  <a-col :span="2">
+    <a-button type="primary" icon="search">查找</a-button>
+  </a-col>
+</a-row>
+      <br />
+
       <a-table
         :columns="columns"
         :rowKey="record => record.patientId"
@@ -8,19 +70,17 @@
         :pagination="pagination"
         :loading="loading"
         @change="handleTableChange"
-        bordered
-      >
-        <!-- <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template> -->
-        <template slot="gender" slot-scope="gender">{{gender}}男</template>
 
-        <template slot="title">
-          <h3>被试者基本资料</h3>
-        </template>
+      >
+
+<!--        <template slot="title">-->
+<!--          <h3>被试者基本资料</h3>-->
+<!--        </template>-->
         <!-- 操作 -->
         <template slot="operation" slot-scope="text, record">
           <div class="editable-row-operations">
             <span>
-              <a @click="() =>editInfo(record.patientId)">查看详情/编辑</a>
+              <a @click="() =>editInfo(record.patientId)">查看/编辑</a>
               <a-divider type="vertical"/>
 
               <a-popconfirm
@@ -43,46 +103,49 @@
 <script>
 import axios from 'axios'
 import reqwest from 'reqwest'
+import ACol from 'ant-design-vue/es/grid/Col'
 // import { debuglog } from "util";
 const columns = [
   {
     title: '被试Id号',
     dataIndex: 'patientId',
     // sorter: true,
-    width: '10%',
+    width: '5%',
     scopedSlots: { customRender: 'patientId' }
   },
   {
     title: '姓名',
     dataIndex: 'name',
     // sorter: true,
-    width: '10%',
+    width: '8%',
     scopedSlots: { customRender: 'name' }
   },
   {
     title: '性别',
     dataIndex: 'gender',
-    width: '7%'
-    // filters: [
-    //   { text: "Male", value: "male" },
-    //   { text: "Female", value: "female" }
-    // ]
+    width: '6%'
   },
   {
     title: '出生日期',
-    width: '12%',
+    width: '10%',
     dataIndex: 'birthday'
   },
   {
     title: '联系方式',
-    width: '15%',
+    width: '9%',
     dataIndex: 'telephoneNumber'
   },
   {
+    title: '民族',
+    width: '7%',
+    dataIndex: 'nation'
+  },
+  {
     title: '家庭地址',
-    width: '20%',
+    width: '30%',
     dataIndex: 'familyAddress'
   },
+
   // {
   //   title:'添加时间',
   //   width:'10%',
@@ -95,13 +158,14 @@ const columns = [
   // },
   {
     title: '操作',
-    width: '20%',
+    width: '15%',
     dataIndex: 'operation',
     scopedSlots: { customRender: 'operation' }
   }
 ]
 
 export default {
+  components: { ACol },
   mounted () {
     this.fetch()
   },
@@ -112,7 +176,24 @@ export default {
       pagination: {},
       loading: false,
       columns,
-      id: 0
+      id: 0,
+
+      // 搜索时的数据
+      searchData: {
+        // 姓名
+        name: '',
+        // 性别
+        gender: '',
+        // 出生日期
+        birthday:'',
+        // 联系方式
+        telephoneNumber:'',
+        // 家庭地址
+        familyAddress:'',
+        // 民族
+        nation:''
+
+      }
     }
   },
   methods: {
@@ -154,7 +235,6 @@ export default {
         type: 'json',
         contentType: 'application/json'
       }).then(values => {
-
         if (values.retCode === '000000') {
           const pagination = { ...this.pagination }
           var page
@@ -169,9 +249,9 @@ export default {
           this.data = values.data.list
           for (var i = 0; i < values.data.list.length; i++) {
             if (values.data.list[i].gender === '1') {
-              values.data.list[i].gender = '女'
-            } else {
               values.data.list[i].gender = '男'
+            } else {
+              values.data.list[i].gender = '女'
             }
           }
           this.pagination = pagination
@@ -212,7 +292,12 @@ export default {
           this.fetch()
           this.$message.success('删除成功！', 5)
         })
+    },
+    // 搜索功能--根据姓名搜索
+    onSearch (value) {
+      console.log(value)
     }
+
   }
 }
 </script>

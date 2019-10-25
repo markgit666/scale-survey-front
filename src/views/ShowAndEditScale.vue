@@ -177,14 +177,19 @@
             </a-card>
           </div>
 
-          <!-- 6.画图 -->
+<!--           6.画图-->
           <div v-if="value.questionType ==='draw'" :style="{marginTop:'15px'}">
             <a-card :hoverable="true" :bordered="false" class="father" :style="{height:'100%'}">
               <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="del(subjectId)">删除</a>
               <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="down(subjectId)">下移&nbsp&nbsp|&nbsp&nbsp</a>
               <a :style="{float:'right',marginTop:'-15px'}" class="child"
                  @click="up(subjectId)">上移&nbsp&nbsp|&nbsp&nbsp</a>
-              <h4 :style="{marginTop:'10px'}">（画图题）</h4>
+              <h4 :style="{color:'#2d8cf0',marginTop:'10px'}"><strong>（画图题）</strong></h4>
+              <a-form :style="{marginTop:'10px',marginLeft:'-130px'}">
+                <a-form-item label="作答要求：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }">
+                  <a-input placeholder="请输入作答要求" v-model="value.title"/>
+                </a-form-item>
+              </a-form>
               <strong :style="{marginTop:'10px'}">注意：一定要点击"开始上传"，才能上传成功!</strong>
 
               <div class="clearfix" :style="{marginTop:'10px'}">
@@ -205,7 +210,8 @@
               </div>
             </a-card>
           </div>
-          <!-- 画图结束 -->
+<!--           画图结束-->
+
 
           <!-- 7.图片题 -->
           <div v-if="value.questionType ==='picture'" :style="{marginTop:'15px'}">
@@ -214,7 +220,12 @@
               <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="down(subjectId)">下移&nbsp&nbsp|&nbsp&nbsp</a>
               <a :style="{float:'right',marginTop:'-15px'}" class="child"
                  @click="up(subjectId)">上移&nbsp&nbsp|&nbsp&nbsp</a>
-              <h4 :style="{marginTop:'10px'}">（图片题）</h4>
+              <h4 :style="{color:'#2d8cf0',marginTop:'10px'}"><strong>（图片题）</strong></h4>
+              <a-form :style="{marginTop:'10px',marginLeft:'-130px'}">
+                <a-form-item label="作答要求：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }">
+                  <a-input placeholder="请输入作答要求" v-model="value.title"/>
+                </a-form-item>
+              </a-form>
               <strong :style="{marginTop:'10px'}">注意：一定要点击"开始上传"，才能上传成功!</strong>
               <div class="clearfix" :style="{marginTop:'10px'}">
                 <a-upload

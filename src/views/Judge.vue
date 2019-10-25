@@ -14,6 +14,7 @@
         <a-form-item label="评定人：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }">
           <a-input v-model="JudgeInfo.checkUser" placeholder="请输入评定人"/>
         </a-form-item>
+
         <!--答题人-->
         <a-form-item label="答题人：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-15px'}">
           {{examinationPaperInfo.patientInfo.name}}
@@ -34,12 +35,23 @@
             <a-form-item label="问题：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-10px'}">
               <strong>{{oneQuestion.title}}</strong>
             </a-form-item>
+
             <a-form-item label="答案：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-30px'}">
               {{oneQuestion.answer.content}}
             </a-form-item>
-            <a-form-item label="评分：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-30px'}">
-              <a-input v-model="oneQuestion.answer.score" placeholder="请输入评分"/>
+
+            <a-form-item label="评分：" :label-col="{ span: 5 }" :wrapper-col="{ span:1 }" :style="{marginTop:'-30px'}">
+              <a-input-number :min="0" :max="100" v-model="oneQuestion.answer.score" placeholder="请输入评分" />
             </a-form-item>
+
+<!--            <a-form-item label="评分：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-30px'}">-->
+<!--              <a-input-number :min="0" :max="100" v-model="oneQuestion.answer.score" placeholder="请输入评分" />-->
+<!--            </a-form-item>-->
+
+<!--            <a-form-item label="评分：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-30px'}">-->
+<!--              <a-input-number :min="0" :max="100" v-model="oneQuestion.answer.score" placeholder="请输入评分" />-->
+<!--            </a-form-item>-->
+
           </a-form>
         </a-card>
       </div>
@@ -56,7 +68,8 @@
               {{oneQuestion.answer.content}}
             </a-form-item>
             <a-form-item label="评分：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-30px'}">
-              <a-input v-model="oneQuestion.answer.score" placeholder="请输入评分"/>
+              <a-input-number :min="0" :max="100" v-model="oneQuestion.answer.score" placeholder="请输入评分" />
+
             </a-form-item>
           </a-form>
         </a-card>
@@ -77,7 +90,7 @@
                 >{{item}}&nbsp;&nbsp;</span>
             </a-form-item>
             <a-form-item label="评分：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-30px'}">
-              <a-input v-model="oneQuestion.answer.score" placeholder="请输入评分"/>
+              <a-input-number :min="0" :max="100" v-model="oneQuestion.answer.score" placeholder="请输入评分" />
             </a-form-item>
           </a-form>
         </a-card>
@@ -100,7 +113,7 @@
 
             <a-form :style="{marginLeft:'-120px',marginTop:'30px'}">
               <a-form-item label="评分：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-30px'}">
-                <a-input v-model="oneQuestion.answer.score" placeholder="请输入评分"/>
+                <a-input-number :min="0" :max="100" v-model="oneQuestion.answer.score" />
               </a-form-item>
             </a-form>
           </div>
@@ -124,7 +137,7 @@
               </a-form-item>
 
               <a-form-item label="评分：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-30px'}">
-                <a-input v-model="oneQuestion.answer.score" placeholder="请输入评分"/>
+                <a-input-number :min="0" :max="100" v-model="oneQuestion.answer.score" placeholder="请输入评分" />
               </a-form-item>
             </a-form>
           </div>
@@ -148,12 +161,14 @@
     <a-card :style="{height:'100%',marginTop:'15px',width:'900px',marginBottom:'20px'}" :bordered="false"
             :hoverable="true">
       <center>
-        <h3><strong>量表评定完成，请保存！</strong></h3>
+            <div>
+              <h3><strong><label >总得分：{{computedTotalScore}}</label></strong></h3>
+            </div>
+        <h3 :style="{marginTop:'10px'}"><strong>量表评定完成，请保存！</strong></h3>
         <a-button type="primary" @click="saveScore" :style="{marginTop:'15px'}">保存</a-button>
       </center>
     </a-card>
-    <!--    </a-card>-->
-    <!-- card结束 -->
+
   </div>
   <!-- 试卷界面  结束 -->
 </template>
@@ -167,12 +182,16 @@ export default {
       serverUrl: this.GLOBAL.serverUrl,
       // 图片地址
       imgUrl: this.GLOBAL.serverUrl + 'file/download?fileNo=',
-      examinationPaperInfo: {},
+      examinationPaperInfo: {
+        scaleInfo: {scaleName: '',questionList:[]},
+        patientInfo:{name:''},
+
+      },
 
       JudgeInfo: {
         examinationPaperId: '',
         checkUser: '',
-        totalScore: '',
+        totalScore: 0,
         answerJudgeList: []
       }
     }
@@ -181,10 +200,29 @@ export default {
   mounted () {
     this.fetch()
   },
+
+  computed: {
+    computedTotalScore () {
+debugger
+      let questionList = []
+      questionList = this.examinationPaperInfo.scaleInfo.questionList
+      var totalScore = 0
+      for (var i = 0; i < questionList.length; i++) {
+        totalScore = totalScore + questionList[i].answer.score
+      }
+      if(isNaN(totalScore)){
+        totalScore = 0
+      }
+      this.JudgeInfo.totalScore = totalScore
+      return totalScore
+    }
+  },
+
   methods: {
+
+
     // 评分-----拿到数据
     fetch () {
-      debugger
       let that = this
       axios
         .post(
@@ -199,35 +237,34 @@ export default {
           }
         )
         .then(response => {
-          debugger
           if (response.data.retCode === '000000') {
             that.examinationPaperInfo = response.data.data.list[0]
-            that.JudgeInfo.examinationPaperId =
-                that.examinationPaperInfo.examinationPaperId
-            that.JudgeInfo.checkUser =
-                that.examinationPaperInfo.judgeInfo.checkUser
-            that.JudgeInfo.totalScore =
-                that.examinationPaperInfo.judgeInfo.totalScore
-            var questionList = that.examinationPaperInfo.scaleInfo.questionList
-            for (var i = 0; i < questionList.length; i++) {
-              var answer = {
-                answerId: questionList[i].answer.answerId,
-                score: questionList[i].answer.score
-              }
-              that.JudgeInfo.answerJudgeList.push(answer)
+            if (that.examinationPaperInfo.judgeInfo != null) {
+              that.JudgeInfo.examinationPaperId = that.examinationPaperInfo.examinationPaperId
+              that.JudgeInfo.checkUser = that.examinationPaperInfo.judgeInfo.checkUser
+              that.JudgeInfo.totalScore = that.examinationPaperInfo.judgeInfo.totalScore
             }
-            // console.log(
-            //   "examinationPaperInfo=",
-            //   JSON.stringify(that.examinationPaperInfo)
-            // );
+
           } else {
             this.$message.error('系统错误')
           }
-          // console.log(this.$route.query);
         })
     },
     // 保存
     saveScore () {
+      // 得到答卷Id
+      this.JudgeInfo.examinationPaperId = this.examinationPaperInfo.examinationPaperId
+      debugger
+
+      // 题目列表
+      var questionList = this.examinationPaperInfo.scaleInfo.questionList
+      for (var i = 0; i < questionList.length; i++) {
+        var answer = {
+          answerId: questionList[i].answer.answerId,
+          score: questionList[i].answer.score
+        }
+        this.JudgeInfo.answerJudgeList.push(answer)
+      }
       debugger
       axios
         .post(this.serverUrl + 'paper/judge/commit', this.JudgeInfo, {
@@ -236,11 +273,17 @@ export default {
           }
         })
         .then(response => {
+          debugger
           console.log(response)
-          this.$message.success('保存成功', 4)
-          this.$router.push({
-            path: '/home/myAnswer'
-          })
+          if(response.data.retCode==='000000'){
+            this.$message.success('保存成功', 4)
+            this.$router.push({
+              path: '/home/myAnswer'
+            })
+          }else {
+            this.$message.error('保存失败', 4)
+          }
+
         })
     }
   }
@@ -264,22 +307,6 @@ export default {
     height: 30vh;
   }
 
-  .judge-div {
-    display: flex;
-    flex-direction: row;
-    /* margin-top: 13px; */
-    /* border: 1px solid sienna; */
-  }
-
-  .judge-text {
-    color: red;
-    width: 4%;
-  }
-
-  .judge-input {
-    width: 40%;
-    margin-top: -2px;
-  }
 
   .draw-img, .picture-img {
     border: 1px solid #2d8cf0;

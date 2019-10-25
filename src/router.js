@@ -23,6 +23,7 @@ import Judge from './views/Judge.vue'
 import FindPassword from './views/FindPassword.vue'
 import ChangePassword from './views/ChangePassword.vue'
 import NoCreate from './views/NoCreate'
+import Testest from './views/Testest'
 Vue.use(Router)
 Vue.use(Antd)
 Vue.use(VueResource);
@@ -42,6 +43,7 @@ export default new Router({
         { path: '/home/myPatients', name: 'myPatients', component: MyPatients },
         { path: '/home/myScale', name: 'myScale', component: MyScale },
         { path: '/home/myAnswer', name: 'myAnswer', component: MyAnswer },
+        { path: '/home/test', name: 'test', component: Testest },
         { path: '/home/ShowAndEditScale', name: 'ShowAndEditScale', component: ShowAndEditScale },
         { path: '/home/showAndEditPatientInfo', name: 'showAndEditPatientInfo', component: ShowAndEditPatientInfo },
       ]

@@ -99,6 +99,10 @@
         <!-- 5.画图 -->
         <div v-if="value.questionType ==='draw'" class="draw_div">
           <a-card :style="{height:'100%',marginTop:'15px',width:'900px'}" :bordered="false">
+            <div class="question">
+              <strong>作答要求：</strong>
+              {{value.title}}
+            </div>
             <div class="img-box-preview">
               <div v-for="(oneImg,imgId) in value.attachmentList" :key="imgId" class="image-div">
                 <img v-bind:src="imgUrl + oneImg"/>
@@ -162,7 +166,10 @@
         <!-- 图片题 -->
         <div v-if="value.questionType ==='picture'">
           <a-card :style="{height:'100%',marginTop:'15px',width:'900px'}" :bordered="false">
-
+            <div class="question">
+              <strong>作答要求：</strong>
+              {{value.title}}
+            </div>
             <div class="img-box-preview">
               <div v-for="(oneImg,imgId) in value.attachmentList" :key="imgId" class="image-div">
                 <img v-bind:src="imgUrl + oneImg"/>
@@ -496,6 +503,7 @@
     justify-content: center;
     align-items: center;
     margin: 0 auto;
+    margin-top: 20px;
   }
 
   /*.pic-img-box{*/
