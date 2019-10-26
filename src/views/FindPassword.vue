@@ -20,7 +20,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="next('ruleForm')" class="login-form-button">下一步</el-button>
+          <el-button type="primary" @click="nextStep('ruleForm')" class="login-form-button">{{buttonText}}</el-button>
         </el-form-item>
         <a @click="back">返回</a>
       </el-form>
@@ -34,6 +34,8 @@ import axios from 'axios'
 export default {
   data () {
     return {
+      buttonText: '下一步',
+      btnDisabled: false,
       // 表单 邮箱校验
       ruleForm: {
         email: '',
@@ -68,6 +70,34 @@ export default {
     this.fetchCaptchaCode()
   },
   methods: {
+    // 倒计时
+    getSecond (wait) {
+      let _this = this
+      let _wait = wait
+      if (wait === 0) {
+        this.btnDisabled = false
+        this.buttonText = '下一步'
+        wait = _wait
+      } else {
+        this.btnDisabled = true
+        this.buttonText = '等待(' + wait + 's)'
+        wait--
+        setTimeout(function () {
+          _this.getSecond(wait)
+        },
+        1000)
+      }
+    },
+
+    // 下一步
+    nextStep (formName) {
+      if (this.btnDisabled) {
+        return
+      }
+      this.next(formName)
+      this.getSecond(3)
+    },
+
     // 刷新验证码
     fetchCaptchaCode () {
       axios.post(this.serverUrl + 'authc/captcha/get').then(response => {
@@ -77,7 +107,7 @@ export default {
         console.log(response)
       })
     },
-    fetchVertifyCode(){
+    fetchVertifyCode () {
       this.fetchCaptchaCode()
     },
 
@@ -94,26 +124,12 @@ export default {
             captchaToken: this.captchaToken
           }).then(response => {
             if (response.data.retCode === '000003') {
-              this.$message.success('验证码已发送到您的邮箱，请等待几秒')
+              this.$message.success('验证码已发送至您的邮箱')
               this.$router.push({ path: '/changePassword', query: { email: this.ruleForm.email } })
             } else {
               this.$message.error(response.data.retMsg, 5)
             }
-          });
-          // axios
-          //   .post(this.serverUrl + "authc/login", {
-          //     loginName: this.ruleForm.email,
-          //     password: this.ruleForm.password
-          //   })
-          //   .then(response => {
-          //     ;
-          //     if (response.data.retCode === "000001") {
-          //       localStorage.setItem("Token", response.data.data);
-          //       this.$router.push({ path: "/Home" });
-          //     } else {
-          //       this.$message.warning("用户名或密码错误",5);
-          //     }
-          //   });
+          })
         } else {
           alert('请输入注册过的邮箱！')
           return false

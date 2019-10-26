@@ -36,6 +36,7 @@
 
 <script>
 import axios from 'axios'
+import JSEncrypt from 'jsencrypt/bin/jsencrypt'
 export default {
   data () {
     // 密码
@@ -67,7 +68,8 @@ export default {
             trigger: 'blur'
           }
         ]
-      }
+      },
+      passwordEncrypt:''
     }
   },
 
@@ -77,7 +79,6 @@ export default {
   },
   methods: {
     sendMessage () {
-
       if (this.ruleForm.email !== '') {
         if (this.btnDisabled) {
           return
@@ -113,15 +114,27 @@ export default {
 
     },
 
+    // 密码加密
+    encryptPassword(){
+      let encryptor = new JSEncrypt() // 新建JSEncrypt对象
+      let publicKey = `MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDnjcWABbbV9C/J6ApZUExQnbMo
+a+mZ+RGzkN8kwWqYT2y+QxaQ9fpF0lDPM9PN6b9Xo7czpJ77l8oJ5IDuNYOZF2/f
+EyAyLGgNjWt1aPa5X6ST0o+mXMfV7UptEIAv7Re1SOukVuA1Ivt7Lq9AHj9kY0Zm
+Xrej5WAcEy7ThIi17wIDAQAB`  //把之前生成的贴进来，实际开发过程中，可以是后台传过来的
+      encryptor.setPublicKey(publicKey) // 设置公钥
+      this.passwordEncrypt = encryptor.encrypt(this.ruleForm.password) // 对需要加密的数据进行加密
+    },
+
     // 提交---修改新的密码
     submit (formName) {
+      //密码加密
+      this.encryptPassword()
       this.$refs[formName].validate(valid => {
         if (valid) {
-
           axios.post(this.serverUrl +'authc/password/modify',{
             emailAddress:this.$route.query.email,
             verifyCode:this.ruleForm.verificationCode,
-            newPassword:this.ruleForm.password
+            newPassword:this.passwordEncrypt
           }).then(response =>{
             if (response.data.retCode === '000000'){
               this.$router.push({ path: '/Login' })
@@ -129,7 +142,6 @@ export default {
             } else {
               this.$message.error(response.data.retMsg,5)
             }
-
           })
         }
       })

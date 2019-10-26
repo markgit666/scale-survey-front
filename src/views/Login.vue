@@ -44,6 +44,7 @@
 
 <script>
 import axios from 'axios'
+import JSEncrypt from 'jsencrypt/bin/jsencrypt'
 import { log } from 'util'
 export default {
   data () {
@@ -87,7 +88,9 @@ export default {
         verificationCode: [
           { required: true, message: '验证码不能为空!', trigger: 'blur' }
         ]
-      }
+      },
+      // 加密密码
+      passwordEncrypt:''
     }
   },
 
@@ -113,14 +116,29 @@ export default {
       this.fetchCaptchaCode()
     },
 
+    // 密码加密
+    encryptPassword(){
+      let encryptor = new JSEncrypt() // 新建JSEncrypt对象
+      let publicKey = `MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDnjcWABbbV9C/J6ApZUExQnbMo
+a+mZ+RGzkN8kwWqYT2y+QxaQ9fpF0lDPM9PN6b9Xo7czpJ77l8oJ5IDuNYOZF2/f
+EyAyLGgNjWt1aPa5X6ST0o+mXMfV7UptEIAv7Re1SOukVuA1Ivt7Lq9AHj9kY0Zm
+Xrej5WAcEy7ThIi17wIDAQAB`  //把之前生成的贴进来，实际开发过程中，可以是后台传过来的
+
+      encryptor.setPublicKey(publicKey) // 设置公钥
+      this.passwordEncrypt = encryptor.encrypt(this.ruleForm.password) // 对需要加密的数据进行加密
+
+    },
+
     // 登录
     login (formName) {
+      this.encryptPassword()
+      debugger
       this.$refs[formName].validate(valid => {
         if (valid) {
           axios
             .post(this.serverUrl + 'authc/login', {
               loginName: this.ruleForm.email,
-              password: this.ruleForm.password,
+              password: this.passwordEncrypt,
               captchaToken: this.captchaToken,
               captcha: this.ruleForm.verificationCode
             })

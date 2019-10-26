@@ -27,8 +27,10 @@
             style="width:70%;"
             size="small"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="男" value="1"></el-option>
             <el-option label="女" value="2"></el-option>
+
           </el-select>
 
         </a-col>
@@ -40,10 +42,10 @@
           <el-input :style="{width:'60%'}" size="small "  v-model="searchData.telephoneNumber"></el-input>
         </a-col>
 
-  <a-col :span="8">
-    <label>家庭地址：</label>
-    <el-input :style="{width:'70%'}" size="small "  v-model="searchData.familyAddress"></el-input>
-  </a-col>
+<!--  <a-col :span="8">-->
+<!--    <label>家庭地址：</label>-->
+<!--    <el-input :style="{width:'70%'}" size="small "  v-model="searchData.familyAddress"></el-input>-->
+<!--  </a-col>-->
   <a-col :span="6">
     <label>民族：</label>
     <el-select
@@ -51,14 +53,15 @@
       style="width:70%;"
       size="small"
     >
+      <el-option label="" value=""></el-option>
       <el-option label="汉族" value="汉族"></el-option>
       <el-option label="其他" value="其他"></el-option>
+
     </el-select>
   </a-col>
 
-
   <a-col :span="2">
-    <a-button type="primary" icon="search">查找</a-button>
+    <a-button type="primary" icon="search" @click="search()">查找</a-button>
   </a-col>
 </a-row>
       <br />
@@ -185,13 +188,13 @@ export default {
         // 性别
         gender: '',
         // 出生日期
-        birthday:'',
+        birthday: '',
         // 联系方式
-        telephoneNumber:'',
+        telephoneNumber: '',
         // 家庭地址
-        familyAddress:'',
+        // familyAddress: '',
         // 民族
-        nation:''
+        nation: ''
 
       }
     }
@@ -230,7 +233,7 @@ export default {
         data: JSON.stringify({
           pageNo: 1,
           pageSize: 5,
-          ...params
+          data:params
         }),
         type: 'json',
         contentType: 'application/json'
@@ -270,6 +273,18 @@ export default {
         path: '/home/showAndEditPatientInfo',
         // patients:patientId
         query: { patientId: patientId }
+      })
+    },
+
+    // 查找
+    search () {
+      debugger
+      this.fetch({
+        name: this.searchData.name,
+        birthday: this.searchData.birthday,
+        gender: this.searchData.gender,
+        telephoneNumber:this.searchData.telephoneNumber,
+        nation:this.searchData.nation
       })
     },
 

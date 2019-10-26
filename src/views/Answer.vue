@@ -1,162 +1,157 @@
 <template>
   <div class="answerBox">
     <div>
-
-
       <a-row>
-        <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="6">xxxx</a-col>
-        <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="12">
-
-          <a-card v-if="patientIdShow" :bordered="false">
+        <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+        <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="22">
+          <a-card v-if="patientIdShow" :bordered="false" class="patientId-box">
             <label>被试者Id：</label>
-            <a-input placeholder="请输入病人Id" v-model="patientId"></a-input>
-            <a-button type="primary" @click="conform">确定</a-button>
+            <a-input placeholder="请输入Id" v-model="patientId" :style="{width:'45%'}"></a-input>
+            <a-button type="primary" @click="conform" :style="{marginLeft:'10px'}">确定</a-button>
           </a-card>
-
         </a-col>
-        <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="6">xxxx</a-col>
+        <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
       </a-row>
-
-
-<!--      <el-row :gutter="10">-->
-<!--        <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1"></el-col>-->
-<!--        <el-col :xs="8" :sm="12" :md="16" :lg="18" :xl="22">-->
-          <!-- 输入病人Id -->
-<!--          <a-card v-if="patientIdShow" :bordered="false">-->
-<!--            <label>被试者Id：</label>-->
-<!--            <a-input placeholder="请输入病人Id" v-model="patientId"></a-input>-->
-<!--            <a-button type="primary" @click="conform">确定</a-button>-->
-<!--            <div class="box">-->
-<!--              <a-form layout="inline">-->
-<!--&lt;!&ndash;                <a-form-item label="被试者Id：">&ndash;&gt;-->
-<!--&lt;!&ndash;                  <a-input placeholder="请输入病人Id" v-model="patientId"></a-input>&ndash;&gt;-->
-<!--&lt;!&ndash;                </a-form-item>&ndash;&gt;-->
-
-<!--                <a-form-item>-->
-<!--                  <a-button type="primary" @click="conform">确定</a-button>-->
-<!--                </a-form-item>-->
-<!--              </a-form>-->
-<!--            </div>-->
-<!--          </a-card>-->
-<!--        </el-col>-->
-<!--        <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1"></el-col>-->
-<!--      </el-row>-->
-
 
       <!-- 答题界面 -->
       <div v-show="show">
         <div>
-
-          <!--量表名称-->
-          <center>
-            <div :style="{marginTop:'15px'}">
-              <h3>
-                <strong>{{oneScale.scaleName}}</strong>
-              </h3>
-            </div>
-          </center>
-          <a-card :style="{height:'100%',marginTop:'15px',width:'400px'}" :bordered="false">
-            <div>
-              <strong>答题人：</strong>
-              {{patientInfo.name}}
-            </div>
-          </a-card>
+          <a-row>
+          <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+          <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="22">
+            <!--量表名称-->
+            <center>
+              <div :style="{marginTop:'15px'}">
+                <h3>
+                  <strong>{{oneScale.scaleName}}</strong>
+                </h3>
+              </div>
+            </center>
+            <!--答题人-->
+            <a-card :bordered="false">
+              <div>
+                <strong>答题人：</strong>
+                {{patientInfo.name}}
+              </div>
+            </a-card>
+          </a-col>
+          <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+          </a-row>
 
           <!-- 一个量表里的各种题目 -->
           <div v-for="(value,subjectId) in oneScale.questionList" :key="subjectId">
             <!-- 1.单选 -->
             <div v-if=" value.questionType==='radio'">
+              <a-row>
+                <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+                <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="22">
               <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
                 <div v-for="(one, index) in answer.answerList" :key="index">
                   <div v-if="value.questionId === one.questionId">
                     <div class="singleChoice">
-                      <!-- 单选题标题 -->
-                      <strong>{{value.title}}&nbsp;&nbsp;&nbsp;(单选)</strong>
-                      <!-- 选项 -->
-                      <el-radio-group v-model="one.content">
-                        <div v-for="(item,optionId) in value.items" :key="optionId" class="radio-div">
-                          <el-radio :label="item.option">{{item.option}}</el-radio>
-                        </div>
-                      </el-radio-group>
 
-                      <!-- <div>你已选中：{{one.content}}</div> -->
+                        <!-- 单选题标题 -->
+                        <strong>{{value.title}}&nbsp;&nbsp;&nbsp;(单选)</strong>
+                        <!-- 选项 -->
+                        <el-radio-group v-model="one.content">
+                          <div v-for="(item,optionId) in value.items" :key="optionId" class="radio-div">
+                            <el-radio :label="item.option">{{item.option}}</el-radio>
+                          </div>
+                        </el-radio-group>
+
                     </div>
                   </div>
                 </div>
               </a-card>
+                </a-col>
+                <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+              </a-row>
             </div>
             <!-- 单选结束 -->
 
             <!-- 2.多选 -->
             <div v-if=" value.questionType==='checkBox'">
-              <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
+              <a-row>
+                <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+                <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="22">
+              <a-card :bordered="false" :style="{marginTop:'10px'}">
                 <div v-for="(one, aindex) in answer.answerList" :key="aindex">
                   <div v-if="value.questionId === one.questionId">
                     <div class="singleChoice">
                       <!-- 标题 -->
                       <strong>{{value.title}}&nbsp;&nbsp;&nbsp;(多选)</strong>
-
                       <!--选项 -->
-
                       <el-checkbox-group v-model="one.chooseAnswerList">
                         <div v-for="(item,optionId) in value.items" :key="optionId" class="radio-div">
-                          <!-- <el-radio :label="item.option">{{item.option}}</el-radio> -->
                           <el-checkbox :label="item.option">{{item.option}}</el-checkbox>
                         </div>
                       </el-checkbox-group>
 
-                      <!-- <div>你已选中：{{one.chooseAnswerList}}</div> -->
-                      <!-- </form> -->
                     </div>
                   </div>
                 </div>
               </a-card>
+                </a-col>
+                <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+              </a-row>
             </div>
             <!-- 多选结束 -->
 
             <!-- 2.指导语 -->
-            <div v-if="value.questionType==='direction'" :style="{marginTop:'30px'}">
-              <!--              <a-divider />-->
-              <div class="direct">
+            <div v-if="value.questionType==='direction'" >
+              <a-row>
+              <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+              <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="22">
+              <div :style="{marginTop:'10px'}">
                 <strong>指导语：</strong>
                 {{value.title}}
               </div>
+              </a-col>
+              <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+              </a-row>
             </div>
             <!-- 指导语结束 -->
 
             <!-- 3.题目类型 -->
-            <div v-if="value.questionType==='questionType'" :style="{marginTop:'30px'}">
+            <div v-if="value.questionType==='questionType'" :style="{marginTop:'10px'}">
+              <a-row>
+              <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+              <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="22">
               <a-divider orientation="left">
                 <strong>{{value.title}}</strong>
               </a-divider>
+              </a-col>
+              <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+              </a-row>
             </div>
 
             <!-- 4.问答题 -->
             <div v-if="value.questionType==='QandA'">
-              <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
+              <a-row>
+                <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+                <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="22">
+                <a-card :style="{marginTop:'10px'}" :bordered="false">
                 <div v-for="(one, index) in answer.answerList" :key="index">
                   <div v-if="value.questionId === one.questionId">
                     <!-- 问题 -->
-                    <div>
                       <strong>问题：</strong>
-                      {{value.title}}
-                      <a-form :style="{marginTop:'20px'}">
-                        <a-form-item label="请记录答案：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }">
-                          <a-input placeholder="请记录答案" v-model="one.content"/>
-                        </a-form-item>
-                      </a-form>
-
-                    </div>
-
+                      {{value.title}}<br/><br/>
+                      <label>答案：</label>
+                      <a-input placeholder="请记录答案!" v-model="one.content" :style="{width:'60%'}"/>
                   </div>
                 </div>
               </a-card>
+                </a-col>
+                <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+              </a-row>
             </div>
             <!-- 5.画图 -->
             <div v-if="value.questionType ==='draw'">
-              <!--              <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">-->
               <div v-for="(one, index) in answer.answerList" :key="index">
                 <div v-if="value.questionId === one.questionId">
+                  <a-row>
+                    <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+                    <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="22">
                   <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
                     <div class="img-box-preview">
                       <div
@@ -166,10 +161,15 @@
                       >
                         <img v-bind:src="imgUrl + oneImg"/>
                       </div>
+
                     </div>
                   </a-card>
-                  <div :style="{background:'white'}">
-                    <div class="box">
+                    </a-col>
+                    <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+                  </a-row>
+
+                  <!--canvas画板-->
+                  <div :style="{background:'white',width:'80%'}">
                       <canvas
                         id="mycanvas"
                         @touchstart="touchstart"
@@ -181,35 +181,24 @@
                         height="400"
                       >您的浏览器不支持canvas，请更换浏览器！
                       </canvas>
-                      <div class="tools">
-                        <!-- 画笔 -->
-                        <div>
-                          <div class="box_box1">
-                            <a-button type="primary" @click="pen">画笔</a-button>
-                          </div>
-                        </div>
-                        <!-- 橡皮擦 -->
-                        <div>
-                          <div class="box_box2">
-                            <a-button type="primary" @click="eraser">橡皮擦</a-button>
-                          </div>
-                        </div>
-                        <!-- 清空 -->
-                        <div>
-                          <div class="box_box3">
-                            <a-button type="primary" @click="clearAll">清除</a-button>
-                          </div>
-                        </div>
-                        <!-- 保存图片 -->
-
-                        <div>
-                          <div class="box_box4">
-                            <a-button type="primary" @click="handleChangeImage(value.questionId)">保存图片</a-button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </div>
+
+                  <!--工具-->
+                  <a-row>
+                    <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+                    <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="22">
+                      <a-card  :bordered="false">
+                        <a-row type="flex" justify="space-around">
+                          <a-col :span="4"> <a-button type="primary" @click="pen">画笔</a-button></a-col>
+                          <a-col :span="4"><a-button type="primary" @click="eraser">橡皮擦</a-button></a-col>
+                          <a-col :span="4"><a-button type="primary" @click="clearAll">清除</a-button></a-col>
+                          <a-col :span="4"> <a-button type="primary" @click="handleChangeImage(value.questionId)">保存图片</a-button></a-col>
+                        </a-row>
+                      </a-card>
+                    </a-col>
+                    <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+                  </a-row>
+
                   <!-- 存放画完图生成图片的div -->
                   <!-- <div id="img-box" v-show="canvasImgUrls.length">
                 <div
@@ -223,12 +212,15 @@
                   <!-- <input type="hidden" v-model="one.content" @change="canvasImgGenerate" /> -->
                 </div>
               </div>
-              <!--              </a-card>-->
+
             </div>
             <!-- 画图结束 -->
 
             <!-- 图片题 -->
             <div v-if="value.questionType ==='picture'">
+              <a-row>
+                <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+                <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="22">
               <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
                 <div v-for="(one, index) in answer.answerList" :key="index">
                   <div v-if="value.questionId === one.questionId">
@@ -249,12 +241,18 @@
                   </div>
                 </div>
               </a-card>
+                </a-col>
+                <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+              </a-row>
             </div>
             <!-- 图片题结束 -->
           </div>
           <!-- 所有题目结束 -->
 
           <!-- 提交 -->
+          <a-row>
+            <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+            <a-col :xs="20" :sm="16" :md="12" :lg="8" :xl="22">
           <a-card :style="{height:'100%',marginTop:'15px',marginBottom:'20px'}" :bordered="false">
             <center><h3><strong>您已完成此量表，请保存！</strong></h3></center>
             <center>
@@ -263,6 +261,9 @@
               </a-button>
             </center>
           </a-card>
+            </a-col>
+            <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="1"></a-col>
+          </a-row>
           <!-- 一个量表的里所有题目 结束 -->
 
         </div>
@@ -567,60 +568,60 @@ export default {
   /* 画图题样式 */
   #mycanvas {
     border: 1px solid #dddee1;
-  }
+    }
 
-  .box {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-    /* padding: 20vh; */
-  }
+  /*.canvas-tools-box{*/
+  /*  display: flex;*/
+  /*  flex-direction: row;*/
+  /*  justify-content: center;*/
+  /*  align-items: center;*/
+  /*  margin: 0 auto;*/
+  /*  !* padding: 20vh; *!*/
+  /*}*/
 
-  .tools {
-    /* height: 25%; */
-    display: flex;
-    /* margin-left: 10px; */
-    flex-direction: column;
-    border: 1px solid #dddee1;
-  }
+  /*.tools {*/
+  /*  !* height: 25%; *!*/
+  /*  display: flex;*/
+  /*  !* margin-left: 10px; *!*/
+  /*  flex-direction: column;*/
+  /*  border: 1px solid #dddee1;*/
+  /*}*/
 
-  .box_box1,
-  .box_box2,
-  .box_box3,
-  .box_box4 {
-    /* margin-left: 10px; */
-    width: 100px;
-    height: 100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+  /*.box_box1,*/
+  /*.box_box2,*/
+  /*.box_box3,*/
+  /*.box_box4 {*/
+  /*  !* margin-left: 10px; *!*/
+  /*  width: 100px;*/
+  /*  height: 100px;*/
+  /*  display: flex;*/
+  /*  flex-direction: column;*/
+  /*  justify-content: center;*/
+  /*  align-items: center;*/
+  /*}*/
 
-  .box_box1,
-  .box_box2,
-  .box_box3 {
-    border-bottom: 1px solid #dddee1;
-  }
+  /*.box_box1,*/
+  /*.box_box2,*/
+  /*.box_box3 {*/
+  /*  border-bottom: 1px solid #dddee1;*/
+  /*}*/
 
-  .img-box-preview {
-    display: flex;
-    /* 左右布局 */
-    justify-content: space-between;
-    /* //换行 */
-    flex-wrap: wrap;
-    /* //紧揍排列 */
-    align-content: flex-start;
-    width: 130vh;
-    height: auto;
+  /*.img-box-preview {*/
+  /*  display: flex;*/
+  /*  !* 左右布局 *!*/
+  /*  justify-content: space-between;*/
+  /*  !* //换行 *!*/
+  /*  flex-wrap: wrap;*/
+  /*  !* //紧揍排列 *!*/
+  /*  align-content: flex-start;*/
+  /*  width: 130vh;*/
+  /*  height: auto;*/
 
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-  }
+  /*  flex-wrap: wrap;*/
+  /*  justify-content: center;*/
+  /*  align-items: center;*/
+  /*  margin: 0 auto;*/
+  /*}*/
 
   /* 图片 */
   .image-div img {
@@ -768,26 +769,12 @@ export default {
     /* margin-left: 30px; */
     width: 100%;
   }
-
-  /*html {font-size: 625%; !*100 ÷ 16 × 100% = 625%*!}*/
-
-  /*@media screen and (min-width:360px) and (max-width:374px) and (orientation:portrait) {*/
-  /*  html { font-size: 703%; }*/
-  /*}*/
-  /*@media screen and (min-width:375px) and (max-width:383px) and (orientation:portrait) {*/
-  /*  html { font-size: 732.4%; }*/
-  /*}*/
-  /*@media screen and (min-width:384px) and (max-width:399px) and (orientation:portrait) {*/
-  /*  html { font-size: 750%; }*/
-  /*}*/
-  /*@media screen and (min-width:400px) and (max-width:413px) and (orientation:portrait) {*/
-  /*  html { font-size: 781.25%; }*/
-  /*}*/
-  /*@media screen and (min-width:414px) and (max-width:431px) and (orientation:portrait){*/
-  /*  html { font-size: 808.6%; }*/
-  /*}*/
-  /*@media screen and (min-width:432px) and (max-width:479px) and (orientation:portrait){*/
-  /*  html { font-size: 843.75%; }*/
-  /*}*/
+.patientId-box{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
 
 </style>

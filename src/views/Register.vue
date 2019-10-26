@@ -40,11 +40,6 @@
           </div>
         </el-form-item>
 
-        <!--        <el-form-item>-->
-        <!--          <el-input v-model="ruleForm.verifyCode" placeholder="请输入验证码"></el-input>-->
-        <!--          <el-button type="primary" @click="getVerifyCode('ruleForm')">邮箱验证</el-button>-->
-        <!--        </el-form-item>-->
-
         <el-form-item>
           <el-button type="primary" @click="register('ruleForm')" class="login-form-button">注册</el-button>
         </el-form-item>
@@ -58,7 +53,7 @@
 
 <script>
 import axios from 'axios'
-
+import JSEncrypt from 'jsencrypt/bin/jsencrypt'
 export default {
   data () {
     // 密码
@@ -111,7 +106,11 @@ export default {
         verifyCode: [
           { required: true, message: '验证码不能为空', trigger: 'blur' }
         ]
-      }
+      },
+      //加密加密1
+      encryptPassword1:'',
+      //加密加密2
+      encryptPassword1:''
     }
   },
   resetForm (formName) {
@@ -181,49 +180,32 @@ export default {
           }
         })
       }
-      // if (this.ruleForm.email !== '') {
-      //   axios.post(this.serverUrl + 'authc/verifyCode/get',
-      //     {
-      //       emailAddress: this.ruleForm.email
-      //     }).then(response => {
-      //     if (response.data.retCode = '00003') {
-      //       this.$message.success(response.data.retMsg, 5)
-      //     } else {
-      //       this.$message.error('获取验证码失败，请稍后重试', 5)
-      //     }
-      //   })
-      // } else {
-      //   this.$message.error('请填写邮箱地址！', 5)
-      // }
+    },
 
-      // this.$refs[formName].validate(valid => {
-      //   if (valid) {
-      //     axios.post(this.serverUrl + 'authc/verifyCode/get',
-      //       {
-      //         emailAddress: this.ruleForm.email
-      //       }).then(response => {
-      //       if (response.data.retCode = '00003') {
-      //         this.$message.success(response.data.retMsg, 5)
-      //       } else {
-      //         this.$message.error('获取验证码失败，请稍后重试', 5)
-      //       }
-      //     })
-      //   } else {
-      //     this.$message.error('请填写邮箱地址！', 5)
-      //   }
-      // })
+    // 密码加密
+    encryptPassword(){
+      let encryptor = new JSEncrypt() // 新建JSEncrypt对象
+      let publicKey = `MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDnjcWABbbV9C/J6ApZUExQnbMo
+a+mZ+RGzkN8kwWqYT2y+QxaQ9fpF0lDPM9PN6b9Xo7czpJ77l8oJ5IDuNYOZF2/f
+EyAyLGgNjWt1aPa5X6ST0o+mXMfV7UptEIAv7Re1SOukVuA1Ivt7Lq9AHj9kY0Zm
+Xrej5WAcEy7ThIi17wIDAQAB`  //把之前生成的贴进来，实际开发过程中，可以是后台传过来的
+
+      encryptor.setPublicKey(publicKey) // 设置公钥
+      this.encryptPassword1 = encryptor.encrypt(this.ruleForm.password1) // 对需要加密的数据进行加密
+      this.encryptPassword2 = encryptor.encrypt(this.ruleForm.password2) // 对需要加密的数据进行加密
     },
 
     // 点击"确定"按钮, 同时会获取到表单提交的数据
     register (formName) {
+      //密码加密
+      this.encryptPassword()
       this.$refs[formName].validate(valid => {
         if (valid) {
-
           axios
             .post(this.serverUrl + 'authc/register', {
               loginName: this.ruleForm.email,
-              password: this.ruleForm.password1,
-              confirmPassword: this.ruleForm.password2,
+              password: this.encryptPassword1,
+              confirmPassword: this.encryptPassword2,
               verifyCode: this.ruleForm.verifyCode
             })
             .then(response => {

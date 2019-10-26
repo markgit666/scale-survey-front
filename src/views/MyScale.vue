@@ -54,161 +54,166 @@
   </div>
 </template>
 <script>
-import reqwest from "reqwest";
-import axios from "axios";
-import { debuglog } from "util";
+import reqwest from 'reqwest'
+import axios from 'axios'
+import { debuglog } from 'util'
 const columns = [
-
   {
-    title: "量表Id",
-    dataIndex: "scaleId",
-    width: "10%",
-    scopedSlots: { customRender: "scaleName" }
+    title: '量表Id',
+    dataIndex: 'scaleId',
+    width: '10%',
+    scopedSlots: { customRender: 'scaleName' }
   },
   {
-    title: "量表名称",
-    dataIndex: "scaleName",
-    width: "40%",
-    scopedSlots: { customRender: "scaleName" }
-  },
-
-  {
-    title: "创建时间",
-    width: "20%",
-    dataIndex: "createTime"
+    title: '量表名称',
+    dataIndex: 'scaleName',
+    width: '40%',
+    scopedSlots: { customRender: 'scaleName' }
   },
 
   {
-    title: "操作",
-    dataIndex: "operation",
-    width: "20%",
-    scopedSlots: { customRender: "operation" }
+    title: '创建时间',
+    width: '15%',
+    dataIndex: 'createTime'
+  },
+  {
+    title: '更新时间',
+    width: '15%',
+    dataIndex: 'updateTime'
+  },
+
+  {
+    title: '操作',
+    dataIndex: 'operation',
+    width: '20%',
+    scopedSlots: { customRender: 'operation' }
   }
-];
+]
 
 export default {
-  mounted() {
-    this.fetch();
+  mounted () {
+    this.fetch()
   },
-  data() {
+  data () {
     return {
       visible: false,
       serverUrl: this.GLOBAL.serverUrl,
-      imgUrl: this.GLOBAL.serverUrl + "file/qrCode/image/download?",
+      imgUrl: this.GLOBAL.serverUrl + 'file/qrCode/image/download?',
       data: [],
       pagination: {},
       loading: false,
       columns,
       id: 0,
-      qrCodeShowSwitch: ""
-    };
+      qrCodeShowSwitch: ''
+    }
   },
   methods: {
     // 分页
-    handleTableChange(pagination, filters, sorter) {
-      pagination.pageSize = 3;
-      console.log("pagination=", pagination);
-      const pager = { ...this.pagination };
-      pager.current = pagination.current;
-      console.log("current是：", pager.current);
-      this.pagination = pager;
+    handleTableChange (pagination, filters, sorter) {
+      pagination.pageSize = 3
+      console.log('pagination=', pagination)
+      const pager = { ...this.pagination }
+      pager.current = pagination.current
+      console.log('current是：', pager.current)
+      this.pagination = pager
       this.fetch({
         pageNo: pagination.current,
         sortField: sorter.field,
         sortOrder: sorter.order,
         ...filters
-      });
+      })
     },
-    fetch(params = {}) {
-      console.log("params:", params);
-      console.log("fetch pagination=", this.pagination);
-      this.loading = true;
+    fetch (params = {}) {
+      debugger
+      // console.log("params:", params);
+      // console.log("fetch pagination=", this.pagination);
+      this.loading = true
       reqwest({
-        url: this.serverUrl + "scale/info/getList",
+        url: this.serverUrl + 'scale/info/getList',
         headers: {
-          Token: localStorage.getItem("Token")
+          Token: localStorage.getItem('Token')
         },
-        method: "post",
+        method: 'post',
         data: JSON.stringify({
           pageNo: 1,
           pageSize: 5,
           ...params
         }),
-        type: "json",
-        contentType: "application/json"
+        type: 'json',
+        contentType: 'application/json'
       }).then(values => {
-
-        if ((values.retCode = "000000")) {
-          const pagination = { ...this.pagination };
-          var page;
+        debugger
+        if ((values.retCode = '000000')) {
+          const pagination = { ...this.pagination }
+          var page
           if (values.data.totalNum % 5 === 0) {
-            page = values.data.totalNum / 5;
+            page = values.data.totalNum / 5
           } else {
-            page = Math.floor(values.data.totalNum / 5 + 1);
+            page = Math.floor(values.data.totalNum / 5 + 1)
           }
-          pagination.total = page * 10;
-          console.log("total=", pagination.total);
-          this.loading = false;
-          this.data = values.data.list;
-          this.pagination = pagination;
+          pagination.total = page * 10
+          console.log('total=', pagination.total)
+          this.loading = false
+          this.data = values.data.list
+          this.pagination = pagination
         } else {
-          this.$message.error("未登录，即将跳转至登录页面", 5);
-          this.$router.push({ path: "/login" });
+          this.$message.error('未登录，即将跳转至登录页面', 5)
+          this.$router.push({ path: '/login' })
         }
-      });
+      })
     },
 
-    //编辑量表
-    editScale(scaleId) {
+    // 编辑量表
+    editScale (scaleId) {
       ;
       this.$router.push({
-        path: "/Home/ShowAndEditScale",
+        path: '/Home/ShowAndEditScale',
         // patients:patientId
         query: { scaleId: scaleId }
-      });
+      })
     },
 
-    //删除量表
-    delScaleInfo(scaleId) {
+    // 删除量表
+    delScaleInfo (scaleId) {
       axios
         .post(
-          this.serverUrl + "scale/info/remove",
+          this.serverUrl + 'scale/info/remove',
           {
             scaleId: scaleId
           },
           {
             headers: {
-              Token: localStorage.getItem("Token")
+              Token: localStorage.getItem('Token')
             }
           }
         )
         .then(response => {
-          console.log(response);
-          ;
-          if ((response.data.retCode = "000000")) {
-            this.fetch();
-            this.$message.success("删除成功！", 5);
+          console.log(response)
+
+          if ((response.data.retCode = '000000')) {
+            this.fetch()
+            this.$message.success('删除成功！', 5)
           } else {
-            this.$message.error("删除失败！", 5);
+            this.$message.error('删除失败！', 5)
           }
-        });
+        })
     },
 
-    //答题
-    chooseSomeOneAnswer(scaleId) {
-      this.qrCodeShowSwitch = scaleId;
-      this.visible = true;
+    // 答题
+    chooseSomeOneAnswer (scaleId) {
+      this.qrCodeShowSwitch = scaleId
+      this.visible = true
     },
-    handleOk(e) {
+    handleOk (e) {
       // console.log(e);
-      this.visible = false;
+      this.visible = false
     },
-//根据量表名称搜索
+    // 根据量表名称搜索
     onSearch (value) {
       console.log(value)
     }
   }
-};
+}
 </script>
 
 <style scoped>
