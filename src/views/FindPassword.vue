@@ -116,6 +116,7 @@ export default {
     // （2）点击时需要把邮箱传到下一个界面
     next (formName) {
       this.$refs[formName].validate(valid => {
+        debugger
         if (valid) {
           // 调用获取验证码的接口,传三个参数
           axios.post(this.serverUrl + 'authc/password/findBack', {
@@ -123,6 +124,7 @@ export default {
             captcha: this.ruleForm.verificationCode,
             captchaToken: this.captchaToken
           }).then(response => {
+            debugger
             if (response.data.retCode === '000003') {
               this.$message.success('验证码已发送至您的邮箱')
               this.$router.push({ path: '/changePassword', query: { email: this.ruleForm.email } })

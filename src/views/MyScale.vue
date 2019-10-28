@@ -2,7 +2,7 @@
   <div class="box">
     <a-card :hoverable="true" :bordered="false">
       <a-input-search placeholder="根据量表名称搜索..." @search="onSearch" enterButton :style="{width:'30%',float:'right'}"/>
-      <br /><br />
+      <br/><br/>
       <a-table
         :columns="columns"
         :rowKey="record => record.scaleId"
@@ -10,17 +10,17 @@
         :pagination="pagination"
         :loading="loading"
         @change="handleTableChange"
-
+        size="middle"
       >
-<!--        <template slot="title">-->
-<!--          <h3>已添加的量表</h3>-->
-<!--        </template>-->
+        <!--        <template slot="title">-->
+        <!--          <h3>已添加的量表</h3>-->
+        <!--        </template>-->
         <!-- 操作 -->
         <template slot="operation" slot-scope="text, record, index">
           <div class="editable-row-operations">
             <span>
               <a @click="() =>editScale(record.scaleId)">查看/编辑</a>
-              <a-divider type="vertical" />
+              <a-divider type="vertical"/>
               <a-popconfirm
                 :style="{color:'red'}"
                 title="确定删除吗"
@@ -31,7 +31,7 @@
                 <a href="#">删除</a>
               </a-popconfirm>
 
-              <a-divider type="vertical" />
+              <a-divider type="vertical"/>
 
               <a @click="() =>chooseSomeOneAnswer(record.scaleId)">答题</a>
 
@@ -56,36 +56,41 @@
 <script>
 import reqwest from 'reqwest'
 import axios from 'axios'
-import { debuglog } from 'util'
+
 const columns = [
   {
-    title: '量表Id',
+    title: '量表编号',
     dataIndex: 'scaleId',
-    width: '10%',
+    width: '9%',
     scopedSlots: { customRender: 'scaleName' }
   },
   {
     title: '量表名称',
     dataIndex: 'scaleName',
-    width: '40%',
+    width: '29%',
     scopedSlots: { customRender: 'scaleName' }
+  },
+  {
+    title: '题目数量',
+    dataIndex: 'questionCount',
+    width: '9%'
   },
 
   {
     title: '创建时间',
-    width: '15%',
+    width: '17%',
     dataIndex: 'createTime'
   },
   {
     title: '更新时间',
-    width: '15%',
+    width: '17%',
     dataIndex: 'updateTime'
   },
 
   {
     title: '操作',
     dataIndex: 'operation',
-    width: '20%',
+    width: '25%',
     scopedSlots: { customRender: 'operation' }
   }
 ]
@@ -96,6 +101,7 @@ export default {
   },
   data () {
     return {
+
       visible: false,
       serverUrl: this.GLOBAL.serverUrl,
       imgUrl: this.GLOBAL.serverUrl + 'file/qrCode/image/download?',
@@ -137,13 +143,13 @@ export default {
         data: JSON.stringify({
           pageNo: 1,
           pageSize: 5,
-          ...params
+          data: params
         }),
         type: 'json',
         contentType: 'application/json'
       }).then(values => {
         debugger
-        if ((values.retCode = '000000')) {
+        if ((values.retCode === '000000')) {
           const pagination = { ...this.pagination }
           var page
           if (values.data.totalNum % 5 === 0) {
@@ -165,7 +171,6 @@ export default {
 
     // 编辑量表
     editScale (scaleId) {
-      ;
       this.$router.push({
         path: '/Home/ShowAndEditScale',
         // patients:patientId
@@ -208,8 +213,12 @@ export default {
       // console.log(e);
       this.visible = false
     },
+
     // 根据量表名称搜索
     onSearch (value) {
+      this.fetch({
+        scaleName: value
+      })
       console.log(value)
     }
   }
@@ -217,17 +226,17 @@ export default {
 </script>
 
 <style scoped>
-.box {
-  text-align: center;
-}
+  .box {
+    text-align: center;
+  }
 
-.img_box {
-  display: flex;
-  justify-content: center;
-}
+  .img_box {
+    display: flex;
+    justify-content: center;
+  }
 
-.img {
-  width: 200px;
-  height: 200px;
-}
+  .img {
+    width: 200px;
+    height: 200px;
+  }
 </style>

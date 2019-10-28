@@ -387,24 +387,26 @@ export default {
         educationYears: '',
         isSnoring: '',
         livingWay: '',
-        medicalHistory: '',
-        otherMedicalHistory: '',
+        medicalHistory: '',//既往病史
+        otherMedicalHistory: '',//其他既往病史
         smokingHistory: '',
         smokingNumEachDay: '',
         smokingYears: '',
-        isMentalDiseaseFamilyHistory: '',
-        mentalDiseaseFamilyHistory: '',
-        otherMentalDiseaseFamilyHistory: '',
-        currentMedicalHistoryMemoryLoss: '', // 现病史（有无记忆下降）
-        memoryLossTime: '',
-        physicalExamination: '',
-        isUseCognitiveDrugs: '',
-        drugsDosage: '',
-        drugsType: '',
         drinkingHistory: '',
         drinkingType: '',
         drinkingNumEachDay: '',
-        drinkingYears: ''
+        drinkingYears: '',
+        isMentalDiseaseFamilyHistory: '',//有无精神疾病家族史
+        mentalDiseaseFamilyHistory: '', //精神疾病家族史
+        otherMentalDiseaseFamilyHistory: '',//其他精神病史
+        currentMedicalHistoryMemoryLoss: '', // 现病史（有无记忆下降）
+        memoryLossTime: '',//记忆力下降多久
+        physicalExamination: '',//体格检查情况
+        isUseCognitiveDrugs: '',//是否合并使用促认知药物
+        drugsType: '',//具体促认知药物
+        drugsDosage: '', //具体药物的剂量
+
+
       },
       rules: {
         name: [{ required: true, message: '不能为空！', trigger: 'blur' }],

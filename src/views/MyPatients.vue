@@ -5,7 +5,7 @@
 
         <a-col :span="8">
           <label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp姓名：</label>
-            <el-input :style="{width:'60%'}" size="small " v-model="searchData.name"></el-input>
+          <el-input :style="{width:'60%'}" size="small " v-model="searchData.name"></el-input>
         </a-col>
 
         <a-col :span="8">
@@ -36,56 +36,56 @@
         </a-col>
       </a-row>
       &nbsp&nbsp
-<a-row>
+      <a-row>
         <a-col :span="8">
           <label>联系方式：</label>
-          <el-input :style="{width:'60%'}" size="small "  v-model="searchData.telephoneNumber"></el-input>
+          <el-input :style="{width:'60%'}" size="small " v-model="searchData.telephoneNumber"></el-input>
         </a-col>
 
-<!--  <a-col :span="8">-->
-<!--    <label>家庭地址：</label>-->
-<!--    <el-input :style="{width:'70%'}" size="small "  v-model="searchData.familyAddress"></el-input>-->
-<!--  </a-col>-->
-  <a-col :span="6">
-    <label>民族：</label>
-    <el-select
-      v-model="searchData.nation"
-      style="width:70%;"
-      size="small"
-    >
-      <el-option label="" value=""></el-option>
-      <el-option label="汉族" value="汉族"></el-option>
-      <el-option label="其他" value="其他"></el-option>
+        <!--  <a-col :span="8">-->
+        <!--    <label>家庭地址：</label>-->
+        <!--    <el-input :style="{width:'70%'}" size="small "  v-model="searchData.familyAddress"></el-input>-->
+        <!--  </a-col>-->
+        <a-col :span="8">
+          <label>民族：</label>
+          <el-select
+            v-model="searchData.nation"
+            style="width:70%;"
+            size="small"
+          >
+            <el-option label="" value=""></el-option>
+            <el-option label="汉族" value="汉族"></el-option>
+            <el-option label="其他" value="其他"></el-option>
 
-    </el-select>
-  </a-col>
+          </el-select>
+        </a-col>
 
-  <a-col :span="2">
-    <a-button type="primary" icon="search" @click="search()">查找</a-button>
-  </a-col>
-</a-row>
-      <br />
+        <a-col :span="3">
+          <a-button type="primary" icon="search" @click="search()">查找</a-button>
+        </a-col>
+        <a-col :span="3">
+          <a-button type="primary" @click="exportPatientInfo" icon="arrow-up">信息导出</a-button>
+        </a-col>
+      </a-row>
+      <br/>
 
       <a-table
         :columns="columns"
         :rowKey="record => record.patientId"
         :dataSource="data"
-        :pagination="pagination"
+        :pagination="false"
         :loading="loading"
         @change="handleTableChange"
-
+        :rowSelection="rowSelection"
+        size="middle"
       >
 
-<!--        <template slot="title">-->
-<!--          <h3>被试者基本资料</h3>-->
-<!--        </template>-->
-        <!-- 操作 -->
+
         <template slot="operation" slot-scope="text, record">
           <div class="editable-row-operations">
             <span>
               <a @click="() =>editInfo(record.patientId)">查看/编辑</a>
               <a-divider type="vertical"/>
-
               <a-popconfirm
                 :style="{color:'red'}"
                 title="确定删除吗"
@@ -98,19 +98,25 @@
             </span>
           </div>
         </template>
+
         <!-- 操作 结束 -->
       </a-table>
+      <div id="pagination-box">
+        <a-pagination size="small" :total="60" showSizeChanger showQuickJumper/>
+      </div>
+
     </a-card>
   </div>
 </template>
 <script>
 import axios from 'axios'
 import reqwest from 'reqwest'
+import $ from 'jquery'
 import ACol from 'ant-design-vue/es/grid/Col'
-// import { debuglog } from "util";
+
 const columns = [
   {
-    title: '被试Id号',
+    title: '被试者编号',
     dataIndex: 'patientId',
     // sorter: true,
     width: '5%',
@@ -167,13 +173,18 @@ const columns = [
   }
 ]
 
+
 export default {
   components: { ACol },
   mounted () {
     this.fetch()
   },
+
   data () {
     return {
+
+      // 选中的某行，某些行
+      selectedRowKeys: [],
       serverUrl: this.GLOBAL.serverUrl,
       data: [],
       pagination: {},
@@ -199,12 +210,29 @@ export default {
       }
     }
   },
+  computed: {
+    rowSelection() {
+      debugger
+      const { selectedRowKeys } = this;
+      return {
+        selectedRowKeys,
+        onChange: this.onSelectChange,
+      };
+    },
+  },
+
   methods: {
     // 确认删除
     confirm () {
       message.info('Clicked on Yes.')
       console.log('a')
     },
+// 选中的某一行或某些行的信息
+    onSelectChange(selectedRowKeys) {
+      console.log('selectedRowKeys changed: ', selectedRowKeys);
+      this.selectedRowKeys = selectedRowKeys;
+    },
+
     // 翻页
     handleTableChange (pagination, filters, sorter) {
       pagination.pageSize = 3
@@ -233,37 +261,38 @@ export default {
         data: JSON.stringify({
           pageNo: 1,
           pageSize: 5,
-          data:params
+          data: params
         }),
         type: 'json',
         contentType: 'application/json'
       }).then(values => {
-        if (values.retCode === '000000') {
-          const pagination = { ...this.pagination }
-          var page
-          if (values.data.totalNum % 5 === 0) {
-            page = values.data.totalNum / 5
-          } else {
-            page = Math.floor(values.data.totalNum / 5 + 1)
-          }
-          pagination.total = page * 10
-          // console.log("total=", pagination.total);
-          this.loading = false
-          this.data = values.data.list
-          for (var i = 0; i < values.data.list.length; i++) {
-            if (values.data.list[i].gender === '1') {
-              values.data.list[i].gender = '男'
-            } else {
-              values.data.list[i].gender = '女'
-            }
-          }
-          this.pagination = pagination
-        } else if (values.retCode === '100001') {
-          this.$message.error('未登录，即将跳转至登录页面', 5)
-          this.$router.push({ path: '/login' })
+        // if (values.retCode === '000000') {
+        const pagination = { ...this.pagination }
+        var page
+        if (values.data.totalNum % 5 === 0) {
+          page = values.data.totalNum / 5
         } else {
-          this.$message.error('系统繁忙', 5)
+          page = Math.floor(values.data.totalNum / 5 + 1)
         }
+        pagination.total = page * 10
+        // console.log("total=", pagination.total);
+        this.loading = false
+        this.data = values.data.list
+        for (var i = 0; i < values.data.list.length; i++) {
+          if (values.data.list[i].gender === '1') {
+            values.data.list[i].gender = '男'
+          } else {
+            values.data.list[i].gender = '女'
+          }
+        }
+        this.pagination = pagination
+        // }
+        // else if (values.retCode === '100001') {
+        //   this.$message.error('未登录，即将跳转至登录页面', 5)
+        //   this.$router.push({ path: '/login' })
+        // } else {
+        //   this.$message.error('系统繁忙', 5)
+        // }
       })
     },
 
@@ -276,15 +305,15 @@ export default {
       })
     },
 
-    // 查找
+    // 查找---搜索
     search () {
       debugger
       this.fetch({
         name: this.searchData.name,
         birthday: this.searchData.birthday,
         gender: this.searchData.gender,
-        telephoneNumber:this.searchData.telephoneNumber,
-        nation:this.searchData.nation
+        telephoneNumber: this.searchData.telephoneNumber,
+        nation: this.searchData.nation
       })
     },
 
@@ -308,11 +337,29 @@ export default {
           this.$message.success('删除成功！', 5)
         })
     },
-    // 搜索功能--根据姓名搜索
-    onSearch (value) {
-      console.log(value)
-    }
 
+    // 选中后导出病人信息
+    exportPatientInfo () {
+      debugger
+      if (this.selectedRowKeys.length === 0) {
+        this.$message.error('请选择需要操作的记录')
+      } else {
+        var form = $("<form>");
+        form.attr("style","display:none");
+        form.attr("target","");
+        form.attr("method","post");
+        form.attr("action",this.serverUrl + "excel/export/patient/info");
+        var input1 = $("<input>");
+        input1.attr("type", "hidden");
+        input1.attr("name", "patientIdArray");
+        input1.attr("value",this.selectedRowKeys);
+        $("body").append(form);
+        form.append(input1);
+        form.submit();
+        form.remove();
+
+      }
+    }
   }
 }
 </script>
@@ -321,4 +368,9 @@ export default {
   .box {
     text-align: center;
   }
+
+  #pagination-box {
+    margin-top: 24px;
+  }
+
 </style>

@@ -203,7 +203,7 @@ export default {
 
   computed: {
     computedTotalScore () {
-debugger
+      debugger
       let questionList = []
       questionList = this.examinationPaperInfo.scaleInfo.questionList
       var totalScore = 0
@@ -224,12 +224,13 @@ debugger
     // 评分-----拿到数据
     fetch () {
       let that = this
+      debugger
       axios
         .post(
           this.serverUrl + '/paper/info/get',
-          {
-            data: this.$route.query
-          },
+
+            this.$route.query,
+
           {
             headers: {
               Token: localStorage.getItem('Token')
@@ -238,7 +239,7 @@ debugger
         )
         .then(response => {
           if (response.data.retCode === '000000') {
-            that.examinationPaperInfo = response.data.data.list[0]
+            that.examinationPaperInfo = response.data.data
             if (that.examinationPaperInfo.judgeInfo != null) {
               that.JudgeInfo.examinationPaperId = that.examinationPaperInfo.examinationPaperId
               that.JudgeInfo.checkUser = that.examinationPaperInfo.judgeInfo.checkUser

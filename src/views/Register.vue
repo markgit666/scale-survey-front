@@ -54,6 +54,7 @@
 <script>
 import axios from 'axios'
 import JSEncrypt from 'jsencrypt/bin/jsencrypt'
+
 export default {
   data () {
     // 密码
@@ -107,10 +108,10 @@ export default {
           { required: true, message: '验证码不能为空', trigger: 'blur' }
         ]
       },
-      //加密加密1
-      encryptPassword1:'',
-      //加密加密2
-      encryptPassword1:''
+      // 加密加密1
+      encryptPassword1: '',
+      // 加密加密2
+      encryptPassword1: ''
     }
   },
   resetForm (formName) {
@@ -126,7 +127,6 @@ export default {
 
     // 验证码
     sendMessage () {
-
       if (this.ruleForm.email !== '') {
         if (this.btnDisabled) {
           return
@@ -139,7 +139,6 @@ export default {
     },
 
     getSecond (wait) {
-
       let _this = this
       let _wait = wait
       if (wait === 0) {
@@ -161,7 +160,6 @@ export default {
        * 获取验证码
        */
     getVerifyCode () {
-
       // 对电子邮件的验证
       var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
       if (!myreg.test(this.ruleForm.email)) {
@@ -173,8 +171,11 @@ export default {
           {
             emailAddress: this.ruleForm.email
           }).then(response => {
-          if (response.data.retCode = '00003') {
+          debugger
+          if (response.data.retCode === '000003') {
             this.$message.success(response.data.retMsg, 5)
+          } else if (response.data.retCode === '100008') {
+            this.$message.error('验证码错误', 5)
           } else {
             this.$message.error('获取验证码失败，请稍后重试', 5)
           }
@@ -183,12 +184,12 @@ export default {
     },
 
     // 密码加密
-    encryptPassword(){
+    encryptPassword () {
       let encryptor = new JSEncrypt() // 新建JSEncrypt对象
       let publicKey = `MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDnjcWABbbV9C/J6ApZUExQnbMo
 a+mZ+RGzkN8kwWqYT2y+QxaQ9fpF0lDPM9PN6b9Xo7czpJ77l8oJ5IDuNYOZF2/f
 EyAyLGgNjWt1aPa5X6ST0o+mXMfV7UptEIAv7Re1SOukVuA1Ivt7Lq9AHj9kY0Zm
-Xrej5WAcEy7ThIi17wIDAQAB`  //把之前生成的贴进来，实际开发过程中，可以是后台传过来的
+Xrej5WAcEy7ThIi17wIDAQAB` // 把之前生成的贴进来，实际开发过程中，可以是后台传过来的
 
       encryptor.setPublicKey(publicKey) // 设置公钥
       this.encryptPassword1 = encryptor.encrypt(this.ruleForm.password1) // 对需要加密的数据进行加密
@@ -197,7 +198,7 @@ Xrej5WAcEy7ThIi17wIDAQAB`  //把之前生成的贴进来，实际开发过程中
 
     // 点击"确定"按钮, 同时会获取到表单提交的数据
     register (formName) {
-      //密码加密
+      // 密码加密
       this.encryptPassword()
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -209,20 +210,23 @@ Xrej5WAcEy7ThIi17wIDAQAB`  //把之前生成的贴进来，实际开发过程中
               verifyCode: this.ruleForm.verifyCode
             })
             .then(response => {
-
+              debugger
               if (response.data.retCode === '100004') {
                 this.$message.error('用户名已被注册！', 5)
               } else if (response.data.retCode === '000002') {
                 this.$message.success('注册成功！', 5)
                 this.$router.push({ path: '/Login' })
+              } else if (response.data.retCode === '100008'){
+                this.$message.error('验证码不正确！', 5)
               } else {
                 this.$message.error('注册失败！', 5)
               }
             })
-        } else {
-          this.$message.error('注册失败！', 5)
-          return false
         }
+        // else {
+        //   this.$message.error('注册失败！', 5)
+        //   return false
+        // }
       })
     }
   }

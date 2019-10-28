@@ -347,12 +347,12 @@ export default {
     addOption (subjectId) {
       console.log(subjectId)
       var items = this.oneScale.questionList[subjectId].items
-      if (items.length <= 5) {
+      if (items.length <= 20) {
         var newitems = {}
         items = items.push(newitems)
         console.log(this.oneScale.questionList[subjectId].items)
       } else {
-        this.$message.warning('选项不允许超过6个！', 5)
+        this.$message.warning('选项不允许超过20个！', 5)
       }
     },
 

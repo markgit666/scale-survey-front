@@ -588,12 +588,13 @@ export default {
           attachmentList: this.pictureFileNoList
         }
         var list = that.oneScale.questionList
-
+        debugger
         for (var i = 0; i < list.length; i++) {
           if (list[i].status === 'noNeed') {
             list.splice(i, 1)
           }
         }
+
         for (var i = 0; i < list.length; i++) {
           if (
             list.length > 0 &&

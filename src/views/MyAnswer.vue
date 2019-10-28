@@ -8,28 +8,32 @@
 </a-col>
         <a-col :span="5">
           <label>答题者：</label>
-          <el-input :style="{width:'60%'}" size="small" v-model="answerResearchData.name"></el-input>
+          <el-input :style="{width:'60%'}" size="small" v-model="answerResearchData.patientName"></el-input>
         </a-col>
 
-        <a-col :span="5">
-          <label>用时：</label>
-          <el-input :style="{width:'60%'}" size="small" v-model="answerResearchData.useTime"></el-input>
-        </a-col>
+<!--        <a-col :span="5">-->
+<!--          <label>用时：</label>-->
+<!--          <el-input :style="{width:'60%'}" size="small" v-model="answerResearchData.useTime"></el-input>-->
+<!--        </a-col>-->
 
         <a-col :span="5">
           <label>是否评分：</label>
           <el-select
-            v-model="answerResearchData.judgeInfo"
+            v-model="answerResearchData.judgeStatus"
             style="width:60%;"
             size="small"
           >
             <el-option label="已评分" value="1"></el-option>
-            <el-option label="未评分" value="2"></el-option>
+            <el-option label="未评分" value="0"></el-option>
           </el-select>
 
         </a-col>
-        <a-col :span="2">
-          <a-button type="primary" icon="search">查找</a-button>
+        <a-col :span="3">
+          <a-button type="primary" icon="search" @click="answerSearch">查找</a-button>
+        </a-col>
+
+        <a-col :span="3">
+          <a-button type="primary" icon="arrow-up" @click="myAnswerExport">信息导出</a-button>
         </a-col>
       </a-row>
       <br/>
@@ -40,7 +44,8 @@
         :pagination="pagination"
         :loading="loading"
         @change="handleTableChange"
-
+        :rowSelection="rowSelection"
+        size="middle"
       >
 <!--        <template slot="title">-->
 <!--          <h3>答案</h3>-->
@@ -78,7 +83,7 @@ const columns = [
     title: '量表名称',
     dataIndex: 'scaleInfo.scaleName',
     // sorter: true,
-    width: '40%'
+    width: '25%'
     // scopedSlots: { customRender: "scaleName" }
   },
 
@@ -94,7 +99,7 @@ const columns = [
     title: '答题者',
     dataIndex: 'patientInfo.name',
     // sorter: true,
-    width: '13%'
+    width: '10%'
     // scopedSlots: { customRender: "answerPerson" }
   },
   {
@@ -103,28 +108,51 @@ const columns = [
     dataIndex: 'useTime'
   },
   {
+    title: '题目总数',
+    dataIndex: 'scaleInfo.questionCount',
+    width: '8%'
+  },
+  {
     title: '评分状态',
-    dataIndex: 'judgeInfo',
-    // sorter: true,
+    dataIndex: 'judgeStatus',
     width: '10%'
-    // scopedSlots: { customRender: "isScore" }
+  },
+  {
+    title: '总分',
+    dataIndex: 'judgeInfo.totalScore',
+    width: '10%'
   },
 
   {
     title: '操作',
-    width: '20%',
+    width: '25%',
     dataIndex: 'operation',
     scopedSlots: { customRender: 'operation' }
   }
-]
+];
+
 
 export default {
   components: { ACol },
   mounted () {
     this.fetch()
   },
+
+  //勾选
+  computed: {
+    rowSelection() {
+      debugger
+      const { selectedRowKeys } = this;
+      return {
+        selectedRowKeys,
+        onChange: this.onSelectChange
+      };
+    },
+  },
   data () {
     return {
+      // 选中的某行，某些行的数组
+      selectedRowKeys: [],
       visible: false,
       serverUrl: this.GLOBAL.serverUrl,
       data: [],
@@ -135,13 +163,22 @@ export default {
       qrCodeShowSwitch: '',
       answerResearchData:{
         scaleName:'',
-        name:'',
-        useTime:'',
-        judgeInfo:''
+        patientName:'',
+        judgeStatus:''
       }
     }
   },
   methods: {
+    // 选中的某一行或某些行的信息
+    onSelectChange(selectedRowKeys) {
+      console.log('selectedRowKeys changed: ', selectedRowKeys);
+      this.selectedRowKeys = selectedRowKeys;
+    },
+// 导出答案
+    myAnswerExport(){
+      console.log("s")
+    },
+
     // 分页
     handleTableChange (pagination, filters, sorter) {
       pagination.pageSize = 3
@@ -161,7 +198,7 @@ export default {
       this.loading = true
 
       reqwest({
-        url: this.serverUrl + 'paper/info/get',
+        url: this.serverUrl + 'paper/list/get',
 
         headers: {
           Token: localStorage.getItem('Token')
@@ -170,13 +207,13 @@ export default {
         data: JSON.stringify({
           pageNo: 1,
           pageSize: 5,
-          ...params
+          data:params
         }),
         type: 'json',
         contentType: 'application/json'
       }).then(values => {
-
-        if ((values.retCode = '000000')) {
+debugger
+        if ((values.retCode === '000000')) {
           const pagination = { ...this.pagination }
           var page
           if (values.data.totalNum % 5 === 0) {
@@ -191,10 +228,10 @@ export default {
 
           // 当null时，显示未评定
           for (var i = 0; i < values.data.list.length; i++) {
-            if (values.data.list[i].judgeInfo === null) {
-              values.data.list[i].judgeInfo = '未评分'
+            if (values.data.list[i].judgeStatus === '1') {
+              values.data.list[i].judgeStatus = '已评分'
             } else {
-              values.data.list[i].judgeInfo = '已评分'
+              values.data.list[i].judgeStatus = '未评分'
             }
             // 将秒数变成分钟
             values.data.list[i].useTime = Math.round(
@@ -205,10 +242,11 @@ export default {
           }
 
           this.pagination = pagination
-        } else if (values.retCode = '100001') {
+        } else if (values.retCode === '100001') {
           this.$message.error('未登录，即将跳转至登录页面', 5)
           this.$router.push({ path: '/login' })
-        } else {
+        }
+        else {
           this.$message.error('系统繁忙', 5)
         }
       })
@@ -225,8 +263,12 @@ export default {
     },
 
     //根据答题者姓名搜索
-    onSearch (value) {
-      console.log(value)
+    answerSearch () {
+      this.fetch({
+        scaleName:this.answerResearchData.scaleName,
+        patientName:this.answerResearchData.patientName,
+        judgeStatus:this.answerResearchData.judgeStatus
+      })
     }
 
     // 删除答卷
