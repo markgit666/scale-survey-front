@@ -80,7 +80,6 @@
         size="middle"
       >
 
-
         <template slot="operation" slot-scope="text, record">
           <div class="editable-row-operations">
             <span>
@@ -173,7 +172,6 @@ const columns = [
   }
 ]
 
-
 export default {
   components: { ACol },
   mounted () {
@@ -211,26 +209,22 @@ export default {
     }
   },
   computed: {
-    rowSelection() {
+    rowSelection () {
       debugger
-      const { selectedRowKeys } = this;
+      const { selectedRowKeys } = this
       return {
         selectedRowKeys,
-        onChange: this.onSelectChange,
-      };
-    },
+        onChange: this.onSelectChange
+      }
+    }
   },
 
   methods: {
-    // 确认删除
-    confirm () {
-      message.info('Clicked on Yes.')
-      console.log('a')
-    },
-// 选中的某一行或某些行的信息
-    onSelectChange(selectedRowKeys) {
-      console.log('selectedRowKeys changed: ', selectedRowKeys);
-      this.selectedRowKeys = selectedRowKeys;
+
+    // 选中的某一行或某些行的信息,用于导出清单列表
+    onSelectChange (selectedRowKeys) {
+      console.log('selectedRowKeys changed: ', selectedRowKeys)
+      this.selectedRowKeys = selectedRowKeys
     },
 
     // 翻页
@@ -344,20 +338,19 @@ export default {
       if (this.selectedRowKeys.length === 0) {
         this.$message.error('请选择需要操作的记录')
       } else {
-        var form = $("<form>");
-        form.attr("style","display:none");
-        form.attr("target","");
-        form.attr("method","post");
-        form.attr("action",this.serverUrl + "excel/export/patient/info");
-        var input1 = $("<input>");
-        input1.attr("type", "hidden");
-        input1.attr("name", "patientIdArray");
-        input1.attr("value",this.selectedRowKeys);
-        $("body").append(form);
-        form.append(input1);
-        form.submit();
-        form.remove();
-
+        var form = $('<form>')
+        form.attr('style', 'display:none')
+        form.attr('target', '')
+        form.attr('method', 'post')
+        form.attr('action', this.serverUrl + 'excel/export/patient/info')
+        var input1 = $('<input>')
+        input1.attr('type', 'hidden')
+        input1.attr('name', 'patientIdArray')
+        input1.attr('value', this.selectedRowKeys)
+        $('body').append(form)
+        form.append(input1)
+        form.submit()
+        form.remove()
       }
     }
   }
