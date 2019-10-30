@@ -195,7 +195,7 @@ export default {
         .then(response => {
           console.log(response)
 
-          if ((response.data.retCode = '000000')) {
+          if ((response.data.retCode === '000000')) {
             this.fetch()
             this.$message.success('删除成功！', 5)
           } else {

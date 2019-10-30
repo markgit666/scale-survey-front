@@ -292,7 +292,7 @@ export default {
         })
         .then(function(data) {
           console.log(data);
-          if ((data.body.retCode = "000000")) {
+          if ((data.body.retCode === "000000")) {
             this.$message.success("保存成功！", 5);
           } else {
             this.$message.error("保存失败！", 5);

@@ -494,7 +494,7 @@ export default {
         })
         .then(response => {
 
-          if ((response.data.retCode = '000000')) {
+          if ((response.data.retCode === '000000')) {
             console.log(response)
             that.ruleForm = response.data.data
           }

@@ -42,11 +42,7 @@
           <el-input :style="{width:'60%'}" size="small " v-model="searchData.telephoneNumber"></el-input>
         </a-col>
 
-        <!--  <a-col :span="8">-->
-        <!--    <label>家庭地址：</label>-->
-        <!--    <el-input :style="{width:'70%'}" size="small "  v-model="searchData.familyAddress"></el-input>-->
-        <!--  </a-col>-->
-        <a-col :span="8">
+        <a-col :span="5">
           <label>民族：</label>
           <el-select
             v-model="searchData.nation"
@@ -64,7 +60,12 @@
           <a-button type="primary" icon="search" @click="search()">查找</a-button>
         </a-col>
         <a-col :span="3">
-          <a-button type="primary" @click="exportPatientInfo" icon="arrow-up">信息导出</a-button>
+          <a-button type="primary" @click="exportPatientInfo" icon="arrow-up" :style="{marginLeft:'-10px'}">信息导出
+          </a-button>
+        </a-col>
+
+        <a-col :span="3">
+          <a-button type="primary" @click="exportPatientInfoTotal" icon="arrow-up">全部导出</a-button>
         </a-col>
       </a-row>
       <br/>
@@ -73,7 +74,7 @@
         :columns="columns"
         :rowKey="record => record.patientId"
         :dataSource="data"
-        :pagination="false"
+        :pagination="true"
         :loading="loading"
         @change="handleTableChange"
         :rowSelection="rowSelection"
@@ -97,12 +98,26 @@
             </span>
           </div>
         </template>
-
         <!-- 操作 结束 -->
       </a-table>
-      <div id="pagination-box">
-        <a-pagination size="small" :total="60" showSizeChanger showQuickJumper/>
-      </div>
+
+      <!--分页-->
+      <template>
+        <el-select
+          v-model="pageSize"
+          style="width: 30%;"
+          size="medium"
+          @change="pageSizeChange"
+        >
+          <el-option label="10/页" value="10"></el-option>
+          <el-option label="20/页" value="20"></el-option>
+          <el-option label="30/页" value="30"></el-option>
+        </el-select>
+      </template>
+
+<!--      <div id="pagination-box">-->
+<!--        <a-pagination size="small" :total="60" showSizeChanger showQuickJumper/>-->
+<!--      </div>-->
 
     </a-card>
   </div>
@@ -180,7 +195,8 @@ export default {
 
   data () {
     return {
-
+      // 分页的页码
+      pageSize:10,
       // 选中的某行，某些行
       selectedRowKeys: [],
       serverUrl: this.GLOBAL.serverUrl,
@@ -205,7 +221,8 @@ export default {
         // 民族
         nation: ''
 
-      }
+      },
+      doctorId:''
     }
   },
   computed: {
@@ -220,6 +237,13 @@ export default {
   },
 
   methods: {
+
+    //改变每页展示多少条数据
+    pageSizeChange(e){
+     this.pageSize = e
+      this.fetch()
+
+    },
 
     // 选中的某一行或某些行的信息,用于导出清单列表
     onSelectChange (selectedRowKeys) {
@@ -254,39 +278,39 @@ export default {
         method: 'post',
         data: JSON.stringify({
           pageNo: 1,
-          pageSize: 5,
+          pageSize: this.pageSize,
           data: params
         }),
         type: 'json',
         contentType: 'application/json'
       }).then(values => {
-        // if (values.retCode === '000000') {
-        const pagination = { ...this.pagination }
-        var page
-        if (values.data.totalNum % 5 === 0) {
-          page = values.data.totalNum / 5
-        } else {
-          page = Math.floor(values.data.totalNum / 5 + 1)
-        }
-        pagination.total = page * 10
-        // console.log("total=", pagination.total);
-        this.loading = false
-        this.data = values.data.list
-        for (var i = 0; i < values.data.list.length; i++) {
-          if (values.data.list[i].gender === '1') {
-            values.data.list[i].gender = '男'
+        if (values.retCode === '000000') {
+          const pagination = { ...this.pagination }
+          var page
+          if (values.data.totalNum % 5 === 0) {
+            page = values.data.totalNum / 5
           } else {
-            values.data.list[i].gender = '女'
+            page = Math.floor(values.data.totalNum / 5 + 1)
           }
+          pagination.total = page * 10
+          // console.log("total=", pagination.total);
+          this.loading = false
+          this.data = values.data.list
+          this.doctorId = values.data.list[0].doctorId
+          for (var i = 0; i < values.data.list.length; i++) {
+            if (values.data.list[i].gender === '1') {
+              values.data.list[i].gender = '男'
+            } else {
+              values.data.list[i].gender = '女'
+            }
+          }
+          this.pagination = pagination
+        } else if (values.retCode === '100001') {
+          this.$message.error('未登录，即将跳转至登录页面', 5)
+          this.$router.push({ path: '/login' })
+        } else {
+          this.$message.error('系统繁忙', 5)
         }
-        this.pagination = pagination
-        // }
-        // else if (values.retCode === '100001') {
-        //   this.$message.error('未登录，即将跳转至登录页面', 5)
-        //   this.$router.push({ path: '/login' })
-        // } else {
-        //   this.$message.error('系统繁忙', 5)
-        // }
       })
     },
 
@@ -347,11 +371,35 @@ export default {
         input1.attr('type', 'hidden')
         input1.attr('name', 'patientIdArray')
         input1.attr('value', this.selectedRowKeys)
+
+        var input2 = $('<input>')
+        input2.attr('type', 'hidden')
+        input2.attr('name', 'doctorId')
+        input2.attr('value', this.doctorId)
+
         $('body').append(form)
-        form.append(input1)
+        form.append(input1).append(input2)
         form.submit()
         form.remove()
       }
+    },
+
+    // 全部导出
+    exportPatientInfoTotal () {
+
+      var form = $('<form>')
+      form.attr('style', 'display:none')
+      form.attr('target', '')
+      form.attr('method', 'post')
+      form.attr('action', this.serverUrl + 'excel/export/all/patient/info')
+      var input1 = $('<input>')
+      input1.attr('type', 'hidden')
+      input1.attr('name', 'doctorId')
+      input1.attr('value', this.doctorId)
+      $('body').append(form)
+      form.append(input1)
+      form.submit()
+      form.remove()
     }
   }
 }

@@ -150,9 +150,9 @@ Xrej5WAcEy7ThIi17wIDAQAB`  //把之前生成的贴进来，实际开发过程中
               } else if (response.data.retCode === '100008') {
                 this.$message.error('验证码错误', 5)
               } else if (response.data.retCode === '100002'){
-                this.$message.error('还未注册，请注册账号', 5)
-              } else {
                 this.$message.error('用户名或密码错误', 5)
+              } else {
+                this.$message.error(response.data.retMsg, 5)
               }
 
               // console.log("response:", response);

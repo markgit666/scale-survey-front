@@ -324,7 +324,7 @@ export default {
           }
         })
         .then(response => {
-          if ((response.data.retCode = "000000")) {
+          if ((response.data.retCode === "000000")) {
             this.$router.push({ path: "/home/answerSubmitSuccess" });
           } else {
             this.$message.error("提交失败", 5);

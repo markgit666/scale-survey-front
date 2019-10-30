@@ -361,7 +361,7 @@ export default {
     submitScale () {
       console.log(this.answer.answerList)
       this.endTime = new Date().getTime()
-      this.answer.useTime = Math.round((this.endTime - this.startTime) / 1000)
+      this.answer.useTime = ((this.endTime - this.startTime) / 1000/60).toFixed(2)
       this.answer.patientId = this.patientId
       this.answer.scaleId = this.$route.query.scaleId
       axios
@@ -371,7 +371,7 @@ export default {
           }
         })
         .then(response => {
-          if ((response.data.retCode = '000000')) {
+          if ((response.data.retCode === '000000')) {
             this.$router.push({ path: '/home/answerSubmitSuccess' })
           } else {
             this.$message.error('提交失败', 5)

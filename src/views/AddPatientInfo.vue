@@ -524,8 +524,7 @@ export default {
               }
             })
             .then(function (data) {
-              if ((data.body.retCode = '000000')) {
-
+              if ((data.body.retCode === '000000')) {
                 console.log(data)
                 this.$router.push({ path: '/home/myPatients' })
                 this.$message.success('保存成功！', 5)

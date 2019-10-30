@@ -491,7 +491,7 @@ export default {
         .then(function(data) {
           console.log(data);
           ;
-          if ((data.body.retCode = "000000")) {
+          if ((data.body.retCode === "000000")) {
             this.$message.success("更新成功！", 5);
           } else {
             this.$message.error("更新失败！", 5);

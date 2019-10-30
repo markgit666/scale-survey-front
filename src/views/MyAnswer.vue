@@ -6,17 +6,12 @@
   <label>量表名称：</label>
   <el-input :style="{width:'70%'}" size="small" v-model="answerResearchData.scaleName"></el-input>
 </a-col>
-        <a-col :span="5">
+        <a-col :span="4">
           <label>答题者：</label>
           <el-input :style="{width:'60%'}" size="small" v-model="answerResearchData.patientName"></el-input>
         </a-col>
 
-<!--        <a-col :span="5">-->
-<!--          <label>用时：</label>-->
-<!--          <el-input :style="{width:'60%'}" size="small" v-model="answerResearchData.useTime"></el-input>-->
-<!--        </a-col>-->
-
-        <a-col :span="5">
+        <a-col :span="4">
           <label>是否评分：</label>
           <el-select
             v-model="answerResearchData.judgeStatus"
@@ -30,12 +25,16 @@
           </el-select>
 
         </a-col>
-        <a-col :span="3">
-          <a-button type="primary" icon="search" @click="answerSearch">查找</a-button>
+        <a-col :span="2">
+          <a-button type="primary" icon="search" @click="answerSearch" :style="{marginLeft:'15px'}">查找</a-button>
         </a-col>
 
         <a-col :span="3">
-          <a-button type="primary" icon="arrow-up" @click="myAnswerExport">信息导出</a-button>
+          <a-button type="primary" icon="arrow-up" @click="myAnswerExport" :style="{marginLeft:'20px'}">信息导出</a-button>
+        </a-col>
+
+        <a-col :span="3">
+          <a-button type="primary" icon="arrow-up" @click="myAnswerExportTotal">全部导出</a-button>
         </a-col>
       </a-row>
       <br/>
@@ -79,6 +78,7 @@
 import reqwest from 'reqwest'
 import axios from 'axios'
 import { debuglog } from 'util'
+import $ from 'jquery'
 import ACol from 'ant-design-vue/es/grid/Col'
 const columns = [
   {
@@ -167,7 +167,8 @@ export default {
         scaleName:'',
         patientName:'',
         judgeStatus:''
-      }
+      },
+      doctorId:''
     }
   },
   methods: {
@@ -178,7 +179,47 @@ export default {
     },
 // 导出答案
     myAnswerExport(){
-      console.log("s")
+      debugger
+      if (this.selectedRowKeys.length === 0) {
+        this.$message.error('请选择需要操作的记录')
+      } else {
+        var form = $('<form>')
+        form.attr('style', 'display:none')
+        form.attr('target', '')
+        form.attr('method', 'post')
+        form.attr('action', this.serverUrl + 'excel/export/examinationPaper/info')
+        var input1 = $('<input>')
+        input1.attr('type', 'hidden')
+        input1.attr('name', 'examinationPaperIdArray')
+        input1.attr('value', this.selectedRowKeys)
+
+        var input2 = $('<input>')
+        input2.attr('type', 'hidden')
+        input2.attr('name', 'doctorId')
+        input2.attr('value', this.doctorId)
+
+        $('body').append(form)
+        form.append(input1).append(input2)
+        form.submit()
+        form.remove()
+      }
+    },
+
+    //全部导出
+    myAnswerExportTotal(){
+      var form = $('<form>')
+      form.attr('style', 'display:none')
+      form.attr('target', '')
+      form.attr('method', 'post')
+      form.attr('action', this.serverUrl + 'excel/export/all/examinationPaper/info')
+      var input1 = $('<input>')
+      input1.attr('type', 'hidden')
+      input1.attr('name', 'doctorId')
+      input1.attr('value', this.doctorId)
+      $('body').append(form)
+      form.append(input1)
+      form.submit()
+      form.remove()
     },
 
     // 分页
@@ -227,7 +268,7 @@ debugger
           console.log('total=', pagination.total)
           this.loading = false
           this.data = values.data.list
-
+this.doctorId = values.data.list[0].patientInfo.doctorId
           // 当null时，显示未评定
           for (var i = 0; i < values.data.list.length; i++) {
             if (values.data.list[i].judgeStatus === '1') {
@@ -236,10 +277,7 @@ debugger
               values.data.list[i].judgeStatus = '未评分'
             }
             // 将秒数变成分钟
-            values.data.list[i].useTime = Math.round(
-              values.data.list[i].useTime / 60
-            )
-
+            // values.data.list[i].useTime = (values.data.list[i].useTime / 60).toFixed(2);
             values.data.list[i].useTime = values.data.list[i].useTime + '分钟'
           }
 
