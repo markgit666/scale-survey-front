@@ -249,7 +249,7 @@
         <!--保存-->
         <a-card :hoverable="true" :bordered="false" class="father" :style="{height:'120px',marginTop:'15px'}">
           <center>
-            <h3><strong>创建完成，请保存！</strong></h3>
+            <h3><strong>如您已创建完成，请保存！</strong></h3>
             <a-button type="primary" @click="submitScale" :style="{marginTop:'5px'}">保存</a-button>
             <a-button type="primary" @click="preview" :style="{marginTop:'5px' ,marginLeft:'15px'}">预览</a-button>
           </center>

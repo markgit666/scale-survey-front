@@ -46,7 +46,6 @@
         :dataSource="data"
         :pagination="false"
         :loading="loading"
-        @change="handleTableChange"
         :rowSelection="rowSelection"
         size="small"
       >
@@ -267,9 +266,10 @@ export default {
         if ((values.retCode === '000000')) {
           that.total = values.data.totalNum
           that.current = params.pageNo
-          this.loading = false
-          this.data = values.data.list
-          this.doctorId = values.data.list[0].patientInfo.doctorId
+          that.loading = false
+          that.data = values.data.list
+          debugger
+          that.doctorId = values.data.list[0].patientInfo.doctorId
           // 当null时，显示未评定
           for (var i = 0; i < values.data.list.length; i++) {
             if (values.data.list[i].judgeStatus === '1') {

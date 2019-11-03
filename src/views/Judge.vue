@@ -211,7 +211,7 @@
             <div>
               <h3><strong><label>总得分：{{computedTotalScore}}</label></strong></h3>
             </div>
-            <h3 :style="{marginTop:'10px'}"><strong>量表评定完成，请保存！</strong></h3>
+            <h3 :style="{marginTop:'10px'}"><strong>如您已评定完量表，请保存！</strong></h3>
             <a-button type="primary" @click="saveScore" :style="{marginTop:'15px'}">保存</a-button>
           </center>
         </a-card>

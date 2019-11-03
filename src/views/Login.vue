@@ -134,7 +134,6 @@ Xrej5WAcEy7ThIi17wIDAQAB` // 把之前生成的贴进来，实际开发过程中
     // 登录
     login (formName) {
       this.encryptPassword()
-
       this.$refs[formName].validate(valid => {
         if (valid) {
           axios

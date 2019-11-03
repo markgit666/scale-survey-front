@@ -260,7 +260,7 @@
             <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
             <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
               <a-card :style="{height:'130px',marginTop:'10px',marginBottom:'20px'}" :bordered="false">
-                <center><h3><strong>您已完成此量表，请保存！</strong></h3></center>
+                <center><h3><strong>如您已完成此量表，请保存！</strong></h3></center>
                 <center>
                   <a-button @click="submitScale" type="primary"
                             :style="{marginTop:'20px',marginBottom:'20px'}">提交

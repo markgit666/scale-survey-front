@@ -262,7 +262,7 @@
       <a-card :hoverable="true" :bordered="false" class="father"
               :style="{height:'100%',marginTop:'15px',marginBottom:'20px'}">
         <center>
-          <h3><strong>更新完成，请保存！</strong></h3>
+          <h3><strong>如您已完成更新，请保存！</strong></h3>
           <a-button class="save_button" type="primary" @click="updataScale">保存</a-button>
           <a-button class="save_button" type="primary" @click="backTotalScale" :style="{marginLeft:'15px'}">返回
           </a-button>
