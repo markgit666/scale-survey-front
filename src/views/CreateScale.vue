@@ -8,7 +8,7 @@
       <a-menu theme="light" mode="inline" :defaultSelectedKeys="['1']" @click="handleClick">
         <a-menu-item key="questionType">
           <a-icon type="bars"/>
-          <span>题目小类</span>
+          <span>量表类型</span>
         </a-menu-item>
 
         <a-menu-item key="direction">
@@ -50,55 +50,42 @@
         <div>
           <!--量表名称-->
           <a-card :hoverable="true" :bordered="false" :style="{height:'80px'}">
-            <a-form :style="{marginTop:'-5px',marginLeft:'-130px'}">
-              <a-form-item label="量表名称：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }">
-                <a-input v-model="oneScale.scaleName" placeholder="请输入量表名称"/>
-              </a-form-item>
-            </a-form>
-
+            <label>&nbsp&nbsp&nbsp&nbsp量表名称：</label>
+            <el-input type="text" maxlength="256" size="small" show-word-limit v-model="oneScale.scaleName"
+                      placeholder="请输入量表名称" :style="{width:'70%'}"/>
           </a-card>
 
           <!-- 一个量表里的各种题目 -->
           <div v-for="(value,subjectId) in oneScale.questionList" :key="subjectId" class="box">
 
             <!-- 1.题目类型 -->
-            <div v-if="value.questionType==='questionType'" :style="{marginTop:'15px'}">
-              <a-card :hoverable="true" :bordered="false" class="father" :style="{height:'100px'}">
+            <div v-if="value.questionType==='questionType'" :style="{marginTop:'10px'}">
+              <a-card :hoverable="true" :bordered="false" class="father" :style="{height:'80px'}">
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="del(subjectId)">删除</a>
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="down(subjectId)">下移&nbsp&nbsp|&nbsp&nbsp</a>
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="up(subjectId)">上移&nbsp&nbsp|&nbsp&nbsp</a>
-                <!--              <a-divider orientation="left">-->
-                <!--                <a-input placeholder="请在此添加题目类型" :style="{width:'27vh'}" v-model="value.title" />-->
-                <!--              </a-divider>-->
-                <a-form :style="{marginTop:'10px',marginLeft:'-130px'}">
-                  <a-form-item label="题目类型：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }">
-                    <a-input placeholder="请在此添加题目类型" v-model="value.title" autosize/>
-                    <!-- {{value.direction_content}} -->
-                  </a-form-item>
-                </a-form>
+                <label>&nbsp&nbsp量表类型：</label>
+                <el-input type="text" show-word-limit maxlength="40" size="small" placeholder="请在此添加量表类型"
+                          v-model="value.title" autosize :style="{width:'60%'}"/>
               </a-card>
             </div>
-            <!-- .题目类型结束 -->
+            <!-- .量表类型结束 -->
 
             <!-- 2.指导语 -->
-            <div v-if="value.questionType==='direction'" :style="{marginTop:'15px'}">
-              <a-card :hoverable="true" :bordered="false" class="father" :style="{height:'100px'}">
+            <div v-if="value.questionType==='direction'" :style="{marginTop:'10px'}">
+              <a-card :hoverable="true" :bordered="false" class="father" :style="{height:'80px'}">
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="del(subjectId)">删除</a>
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="down(subjectId)">下移&nbsp&nbsp|&nbsp&nbsp</a>
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="up(subjectId)">上移&nbsp&nbsp|&nbsp&nbsp</a>
-
-                <a-form :style="{marginTop:'10px',marginLeft:'-130px'}">
-                  <a-form-item label="指导语：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }">
-                    <a-input placeholder="请输入指导语" v-model="value.title"/>
-                  </a-form-item>
-                </a-form>
-
+                <label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp指导语：</label>
+                <el-input type="text" show-word-limit maxlength="1000" size="small" placeholder="请输入指导语"
+                          v-model="value.title" :style="{width:'60%'}"/>
               </a-card>
             </div>
             <!-- 指导语结束 -->
 
             <!-- 3.单选 -->
-            <div v-if=" value.questionType==='radio'" :style="{marginTop:'15px'}">
+            <div v-if=" value.questionType==='radio'" :style="{marginTop:'10px'}">
               <a-card :hoverable="true" :bordered="false" class="father" :style="{height:'100%'}">
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="del(subjectId)">删除</a>
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="down(subjectId)">下移&nbsp&nbsp|&nbsp&nbsp</a>
@@ -106,40 +93,32 @@
                 <a :style="{float:'right',marginTop:'-15px',color:'#19be6b'}" class="child"
                    @click="addOption(subjectId)">增加选项&nbsp&nbsp|&nbsp&nbsp</a>
 
-                <a-form :style="{marginTop:'20px',marginLeft:'-130px'}">
-                  <a-form-item label="（单选）标题：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }">
-                    <a-input placeholder="请输入标题！" v-model="value.title"/>
-                  </a-form-item>
-                </a-form>
+                <h4 :style="{color:'#2d8cf0',marginTop:'10px'}"><strong>（单选）</strong></h4>
 
-                <div v-for="(item,optionId) in value.items" :key="optionId" class="singleChoice-option">
-                  <a-form :style="{marginLeft:'20vh',width:'65%'}">
-                    <a-form-item :label-col="{ span: 5 }" :wrapper-col="{ span:49 }">
-                      <div class="singleChoice">
-                        <a-radio :style="{width:'100%'}" :defaultChecked="false" disabled>
-                          <a-input placeholder="请输入选项！" v-model="item.option" :style="{width:'100%'}"/>
-                        </a-radio>
-                      </div>
-                    </a-form-item>
-                  </a-form>
+                <label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp标题：</label>
 
-                  <div class="icons-list">
-                    <a-icon
-                      type="minus-circle"
-                      theme="twoTone"
-                      twoToneColor="#ed3f14"
-                      @click="delOption(subjectId, optionId)"
-                    />
-                  </div>
+                <el-input type="text" show-word-limit maxlength="256" size="small" placeholder="请输入标题！"
+                          v-model="value.title" :style="{width:'60%'}"/>
+
+                <div v-for="(item,optionId) in value.items" :key="optionId" :style="{marginTop:'10px'}">
+                  <label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp选项：</label>
+                  <el-input type="text" show-word-limit maxlength="256" size="small" placeholder="请输入选项！"
+                            v-model="item.option" :style="{width:'55%'}"/>
+                  <a-icon
+                    :style="{marginLeft:'10px'}"
+                    type="minus-circle"
+                    theme="twoTone"
+                    twoToneColor="#ed3f14"
+                    @click="delOption(subjectId, optionId)"
+                  />
                 </div>
-
               </a-card>
             </div>
             <!-- 单选结束 -->
 
             <!-- 4.多选题 -->
 
-            <div v-if=" value.questionType==='checkBox'" :style="{marginTop:'15px'}">
+            <div v-if=" value.questionType==='checkBox'" :style="{marginTop:'10px'}">
               <a-card :hoverable="true" :bordered="false" class="father" :style="{height:'100%'}">
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="del(subjectId)">删除</a>
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="down(subjectId)">下移&nbsp&nbsp|&nbsp&nbsp</a>
@@ -147,71 +126,59 @@
                 <a :style="{float:'right',marginTop:'-15px',color:'#19be6b'}" class="child"
                    @click="addOption(subjectId)">增加选项&nbsp&nbsp|&nbsp&nbsp</a>
 
-                <a-form :style="{marginTop:'20px',marginLeft:'-130px'}">
-                  <a-form-item label="（多选）标题：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }">
-                    <a-input placeholder="请输入标题！" v-model="value.title"/>
-                  </a-form-item>
-                </a-form>
+                <h4 :style="{color:'#2d8cf0',marginTop:'10px'}"><strong>（多选）</strong></h4>
 
-                <div v-for="(item,optionId) in value.items" :key="optionId" class="singleChoice-option">
-                  <a-form :style="{marginLeft:'60px',width:'73%'}">
-                    <a-form-item :label-col="{ span: 5 }" :wrapper-col="{ span:49 }">
-                      <div class="singleChoice">
-                        <a-checkbox :style="{width:'100%'}" :defaultChecked="false" disabled>
-                          <a-input placeholder="请输入选项！" v-model="item.option" :style="{width:'95%'}"/>
-                        </a-checkbox>
-                      </div>
-                    </a-form-item>
-                  </a-form>
+                <label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp标题：</label>
 
-                  <div class="icons-list-checkBox">
-                    <a-icon
-                      type="minus-circle"
-                      theme="twoTone"
-                      twoToneColor="#ed3f14"
-                      @click="delOption(subjectId, optionId)"
-                    />
-                  </div>
+                <el-input type="text" show-word-limit maxlength="256" size="small" placeholder="请输入标题！"
+                          v-model="value.title" :style="{width:'60%'}"/>
+                <div v-for="(item,optionId) in value.items" :key="optionId" :style="{marginTop:'10px'}">
+                  <label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp选项：</label>
+                  <el-input type="text" show-word-limit maxlength="256" size="small" placeholder="请输入选项！"
+                            v-model="item.option" :style="{width:'55%'}"/>
+                  <a-icon
+                    :style="{marginLeft:'10px'}"
+                    type="minus-circle"
+                    theme="twoTone"
+                    twoToneColor="#ed3f14"
+                    @click="delOption(subjectId, optionId)"
+                  />
                 </div>
-
               </a-card>
             </div>
             <!-- 多选题结束 -->
 
             <!-- 5.问答题 -->
-            <div v-if="value.questionType==='QandA'" :style="{marginTop:'15px'}">
-              <a-card :hoverable="true" :bordered="false" class="father" :style="{height:'100px'}">
+            <div v-if="value.questionType==='QandA'" :style="{marginTop:'10px'}">
+              <a-card :hoverable="true" :bordered="false" class="father" :style="{height:'80px'}">
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="del(subjectId)">删除</a>
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="down(subjectId)">下移&nbsp&nbsp|&nbsp&nbsp</a>
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="up(subjectId)">上移&nbsp&nbsp|&nbsp&nbsp</a>
 
-                <a-form :style="{marginTop:'10px',marginLeft:'-130px'}">
-                  <a-form-item label="问题：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }">
-                    <a-input placeholder="请添加您的问题" v-model="value.title"/>
-                  </a-form-item>
-                </a-form>
+                <label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp问题：</label>
+                <el-input type="text" show-word-limit maxlength="256" size="small" placeholder="请添加您的问题"
+                          v-model="value.title" :style="{width:'60%'}"/>
 
               </a-card>
             </div>
             <!--问答题结束-->
 
             <!-- 6.画图 -->
-            <div v-if="value.questionType ==='draw'" :style="{marginTop:'15px'}">
+            <div v-if="value.questionType ==='draw'" :style="{marginTop:'10px'}">
               <a-card :hoverable="true" :bordered="false" class="father" :style="{height:'100%'}">
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="del(subjectId)">删除</a>
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="down(subjectId)">下移&nbsp&nbsp|&nbsp&nbsp</a>
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="up(subjectId)">上移&nbsp&nbsp|&nbsp&nbsp</a>
                 <h4 :style="{color:'#2d8cf0'}"><strong>（画图题）</strong></h4>
-                <a-form :style="{marginTop:'10px',marginLeft:'-130px'}">
-                  <a-form-item label="作答要求：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }">
-                    <a-input placeholder="请输入作答要求！" v-model="value.title"/>
-                  </a-form-item>
-                </a-form>
-                <strong :style="{marginTop:'10px'}">注意：一定要点击"开始上传"，才能上传成功!</strong>
+                <label>&nbsp&nbsp&nbsp&nbsp作答要求：</label>
+                <el-input type="text" show-word-limit maxlength="1000" size="small" placeholder="请输入作答要求！"
+                          v-model="value.title" :style="{width:'60%'}"/>
+                <br/><br/>
+                <strong :style="{marginTop:'10px'}">&nbsp&nbsp&nbsp&nbsp注意：一定要点击"开始上传"，才能上传成功!</strong>
                 <br/><br/>
                 <!--画图--图片上传--开始-->
                 <div class="choose-upload">
-                  <div id="choosePictureBox">
+                  <div id="choosePictureBox" :style="{marginLeft:'15px'}">
                     选择图片
                     <input class="file" type="file" :id="drawIdFile(subjectId)" name="file" multiple="multiple"
                            accept="image/gif, image/jpeg, image/png, image/jpg"
@@ -222,7 +189,7 @@
                 </div>
 
                 <!-- 文件名显示区域 -->
-                <div :id="drawIdFileName(subjectId)" :style="{marginTop:'10px'}"></div>
+                <div :id="drawIdFileName(subjectId)" :style="{marginTop:'10px',marginLeft:'15px'}"></div>
 
                 <!--画图--图片上传--结束-->
 
@@ -231,23 +198,21 @@
             <!-- 画图结束 -->
 
             <!-- 7.图片题 -->
-            <div v-if="value.questionType ==='picture'" :style="{marginTop:'15px'}">
+            <div v-if="value.questionType ==='picture'" :style="{marginTop:'10px'}">
               <a-card :hoverable="true" :bordered="false" class="father" :style="{height:'100%'}">
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="del(subjectId)">删除</a>
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="down(subjectId)">下移&nbsp&nbsp|&nbsp&nbsp</a>
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="up(subjectId)">上移&nbsp&nbsp|&nbsp&nbsp</a>
                 <h4 :style="{color:'#2d8cf0'}"><strong>（图片题）</strong></h4>
-                <a-form :style="{marginTop:'10px',marginLeft:'-130px'}">
-                  <a-form-item label="作答要求：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }">
-                    <a-input placeholder="请输入作答要求！" v-model="value.title"/>
-                  </a-form-item>
-                </a-form>
-                <strong :style="{marginTop:'10px'}">注意：一定要点击"开始上传"，才能上传成功!</strong>
+                <label>&nbsp&nbsp&nbsp&nbsp作答要求：</label>
+                <el-input type="text" show-word-limit maxlength="1000" size="small" placeholder="请输入作答要求！"
+                          v-model="value.title" :style="{width:'60%'}"/>
+                <br/><br/>
+                <strong :style="{marginTop:'10px',marginLeft:'15px'}">注意：一定要点击"开始上传"，才能上传成功!</strong>
                 <br/> <br/>
-
                 <!--图片上传--开始-->
                 <div class="choose-upload">
-                  <div id="choosePictureBox">
+                  <div id="choosePictureBox" :style="{marginLeft:'15px'}">
                     选择图片
                     <input class="file" type="file" :id="idFile(subjectId)" name="file" multiple="multiple"
                            accept="image/gif, image/jpeg, image/png, image/jpg"
@@ -258,7 +223,7 @@
                 </div>
 
                 <!-- 文件名显示区域 -->
-                <div :id="idFileName(subjectId)" :style="{marginTop:'10px'}"></div>
+                <div :id="idFileName(subjectId)" :style="{marginTop:'10px',marginLeft:'15px'}"></div>
                 <!--图片上传--结束-->
 
               </a-card>
@@ -342,12 +307,26 @@ export default {
     pictureChoose (subjectId) {
       // 存放文件名的数组，用于显示
       var fileNameArray = []
-      // 获取文件名称
+      // 获取文件
       var filename = document.getElementById('file' + subjectId)
-      for (var i = 0; i < filename.files.length; i++) {
-        var temp = filename.files[i].name
-        fileNameArray.push(temp)
+      if (filename.files.length > 20) {
+        // 限制图片个数
+        alert('图片上传的数量不能超过20张！')
+      } else {
+        for (var i = 0; i < filename.files.length; i++) {
+          // 限制图片大小
+          var pictureSize = 1024 * 1024 * 3
+          if (filename.files[i].size < pictureSize) {
+            var temp = filename.files[i].name
+            fileNameArray.push(temp)
+          } else {
+            alert('您上传的图片中含有超过5M的图片,请重新选择')
+            // 使之不会重复弹出
+            return false
+          }
+        }
       }
+
       // 拼接
       var idTemp = '#' + 'fileName' + subjectId
       $(idTemp).text(fileNameArray)
@@ -355,7 +334,6 @@ export default {
 
     // 动态绑定Id---图片题---选择文件
     idFile (subjectId) {
-      console.log('file' + subjectId)
       return 'file' + subjectId
     },
 
@@ -388,12 +366,16 @@ export default {
       let that = this
       xmlobj.onload = function () {
         if (xmlobj.readyState == 4 && xmlobj.status == 200) {
-          // alert(xmlobj.responseText)
-          that.$message.success('上传成功', 5)
           // 将json对象转化成字符串
-          var responseText = JSON.parse(xmlobj.responseText)
-          // 将response返回的图片二进制数据放入自己构造的list中
-          that.oneScale.questionList[subjectId].attachmentList = responseText.data
+          var responseJson = JSON.parse(xmlobj.responseText)
+
+          if (responseJson.retCode === '000000') {
+            // 将response返回的图片二进制数据放入自己构造的list中
+            that.oneScale.questionList[subjectId].attachmentList = responseJson.data
+            that.$message.success('上传成功', 5)
+          } else {
+            that.$message.error(responseJson.retMsg, 5)
+          }
         }
       }
     },
@@ -407,9 +389,22 @@ export default {
       var fileNameArray = []
       // 获取文件名称
       var filename = document.getElementById('file' + subjectId)
-      for (var i = 0; i < filename.files.length; i++) {
-        var temp = filename.files[i].name
-        fileNameArray.push(temp)
+
+      if (filename.files.length > 20) {
+        // 限制图片个数
+        alert('图片上传的数量不能超过20张！')
+      } else {
+        for (var i = 0; i < filename.files.length; i++) {
+          // 限制图片大小
+          var pictureSize = 1024 * 1024 * 3
+          if (filename.files[i].size < pictureSize) {
+            var temp = filename.files[i].name
+            fileNameArray.push(temp)
+          } else {
+            alert('您上传的图片中含有超过5M的图片,请重新选择')
+            return false
+          }
+        }
       }
       // 拼接
       var idTemp = '#' + 'fileName' + subjectId
@@ -418,7 +413,6 @@ export default {
 
     // 动态绑定Id---画图题---选择文件
     drawIdFile (subjectId) {
-      console.log('file' + subjectId)
       return 'file' + subjectId
     },
 
@@ -451,12 +445,16 @@ export default {
       let that = this
       xmlobj.onload = function () {
         if (xmlobj.readyState == 4 && xmlobj.status == 200) {
-          // alert(xmlobj.responseText)
-          that.$message.success('上传成功', 5)
           // 将json对象转化成字符串
-          var responseText = JSON.parse(xmlobj.responseText)
-          // 将response返回的图片二进制数据放入自己构造的list中
-          that.oneScale.questionList[subjectId].attachmentList = responseText.data
+          var responseJson = JSON.parse(xmlobj.responseText)
+          // 判断是否上传成功
+          if (responseJson.retCode === '000000') {
+            // 将response返回的图片二进制数据放入自己构造的list中
+            that.oneScale.questionList[subjectId].attachmentList = responseJson.data
+            that.$message.success('上传成功', 5)
+          } else {
+            that.$message.error(responseJson.retMsg, 5)
+          }
         }
       }
     },
@@ -471,14 +469,22 @@ export default {
           }
         })
         .then(function (data) {
-          debugger
-          console.log(data)
           if ((data.body.retCode === '000000')) {
             this.$message.success('保存成功！', 5)
+            this.$router.push({ path: '/home/myScale' })
+          } else if (data.body.retCode === '100001') {
+            if (localStorage.getItem('Token') === null) {
+              this.$message.error('未登录，即将跳转至登录页面', 5)
+              this.$router.push({ path: '/login' })
+            } else {
+              this.$message.error('登录超时', 5)
+              this.$router.push({ path: '/login' })
+            }
           } else {
-            this.$message.error('保存失败！', 5)
+            this.$message.error(data.body.retMsg, 5)
           }
-          this.$router.push({ path: '/home/myScale' })
+        }, err => {
+          alert('网络异常，请检查是否连接上网络')
         })
     },
     // 预览
@@ -489,6 +495,7 @@ export default {
         query: { oneScale: oneScale }
         //  params:{catId:params.catId}
       })
+      this.$message.success('注意：预览页面仅仅是预览作用，不可答题！')
       // 新建个窗口来打开路由地址
       window.open(routeData.href, '_blank')
     },
@@ -545,7 +552,7 @@ export default {
         }
         this.oneScale.questionList.push(pictureObject)
       } else if (e.key === 'questionType') {
-        // 一个量表中的题目类型
+        // 一个量表中的量表类型
         var questionTypeObject = {
           questionType: e.key,
           show: true,
@@ -570,17 +577,14 @@ export default {
     delOption (subjectId, optionId) {
       var option = this.oneScale.questionList[subjectId].items
       option.splice(optionId, 1)
-      console.log(this.oneScale.questionList[subjectId].items)
     },
 
     // 增加选项（单选，多选）
     addOption (subjectId) {
-      console.log(subjectId)
       var items = this.oneScale.questionList[subjectId].items
       if (items.length <= 20) {
         var newitems = {}
         items = items.push(newitems)
-        console.log(this.oneScale.questionList[subjectId].items)
       } else {
         this.$message.warning('选项不允许超过20个！', 5)
       }
@@ -588,7 +592,6 @@ export default {
 
     // 删除题目
     del (subjectId) {
-      console.log(subjectId)
       this.oneScale.questionList.splice(subjectId, 1)
       if (this.oneScale.questionList.length === 0) {
         this.showMiddleBox = true
@@ -619,7 +622,6 @@ export default {
     },
     // 下移题目
     down (subjectId) {
-      console.log('a')
       if (subjectId < this.oneScale.questionList.length - 1) {
         this.oneScale.questionList.splice(
           subjectId,
@@ -645,9 +647,6 @@ export default {
   body {
     text-align: center;
   }
-
-
-
 
   /*图片题选择图片按钮--开始*/
   .choose-upload {
@@ -683,10 +682,11 @@ export default {
     color: white;
     text-decoration: none;
   }
+
   /*图片题选择图片按钮--结束*/
 
   .singleChoice,
-   {
+  {
     display: flex;
     flex-direction: row;
   }
@@ -713,8 +713,8 @@ export default {
     margin-top: 8px;
     color: #666;
   }
-  /* 上传图片样式 结束 */
 
+  /* 上传图片样式 结束 */
 
   .father .child {
     /*p的内容一开始设置为不可见*/
@@ -725,11 +725,6 @@ export default {
     /*鼠标移入后，p的标签的内容为可见*/
     display: block;
 
-  }
-
-  .singleChoice-option {
-    display: flex;
-    flex-direction: row;
   }
 
   .middleBox {

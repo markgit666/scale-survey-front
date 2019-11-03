@@ -5,7 +5,8 @@
 
         <a-col :span="8">
           <label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp姓名：</label>
-          <el-input :style="{width:'60%'}" size="small " v-model="searchData.name"></el-input>
+          <el-input type="text" maxlength="10" show-word-limit :style="{width:'60%'}" size="small "
+                    v-model="searchData.name"></el-input>
         </a-col>
 
         <a-col :span="8">
@@ -39,10 +40,11 @@
       <a-row>
         <a-col :span="8">
           <label>联系方式：</label>
-          <el-input :style="{width:'60%'}" size="small " v-model="searchData.telephoneNumber"></el-input>
+          <el-input type="text" maxlength="11" show-word-limit :style="{width:'60%'}" size="small "
+                    v-model="searchData.telephoneNumber"></el-input>
         </a-col>
 
-        <a-col :span="5">
+        <a-col :span="7">
           <label>民族：</label>
           <el-select
             v-model="searchData.nation"
@@ -56,7 +58,7 @@
           </el-select>
         </a-col>
 
-        <a-col :span="3">
+        <a-col :span="4">
           <a-button type="primary" icon="search" @click="search()">查找</a-button>
         </a-col>
         <a-col :span="3">
@@ -64,9 +66,9 @@
           </a-button>
         </a-col>
 
-        <a-col :span="3">
-          <a-button type="primary" @click="exportPatientInfoTotal" icon="arrow-up">全部导出</a-button>
-        </a-col>
+        <!--        <a-col :span="3">-->
+        <!--          <a-button type="primary" @click="exportPatientInfoTotal" icon="arrow-up">全部导出</a-button>-->
+        <!--        </a-col>-->
       </a-row>
       <br/>
 
@@ -74,11 +76,11 @@
         :columns="columns"
         :rowKey="record => record.patientId"
         :dataSource="data"
-        :pagination="true"
+        :pagination="false"
         :loading="loading"
         @change="handleTableChange"
         :rowSelection="rowSelection"
-        size="middle"
+        size="small"
       >
 
         <template slot="operation" slot-scope="text, record">
@@ -101,23 +103,22 @@
         <!-- 操作 结束 -->
       </a-table>
 
-      <!--分页-->
+      <!--      分页-->
       <template>
-        <el-select
-          v-model="pageSize"
-          style="width: 30%;"
-          size="medium"
-          @change="pageSizeChange"
+        <a-pagination
+          :pageSizeOptions="pageSizeOptions"
+          :total="total"
+          showSizeChanger
+          :pageSize="pageSize"
+          v-model="current"
+          @showSizeChange="onShowSizeChange"
+          :style="{marginTop:'15px',float:'right'}"
         >
-          <el-option label="10/页" value="10"></el-option>
-          <el-option label="20/页" value="20"></el-option>
-          <el-option label="30/页" value="30"></el-option>
-        </el-select>
+          <template slot="buildOptionText" slot-scope="props">
+            <span>{{props.value}}条/页</span>
+          </template>
+        </a-pagination>
       </template>
-
-<!--      <div id="pagination-box">-->
-<!--        <a-pagination size="small" :total="60" showSizeChanger showQuickJumper/>-->
-<!--      </div>-->
 
     </a-card>
   </div>
@@ -168,17 +169,6 @@ const columns = [
     width: '30%',
     dataIndex: 'familyAddress'
   },
-
-  // {
-  //   title:'添加时间',
-  //   width:'10%',
-  //   dataIndex:'createTime'
-  // },
-  // {
-  //   title:'更新时间',
-  //   width:'10%',
-  //   dataIndex:'updateTime'
-  // },
   {
     title: '操作',
     width: '15%',
@@ -195,8 +185,11 @@ export default {
 
   data () {
     return {
-      // 分页的页码
-      pageSize:10,
+      // 分页变量
+      pageSizeOptions: ['10', '20', '30', '40', '50'],
+      current: 1,
+      pageSize: 10,
+      total: 50,
       // 选中的某行，某些行
       selectedRowKeys: [],
       serverUrl: this.GLOBAL.serverUrl,
@@ -222,12 +215,11 @@ export default {
         nation: ''
 
       },
-      doctorId:''
+      doctorId: ''
     }
   },
   computed: {
     rowSelection () {
-      debugger
       const { selectedRowKeys } = this
       return {
         selectedRowKeys,
@@ -235,65 +227,62 @@ export default {
       }
     }
   },
+  // 监控当前页页数变化
+  watch: {
+    current (val) {
+      this.fetch({
+        pageNo: val,
+        pageSize: this.pageSize,
+        data: {
+          name: this.searchData.name,
+          birthday: this.searchData.birthday,
+          gender: this.searchData.gender,
+          telephoneNumber: this.searchData.telephoneNumber,
+          nation: this.searchData.nation
+        }
+      })
+    }
+  },
 
   methods: {
-
-    //改变每页展示多少条数据
-    pageSizeChange(e){
-     this.pageSize = e
-      this.fetch()
-
+    // 选择一页几条数据
+    onShowSizeChange (current, pageSize) {
+      this.pageSize = pageSize
+      this.fetch({ pageNo: current, pageSize: pageSize })
     },
 
     // 选中的某一行或某些行的信息,用于导出清单列表
     onSelectChange (selectedRowKeys) {
-      console.log('selectedRowKeys changed: ', selectedRowKeys)
       this.selectedRowKeys = selectedRowKeys
     },
 
     // 翻页
-    handleTableChange (pagination, filters, sorter) {
-      pagination.pageSize = 3
-      console.log('pagination=', pagination)
+    handleTableChange (pagination) {
       const pager = { ...this.pagination }
-      pager.current = pagination.current
-      console.log('current是：', pager.current)
+      // pager.current = pagination.current
       this.pagination = pager
       this.fetch({
-        pageNo: pagination.current,
-        sortField: sorter.field,
-        sortOrder: sorter.order,
-        ...filters
+        pageNo: pagination.current
       })
     },
 
     // 更新
     fetch (params = {}) {
       this.loading = true
+      let that = this
       reqwest({
         url: this.serverUrl + 'patient/info/getList',
         headers: {
           Token: localStorage.getItem('Token')
         },
         method: 'post',
-        data: JSON.stringify({
-          pageNo: 1,
-          pageSize: this.pageSize,
-          data: params
-        }),
+        data: JSON.stringify(params),
         type: 'json',
         contentType: 'application/json'
       }).then(values => {
         if (values.retCode === '000000') {
-          const pagination = { ...this.pagination }
-          var page
-          if (values.data.totalNum % 5 === 0) {
-            page = values.data.totalNum / 5
-          } else {
-            page = Math.floor(values.data.totalNum / 5 + 1)
-          }
-          pagination.total = page * 10
-          // console.log("total=", pagination.total);
+          that.total = values.data.totalNum
+          that.current = params.pageNo
           this.loading = false
           this.data = values.data.list
           this.doctorId = values.data.list[0].doctorId
@@ -304,13 +293,19 @@ export default {
               values.data.list[i].gender = '女'
             }
           }
-          this.pagination = pagination
         } else if (values.retCode === '100001') {
-          this.$message.error('未登录，即将跳转至登录页面', 5)
-          this.$router.push({ path: '/login' })
+          if (localStorage.getItem('Token') === null) {
+            this.$message.error('未登录，即将跳转至登录页面', 5)
+            this.$router.push({ path: '/login' })
+          } else {
+            this.$message.error('登录超时', 5)
+            this.$router.push({ path: '/login' })
+          }
         } else {
-          this.$message.error('系统繁忙', 5)
+          this.$message.error(values.retMsg, 5)
         }
+      }, err => {
+        alert('网络异常，请检查是否连接上网络')
       })
     },
 
@@ -325,13 +320,17 @@ export default {
 
     // 查找---搜索
     search () {
-      debugger
       this.fetch({
-        name: this.searchData.name,
-        birthday: this.searchData.birthday,
-        gender: this.searchData.gender,
-        telephoneNumber: this.searchData.telephoneNumber,
-        nation: this.searchData.nation
+        pageNo: 1,
+        pageSize: this.pageSize,
+        data: {
+          name: this.searchData.name,
+          birthday: this.searchData.birthday,
+          gender: this.searchData.gender,
+          telephoneNumber: this.searchData.telephoneNumber,
+          nation: this.searchData.nation
+        }
+
       })
     },
 
@@ -350,15 +349,27 @@ export default {
           }
         )
         .then(response => {
-          console.log(response)
-          this.fetch()
-          this.$message.success('删除成功！', 5)
+          if (response.data.retCode === '000000') {
+            this.fetch()
+            this.$message.success('删除成功！', 5)
+          } else if (response.data.retCode === '100001') {
+            if (localStorage.getItem('Token') === null) {
+              this.$message.error('未登录，即将跳转至登录页面', 5)
+              this.$router.push({ path: '/login' })
+            } else {
+              this.$message.error('登录超时', 5)
+              this.$router.push({ path: '/login' })
+            }
+          } else {
+            this.$message.error(response.data.retMsg, 5)
+          }
+        }, err => {
+          alert('网络异常，请检查是否连接上网络')
         })
     },
 
     // 选中后导出病人信息
     exportPatientInfo () {
-      debugger
       if (this.selectedRowKeys.length === 0) {
         this.$message.error('请选择需要操作的记录')
       } else {
@@ -382,25 +393,24 @@ export default {
         form.submit()
         form.remove()
       }
-    },
+    }
 
     // 全部导出
-    exportPatientInfoTotal () {
-
-      var form = $('<form>')
-      form.attr('style', 'display:none')
-      form.attr('target', '')
-      form.attr('method', 'post')
-      form.attr('action', this.serverUrl + 'excel/export/all/patient/info')
-      var input1 = $('<input>')
-      input1.attr('type', 'hidden')
-      input1.attr('name', 'doctorId')
-      input1.attr('value', this.doctorId)
-      $('body').append(form)
-      form.append(input1)
-      form.submit()
-      form.remove()
-    }
+    // exportPatientInfoTotal () {
+    //   var form = $('<form>')
+    //   form.attr('style', 'display:none')
+    //   form.attr('target', '')
+    //   form.attr('method', 'post')
+    //   form.attr('action', this.serverUrl + 'excel/export/all/patient/info')
+    //   var input1 = $('<input>')
+    //   input1.attr('type', 'hidden')
+    //   input1.attr('name', 'doctorId')
+    //   input1.attr('value', this.doctorId)
+    //   $('body').append(form)
+    //   form.append(input1)
+    //   form.submit()
+    //   form.remove()
+    // }
   }
 }
 </script>

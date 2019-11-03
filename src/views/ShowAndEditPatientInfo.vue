@@ -4,7 +4,8 @@
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="175px" class="form-div">
         <!-- 姓名 -->
         <el-form-item label="姓名 :" class="form-item-div" prop="name">
-          <el-input v-model="ruleForm.name" size="medium" placeholder="请输入姓名"></el-input>
+          <el-input type="text" maxlength="10" show-word-limit v-model="ruleForm.name" size="medium"
+                    placeholder="请输入姓名"></el-input>
         </el-form-item>
 
         <!-- 出生日期 -->
@@ -34,11 +35,13 @@
         </el-form-item>
         <!-- 家庭地址 -->
         <el-form-item label="家庭地址 :" class="form-item-div" prop="familyAddress">
-          <el-input v-model="ruleForm.familyAddress" size="medium" placeholder="请输入家庭地址"></el-input>
+          <el-input type="text" maxlength="100" show-word-limit v-model="ruleForm.familyAddress" size="medium"
+                    placeholder="请输入家庭地址"></el-input>
         </el-form-item>
 
         <!-- 联系方式 -->
-        <el-form-item label="联系方式 :" class="form-item-div" prop="telephoneNumber">
+        <el-form-item type="text" maxlength="11" show-word-limit label="联系方式 :" class="form-item-div"
+                      prop="telephoneNumber">
           <el-input v-model="ruleForm.telephoneNumber" size="medium" placeholder="请输入联系方式"></el-input>
         </el-form-item>
 
@@ -95,7 +98,8 @@
 
         <!-- 如果是在职，输入职业 -->
         <el-form-item label="在职职业 :" class="form-item-div" v-if="ruleForm.workStatus==='在职'">
-          <el-input v-model="ruleForm.inServiceJob" size="medium" placeholder="请输入"></el-input>
+          <el-input type="text" maxlength="20" show-word-limit v-model="ruleForm.inServiceJob" size="medium"
+                    placeholder="请输入"></el-input>
         </el-form-item>
 
         <!-- 文化程度 -->
@@ -118,8 +122,8 @@
         </el-form-item>
 
         <!-- 受教育年数 -->
-        <el-form-item label="受教育年数 :" class="form-item-div" >
-          <a-input-number v-model="ruleForm.educationYears"  placeholder="请输入数字值（单位：年）" :style="{width:'100%'}" />
+        <el-form-item label="受教育年数 :" class="form-item-div">
+          <a-input-number v-model="ruleForm.educationYears" placeholder="请输入数字值（单位：年）" :style="{width:'100%'}"/>
         </el-form-item>
 
         <!-- 是否打呼噜 -->
@@ -172,7 +176,8 @@
 
         <!-- 如果是其他病史，输入其他病史  -->
         <el-form-item label="其他病史 :" class="form-item-div" v-if="ruleForm.medicalHistory==='其他疾病'">
-          <el-input v-model="ruleForm.otherMedicalHistory" size="medium" placeholder="请输入"></el-input>
+          <el-input type="text" maxlength="20" show-word-limit v-model="ruleForm.otherMedicalHistory" size="medium"
+                    placeholder="请输入"></el-input>
         </el-form-item>
 
         <!-- 吸烟史 -->
@@ -197,15 +202,13 @@
           v-if="ruleForm.smokingHistory==='仍在吸'"
 
         >
-          <a-input-number v-model="ruleForm.smokingNumEachDay"  placeholder="请输入数字值（单位：支）" :style="{width:'100%'}" />
-
+          <a-input-number v-model="ruleForm.smokingNumEachDay" placeholder="请输入数字值（单位：支）" :style="{width:'100%'}"/>
 
         </el-form-item>
 
         <!-- 吸烟年数 -->
-        <el-form-item label="吸烟年数 :" class="form-item-div"  v-if="ruleForm.smokingHistory==='仍在吸'">
-          <a-input-number v-model="ruleForm.smokingYears"  placeholder="请输入数字值（单位：年）" :style="{width:'100%'}" />
-
+        <el-form-item label="吸烟年数 :" class="form-item-div" v-if="ruleForm.smokingHistory==='仍在吸'">
+          <a-input-number v-model="ruleForm.smokingYears" placeholder="请输入数字值（单位：年）" :style="{width:'100%'}"/>
 
         </el-form-item>
 
@@ -224,7 +227,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="饮酒类型 :" class="form-item-div" v-show="ruleForm.drinkingHistory==='仍在喝'" >
+        <el-form-item label="饮酒类型 :" class="form-item-div" v-show="ruleForm.drinkingHistory==='仍在喝'">
           <el-select
             v-model="ruleForm.drinkingType"
             placeholder="请选择"
@@ -245,15 +248,13 @@
           v-show="ruleForm.drinkingHistory==='仍在喝'"
 
         >
-          <a-input-number v-model="ruleForm.drinkingNumEachDay"  placeholder="请输入数字值（单位：两）" :style="{width:'100%'}" />
-
+          <a-input-number v-model="ruleForm.drinkingNumEachDay" placeholder="请输入数字值（单位：两）" :style="{width:'100%'}"/>
 
         </el-form-item>
 
         <!-- 喝酒年数 -->
-        <el-form-item label="喝酒年数 :" class="form-item-div"  v-show="ruleForm.drinkingHistory==='仍在喝'">
-          <a-input-number v-model="ruleForm.drinkingYears"  placeholder="请输入数字值（单位：年）" :style="{width:'100%'}" />
-
+        <el-form-item label="喝酒年数 :" class="form-item-div" v-show="ruleForm.drinkingHistory==='仍在喝'">
+          <a-input-number v-model="ruleForm.drinkingYears" placeholder="请输入数字值（单位：年）" :style="{width:'100%'}"/>
 
         </el-form-item>
 
@@ -293,6 +294,10 @@
             v-model="ruleForm.otherMentalDiseaseFamilyHistory"
             size="medium"
             placeholder="请输入"
+            type="text"
+            maxlength="40"
+            show-word-limit
+
           ></el-input>
         </el-form-item>
         <!-- 现病史 -->
@@ -309,14 +314,17 @@
           </el-select>
         </el-form-item>
 
-<!--如果有记忆力下降-->
-        <el-form-item label="记忆力下降多久 :" class="form-item-div" v-if="ruleForm.currentMedicalHistoryMemoryLoss==='有记忆力下降'">
-          <el-input v-model="ruleForm.memoryLossTime" size="medium" placeholder="请输入"></el-input>
+        <!--如果有记忆力下降-->
+        <el-form-item label="记忆力下降多久 :" class="form-item-div"
+                      v-if="ruleForm.currentMedicalHistoryMemoryLoss==='有记忆力下降'">
+          <el-input type="text" maxlength="40" show-word-limit v-model="ruleForm.memoryLossTime" size="medium"
+                    placeholder="请输入"></el-input>
         </el-form-item>
 
         <!-- 体格检查情况 -->
         <el-form-item label="体格检查情况 :" class="form-item-div">
-          <el-input v-model="ruleForm.physicalExamination" size="medium" placeholder="请输入"></el-input>
+          <el-input type="text" maxlength="300" show-word-limit v-model="ruleForm.physicalExamination" size="medium"
+                    placeholder="请输入"></el-input>
         </el-form-item>
 
         <!-- 是否合并使用促认知药物 -->
@@ -334,7 +342,8 @@
         </el-form-item>
         <!--如果有合并使用促认知药物-->
         <el-form-item label="具体促认知药物 :" class="form-item-div" v-if="ruleForm.isUseCognitiveDrugs==='有合并使用促认知药物'">
-          <el-input v-model="ruleForm.drugsType " size="medium" placeholder="请输入"></el-input>
+          <el-input type="text" maxlength="40" show-word-limit v-model="ruleForm.drugsType " size="medium"
+                    placeholder="请输入"></el-input>
         </el-form-item>
 
         <!--如果有合并使用促认知药物-->
@@ -344,7 +353,7 @@
           v-if="ruleForm.isUseCognitiveDrugs==='有合并使用促认知药物'"
 
         >
-          <a-input-number v-model="ruleForm.drugsDosage"  placeholder="请输入数字值" :style="{width:'100%'}" />
+          <a-input-number v-model="ruleForm.drugsDosage" placeholder="请输入数字值" :style="{width:'100%'}"/>
 
         </el-form-item>
 
@@ -360,6 +369,7 @@
 
 <script>
 import axios from 'axios'
+
 export default {
   data () {
     // 手机号
@@ -370,7 +380,6 @@ export default {
         callback()
       }
     }
-
 
     return {
       ruleForm: {},
@@ -384,20 +393,11 @@ export default {
         telephoneNumber: [
           { required: true, message: '不能为空！', trigger: 'blur' },
           { validator: validatePhone, trigger: 'blur' }
-        ],
-
+        ]
 
       },
       // 服务器地址
       serverUrl: this.GLOBAL.serverUrl,
-      // showJob: false,
-      // showDisease: false,
-      // showSmoke: false,
-      // showDrink: false,
-      // showMentalDisease: false,
-      // showOtherMentalDisease: false,
-      // showMemory: false,
-      // showCognitiveDrug: false,
       // 个人信息
       name: 'zoujiem',
       birthday: null,
@@ -419,7 +419,8 @@ export default {
   },
 
   methods: {
-    handleChange () {},
+    handleChange () {
+    },
     //   如果是在职，输入职业
     jobChange (value) {
       if (value == '在职') {
@@ -479,10 +480,7 @@ export default {
       }
     },
 
-    toggle () {
-      this.disabled = !this.disabled
-    },
-    // 更新
+    // 查看/编辑
     fetch () {
       let that = this
 
@@ -493,24 +491,29 @@ export default {
           }
         })
         .then(response => {
-
           if ((response.data.retCode === '000000')) {
-            console.log(response)
             that.ruleForm = response.data.data
+          } else if (response.data.retCode === '100001') {
+            if (localStorage.getItem('Token') === null) {
+              this.$message.error('未登录，即将跳转至登录页面', 5)
+              this.$router.push({ path: '/login' })
+            } else {
+              this.$message.error('登录超时', 5)
+              this.$router.push({ path: '/login' })
+            }
           }
+        }, err => {
+          alert('网络异常，请检查是否连接上网络')
         })
         .catch(function (error) {
           // 请求失败处理
-          console.log(error)
         })
     },
 
-    // 更新
+    // 编辑后的保存功能
     updateInfo (formName) {
       this.$refs[formName].validate(valid => {
-
         if (valid) {
-
           this.$http
             .post(this.serverUrl + '/patient/info/save', this.ruleForm, {
               headers: {
@@ -518,18 +521,25 @@ export default {
               }
             })
             .then(function (data) {
-
               if (data.data.retCode === '000000') {
-                console.log(data)
                 this.$message.success('更新成功', 5)
                 this.$router.push({ path: '/Home/MyPatients' })
+              } else if (data.data.retCode === '100001') {
+                if (localStorage.getItem('Token') === null) {
+                  this.$message.error('未登录，即将跳转至登录页面', 5)
+                  this.$router.push({ path: '/login' })
+                } else {
+                  this.$message.error('登录超时', 5)
+                  this.$router.push({ path: '/login' })
+                }
               } else {
-                this.$message.error('更新失败', 5)
+                this.$message.error(values.retMsg, 5)
               }
+            }, err => {
+              alert('网络异常，请检查是否连接上网络')
             })
         } else {
-          alert('格式错误！检查一下是不是有没填完的表单')
-          return false
+          this.$message.error('格式错误', 5)
         }
       })
     }
@@ -538,37 +548,25 @@ export default {
 </script>
 
 <style scoped>
-.info_box {
-  /* border: 1px solid saddlebrown; */
-  /* width: 100%; */
-  text-align: center;
-}
+  .info_box {
+    text-align: center;
+  }
 
-.form {
-  border: 1px solid springgreen;
-}
-.text {
-  color: #2d8cf0;
-  font-size: 2.5vh;
-}
+  .form-div {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
 
-.form-div {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* border: 1px solid saddlebrown; */
-  /* margin-left: -90px; */
-  width: 100%;
-}
+  .form-item-div {
+    width: 80%;
+    margin-left: -120px;
+  }
 
-.form-item-div {
-  width: 80%;
-  margin-left: -120px;
-}
-
-.saveButton {
-  margin-left: -200px;
-  width: 200px;
-}
+  .saveButton {
+    margin-left: -200px;
+    width: 200px;
+  }
 </style>

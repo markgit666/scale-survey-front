@@ -2,50 +2,30 @@
   <div class="box8">
     <a-layout id="components-layout-demo-fixed">
       <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
-        <div class="logo" />
+        <img src="../../public/homeLogo.png" class="homeLogo" @click="homeLogoClick"/>
         <a-menu
           theme="dark"
           mode="horizontal"
-
           :style="{ lineHeight: '64px' }"
         >
           <a-menu-item key="1">
 
-            <router-link to="/Home/CreateScale"> <a-icon type="form" />创建量表</router-link>
+            <router-link to="/Home/CreateScale">
+              <a-icon type="form"/>
+              创建量表
+            </router-link>
           </a-menu-item>
 
           <a-menu-item key="2">
-            <router-link to="/Home/AddPatientInfo"><a-icon type="usergroup-add" />新增被试者</router-link>
+            <router-link to="/Home/AddPatientInfo">
+              <a-icon type="usergroup-add"/>
+              新增被试者
+            </router-link>
           </a-menu-item>
-
-          <!-- <a-menu-item key="2">
-            <router-link to="/Home/CreateScale">创建量表</router-link>
-          </a-menu-item>-->
-          <!-- <a-menu-item key="3">
-            <router-link to="/Home/CreateQuestionnaire">创建问卷</router-link>
-          </a-menu-item>
-
-          <a-menu-item key="4">
-            <router-link to="/Home/AddPatientInfo">添加病人信息</router-link>
-          </a-menu-item>-->
-
-<!--          <a-sub-menu>-->
-<!--            <span slot="title" class="submenu-title-wrapper">-->
-<!--              <a-icon type="form" />创建-->
-<!--            </span>-->
-<!--            <a-menu-item-group>-->
-<!--              <a-menu-item key="setting:1">-->
-<!--                <router-link to="/Home/AddPatientInfo">添加被试者信息</router-link>-->
-<!--              </a-menu-item>-->
-<!--              <a-menu-item key="setting:2">-->
-<!--                <router-link to="/Home/CreateScale">创建量表</router-link>-->
-<!--              </a-menu-item>-->
-<!--            </a-menu-item-group>-->
-<!--          </a-sub-menu>-->
 
           <a-sub-menu>
             <span slot="title" class="submenu-title-wrapper">
-              <a-icon type="user" />我的
+              <a-icon type="user"/>我的
             </span>
             <a-menu-item-group>
               <a-menu-item key="setting:3">
@@ -58,15 +38,15 @@
           </a-sub-menu>
 
           <a-menu-item key="5">
-            <router-link to="/Home/MyAnswer"><a-icon type="eye" />查看答案</router-link>
+            <router-link to="/Home/MyAnswer">
+              <a-icon type="eye"/>
+              查看答案
+            </router-link>
           </a-menu-item>
 
-<!--          <a-menu-item key="5">-->
-<!--            <router-link to="/Home/test"><a-icon type="eye" />查看答案</router-link>-->
-<!--          </a-menu-item>-->
-
           <a-menu-item key="6" :style="{float:'right'}" @click="dialogVisible = true">
-            <a-icon type="user-delete" />安全退出
+            <a-icon type="user-delete"/>
+            安全退出
           </a-menu-item>
         </a-menu>
       </a-layout-header>
@@ -84,13 +64,8 @@
         </span>
       </el-dialog>
 
-<!--内容-->
+      <!--内容-->
       <a-layout-content :style="{ padding: '0 50px', marginTop: '64px',background: '#F0F2F5'}">
-<!--      <a-breadcrumb :style="{ margin: '16px 0' }">-->
-<!--          <a-breadcrumb-item>Home</a-breadcrumb-item>-->
-<!--          <a-breadcrumb-item>List</a-breadcrumb-item>-->
-<!--          <a-breadcrumb-item>App</a-breadcrumb-item>-->
-<!--        </a-breadcrumb>-->
 
         <div :style="{ background: '#F0F2F5', padding: '24px', minHeight: '380px' }">
           <router-view></router-view>
@@ -98,54 +73,36 @@
         </div>
       </a-layout-content>
 
-<!--      尾部-->
+      <!--      尾部-->
       <a-layout-footer
         :style="{ textAlign: 'center', background: '#F0F2F5', padding:'24px 10px' }"
-      >中国科学院深圳先进技术研究院脑所 ©2019</a-layout-footer>
+      >中国科学院深圳先进技术研究院脑所 ©2019
+      </a-layout-footer>
     </a-layout>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
+
 export default {
   data () {
     return {
-
       dialogVisible: false,
       serverUrl: this.GLOBAL.serverUrl
     }
   },
   methods: {
 
-
-    // exit() {
-    //   this.$confirm({
-    //     title: "确定退出吗?",
-    //     onOk() {
-    //       axios.post(this.serverUrl + "authc/logout").then(response => {
-    //         ;
-    //         if (response.data.retCode === "000000") {
-    //           localStorage.clear();
-    //           this.$router.push({ path: "/login" });
-    //         }
-    //       });
-    //     },
-    //     onCancel() {
-    //       console.log("Cancel");
-    //     },
-    //     class: "test"
-    //   });
-    // },
     exit () {
       axios.post(this.serverUrl + 'authc/logout').then(response => {
-
         if (response.data.retCode === '000000') {
           localStorage.clear()
           this.$router.push({ path: '/login' })
         }
+      }, err => {
+        alert('网络异常，请检查是否连接上网络')
       })
     },
 
@@ -155,29 +112,33 @@ export default {
         .then(_ => {
           done()
         })
-        .catch(_ => {})
+        .catch(_ => {
+        })
+    },
+
+    // logo跳转
+    homeLogoClick () {
+      this.$router.push({
+        path: '/home/noCreate'
+      })
     }
   }
 }
 </script>
 <style>
-#components-layout-demo-fixed {
-  background: #f8f8f9;
-}
-#components-layout-demo-fixed .logo {
-  width: 120px;
-  height: 31px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px 24px 16px 0;
-  float: left;
-}
+  #components-layout-demo-fixed {
+    background: #f8f8f9;
+  }
 
-body {
-  background: #f0f2f5;
-}
+  #components-layout-demo-fixed .homeLogo {
+    width: 30px;
+    height: 30px;
+    margin: 16px 24px 16px 0;
+    float: left;
+  }
 
-/*.noCreateButton{*/
-/*  margin-top: 250px;*/
-/*  }*/
+  body {
+    background: #f0f2f5;
+  }
 
 </style>

@@ -9,12 +9,14 @@
         class="demo-dynamic"
       >
         <el-form-item prop="email" label="邮箱:">
-          <el-input v-model="ruleForm.email" size="medium" placeholder="请输入邮箱"></el-input>
+          <el-input type="text" maxlength="40" show-word-limit v-model="ruleForm.email" size="medium"
+                    placeholder="请输入邮箱"></el-input>
         </el-form-item>
 
-        <el-form-item prop="verificationCode" label="验证码:" >
+        <el-form-item prop="verificationCode" label="验证码:">
           <div class="verifyCode">
-            <el-input v-model="ruleForm.verificationCode" size="medium" placeholder="请输入验证码" class="verifyCode-input"></el-input>
+            <el-input type="text" maxlength="4" show-word-limit v-model="ruleForm.verificationCode" size="medium"
+                      placeholder="请输入验证码" class="verifyCode-input"></el-input>
             <el-image class="verifyCode-image" :src="imageCode" @click="fetchVertifyCode"></el-image>
           </div>
         </el-form-item>
@@ -31,6 +33,7 @@
 
 <script>
 import axios from 'axios'
+
 export default {
   data () {
     return {
@@ -95,7 +98,7 @@ export default {
         return
       }
       this.next(formName)
-      this.getSecond(3)
+      this.getSecond(5)
     },
 
     // 刷新验证码
@@ -104,7 +107,8 @@ export default {
         this.base64Code = response.data.data.captchaImg
         this.imageCode = 'data:image/jpeg;base64,' + this.base64Code
         this.captchaToken = response.data.data.captchaToken
-        console.log(response)
+      }, err => {
+        alert('网络异常，请检查是否连接上网络')
       })
     },
     fetchVertifyCode () {
@@ -116,7 +120,6 @@ export default {
     // （2）点击时需要把邮箱传到下一个界面
     next (formName) {
       this.$refs[formName].validate(valid => {
-        debugger
         if (valid) {
           // 调用获取验证码的接口,传三个参数
           axios.post(this.serverUrl + 'authc/password/findBack', {
@@ -124,13 +127,15 @@ export default {
             captcha: this.ruleForm.verificationCode,
             captchaToken: this.captchaToken
           }).then(response => {
-            debugger
             if (response.data.retCode === '000003') {
               this.$message.success('验证码已发送至您的邮箱')
               this.$router.push({ path: '/changePassword', query: { email: this.ruleForm.email } })
             } else {
               this.$message.error(response.data.retMsg, 5)
+              this.ruleForm.verificationCode = ''
             }
+          }, err => {
+            alert('网络异常，请检查是否连接上网络')
           })
         } else {
           alert('请输入注册过的邮箱！')
@@ -147,7 +152,6 @@ export default {
 }
 </script>
 <style>
-  /* card */
   #main {
     /* background-image: url(../assets/img/login.jpg); */
     background-size: cover;
@@ -160,27 +164,11 @@ export default {
     align-items: center;
   }
 
-  .forgot-register {
-    width: 90%;
-    align-items: center;
-    margin: 0 auto;
-  }
   /* 表单 */
   .demo-dynamic {
     width: 90%;
     align-items: center;
     margin: 0 auto;
-    margin-left: 10px;
-  }
-  /* 忘记密码 */
-  .login-form-register {
-    float: right;
-    /* margin-right: px; */
-    margin-right: 20px;
-  }
-  /* 马上注册 */
-  .login-form-forgot {
-    float: left;
     margin-left: 10px;
   }
 
@@ -191,17 +179,19 @@ export default {
     margin-left: -45px;
   }
 
-  .verifyCode{
+  .verifyCode {
     width: 100%;
     display: flex;
     flex-direction: row;
     /*border: 1px solid red;*/
   }
-  .verifyCode-input{
-    width:75%;
+
+  .verifyCode-input {
+    width: 75%;
   }
-  .verifyCode-image{
-    width:25%;
+
+  .verifyCode-image {
+    width: 25%;
     height: 33px;
     margin-top: 3px;
     margin-left: 10px;

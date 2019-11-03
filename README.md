@@ -1,4 +1,4 @@
-# scaleproject1
+# scaleSurveyFront
 
 ## Project setup
 ```

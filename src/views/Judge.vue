@@ -1,26 +1,39 @@
 <template>
   <!-- 试卷界面 -->
-  <div class="judge-box">
-    <!--    <a-card>-->
+  <div>
     <!-- 量表名称 -->
-    <div :style="{marginTop:'15px'}">
-      <center>
-        <h3><strong>{{examinationPaperInfo.scaleInfo.scaleName}}</strong></h3>
-      </center>
-    </div>
-    <!-- 评定人、答题人 开始-->
-    <a-card :style="{height:'130px',marginTop:'15px',width:'900px'}" :bordered="false" :hoverable="true">
-      <a-form :style="{marginLeft:'-120px'}">
-        <a-form-item label="评定人：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }">
-          <a-input v-model="JudgeInfo.checkUser" placeholder="请输入评定人"/>
-        </a-form-item>
+    <a-row>
+      <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+      <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
 
-        <!--答题人-->
-        <a-form-item label="答题人：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-15px'}">
-          {{examinationPaperInfo.patientInfo.name}}
-        </a-form-item>
-      </a-form>
-    </a-card>
+        <div :style="{marginTop:'15px'}">
+          <center>
+            <h3><strong>{{examinationPaperInfo.scaleInfo.scaleName}}</strong></h3>
+          </center>
+        </div>
+      </a-col>
+      <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+    </a-row>
+
+    <!-- 评定人、答题人 开始-->
+    <div>
+      <a-row>
+        <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+        <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
+          <a-card :style="{height:'100px',marginTop:'10px'}" :bordered="false" :hoverable="true">
+
+            <label>评定人：</label>
+            <el-input type="text" show-word-limit maxlength="10" size="small" v-model="JudgeInfo.checkUser"
+                      placeholder="请输入评定人" :style="{width:'60%',marginTop:'-10px'}"/>
+            <br/><br/>
+            <label>答题人：</label>
+            {{examinationPaperInfo.patientInfo.name}}
+
+          </a-card>
+        </a-col>
+        <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+      </a-row>
+    </div>
     <!-- 评定人、答题人 结束-->
 
     <!--所有题目 开始-->
@@ -30,144 +43,181 @@
     >
       <!-- 1.如果是问答题 -->
       <div v-if="oneQuestion.questionType==='QandA'">
-        <a-card :style="{height:'150px',marginTop:'15px',width:'900px'}" :bordered="false" :hoverable="true">
-          <a-form :style="{marginLeft:'-120px'}">
-            <a-form-item label="问题：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-10px'}">
+        <a-row>
+          <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+          <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
+            <a-card :style="{height:'150px',marginTop:'15px'}" :bordered="false" :hoverable="true">
+
+              <label>问题：</label>
               <strong>{{oneQuestion.title}}</strong>
-            </a-form-item>
+              <br/>
+              <br/>
 
-            <a-form-item label="答案：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-30px'}">
+              <label>答案：</label>
               {{oneQuestion.answer.content}}
-            </a-form-item>
+              <br/>
+              <br/>
 
-            <a-form-item label="评分：" :label-col="{ span: 5 }" :wrapper-col="{ span:1 }" :style="{marginTop:'-30px'}">
-              <a-input-number :min="0" :max="100" v-model="oneQuestion.answer.score" placeholder="请输入评分" />
-            </a-form-item>
-
-<!--            <a-form-item label="评分：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-30px'}">-->
-<!--              <a-input-number :min="0" :max="100" v-model="oneQuestion.answer.score" placeholder="请输入评分" />-->
-<!--            </a-form-item>-->
-
-<!--            <a-form-item label="评分：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-30px'}">-->
-<!--              <a-input-number :min="0" :max="100" v-model="oneQuestion.answer.score" placeholder="请输入评分" />-->
-<!--            </a-form-item>-->
-
-          </a-form>
-        </a-card>
+              <label>评分：</label>
+              <a-input-number :min="0" :max="100" v-model="oneQuestion.answer.score" placeholder="请输入评分"/>
+              <br/>
+              <br/>
+            </a-card>
+          </a-col>
+          <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+        </a-row>
       </div>
 
       <!-- 2.如果是单选题 -->
       <div v-if="oneQuestion.questionType==='radio'">
-        <a-card :style="{height:'150px',marginTop:'15px',width:'900px'}" :bordered="false" :hoverable="true">
-          <a-form :style="{marginLeft:'-120px'}">
-            <a-form-item label="（单选）题目：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }"
-                         :style="{marginTop:'-10px'}">
-              <strong>{{oneQuestion.title}}</strong>
-            </a-form-item>
-            <a-form-item label="答案：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-30px'}">
-              {{oneQuestion.answer.content}}
-            </a-form-item>
-            <a-form-item label="评分：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-30px'}">
-              <a-input-number :min="0" :max="100" v-model="oneQuestion.answer.score" placeholder="请输入评分" />
+        <a-row>
+          <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+          <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
+            <a-card :style="{height:'150px',marginTop:'15px'}" :bordered="false" :hoverable="true">
 
-            </a-form-item>
-          </a-form>
-        </a-card>
+              <label>（单选）题目：</label>
+              <strong>{{oneQuestion.title}}</strong>
+              <br/><br/>
+
+              <label>答案：</label>
+              <strong>{{oneQuestion.title}}</strong>
+              <br/><br/>
+
+              <label>评分：</label>
+              <a-input-number :min="0" :max="100" v-model="oneQuestion.answer.score" placeholder="请输入评分"/>
+            </a-card>
+          </a-col>
+          <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+        </a-row>
+
       </div>
 
       <!-- 3.如果是多选题 -->
       <div v-if="oneQuestion.questionType==='checkBox'">
-        <a-card :style="{height:'150px',marginTop:'15px',width:'900px'}" :bordered="false" :hoverable="true">
-          <a-form :style="{marginLeft:'-120px'}">
-            <a-form-item label="（多选）题目：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }"
-                         :style="{marginTop:'-10px'}">
+        <a-row>
+          <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+          <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
+            <a-card :style="{height:'150px',marginTop:'15px'}" :bordered="false" :hoverable="true">
+
+              <label>题目：</label>
               <strong>{{oneQuestion.title}}</strong>
-            </a-form-item>
-            <a-form-item label="答案：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-30px'}">
-                <span
-                  v-for="(item,itemId) in oneQuestion.answer.chooseAnswerList"
-                  :key="itemId"
-                >{{item}}&nbsp;&nbsp;</span>
-            </a-form-item>
-            <a-form-item label="评分：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-30px'}">
-              <a-input-number :min="0" :max="100" v-model="oneQuestion.answer.score" placeholder="请输入评分" />
-            </a-form-item>
-          </a-form>
-        </a-card>
+              <br/><br/>
+
+              <label>答案：</label>
+              <span
+                v-for="(item,itemId) in oneQuestion.answer.chooseAnswerList"
+                :key="itemId"
+              >{{item}}&nbsp;&nbsp;</span>
+              <br/><br/>
+
+              <label>评分：</label>
+              <a-input-number :min="0" :max="100" v-model="oneQuestion.answer.score" placeholder="请输入评分"/>
+              <br/><br/>
+
+            </a-card>
+          </a-col>
+          <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+        </a-row>
       </div>
 
       <!-- 6.如果是画图题 -->
       <div v-if="oneQuestion.questionType==='draw'">
-        <a-card :style="{height:'100%',marginTop:'15px',width:'900px'}" :bordered="false" :hoverable="true">
-          <div
-            v-for="(oneImage,oneImageId ) in oneQuestion.attachmentList"
-            :key="oneImageId"
-            class="image-div"
-          >
-            <img v-bind:src="imgUrl + oneImage" class="draw-img"/>
-            <br/>
-            <span :style="{marginLeft:'10px'}">答案如下图所示：</span>
-            <br/>
-            <br/>
-            <img v-bind:src="imgUrl + oneQuestion.answer.content" class="draw-img"/>
-
-            <a-form :style="{marginLeft:'-120px',marginTop:'30px'}">
-              <a-form-item label="评分：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-30px'}">
-                <a-input-number :min="0" :max="100" v-model="oneQuestion.answer.score" />
-              </a-form-item>
-            </a-form>
-          </div>
-        </a-card>
+        <a-row>
+          <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+          <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
+            <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false" :hoverable="true">
+              <div class="img-box-preview">
+                <div
+                  v-for="(oneImage,oneImageId ) in oneQuestion.attachmentList"
+                  :key="oneImageId"
+                  class="image-div"
+                >
+                  <img v-bind:src="imgUrl + oneImage" class="draw-img"/>
+                </div>
+              </div>
+              <br/>
+              <span :style="{marginLeft:'10px'}">答案如下图所示：</span>
+              <br/>
+              <br/>
+              <!--图片答案-->
+              <img v-bind:src="imgUrl + oneQuestion.answer.content" class="draw-img"/>
+              <br/><br/>
+              <label>评分：</label>
+              <a-input-number :min="0" :max="100" v-model="oneQuestion.answer.score"/>
+            </a-card>
+          </a-col>
+          <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+        </a-row>
       </div>
 
       <!-- 7.如果是图片题 -->
       <div v-if="oneQuestion.questionType==='picture'">
-        <a-card :style="{height:'100%',marginTop:'15px',width:'900px'}" :bordered="false" :hoverable="true">
-          <div
-            v-for="(oneImage,oneImageId ) in oneQuestion.attachmentList"
-            :key="oneImageId"
-            class="image-div"
-          >
-            <img v-bind:src="imgUrl + oneImage" class="picture-img"/>
-
-            <a-form :style="{marginLeft:'-120px',marginTop:'30px'}">
-
-              <a-form-item label="答案：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-30px'}">
-                {{oneQuestion.answer.content}}
-              </a-form-item>
-
-              <a-form-item label="评分：" :label-col="{ span: 5 }" :wrapper-col="{ span:16 }" :style="{marginTop:'-30px'}">
-                <a-input-number :min="0" :max="100" v-model="oneQuestion.answer.score" placeholder="请输入评分" />
-              </a-form-item>
-            </a-form>
-          </div>
-        </a-card>
+        <a-row>
+          <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+          <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
+            <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false" :hoverable="true">
+              <div class="img-box-preview">
+                <div
+                  v-for="(oneImage,oneImageId ) in oneQuestion.attachmentList"
+                  :key="oneImageId"
+                  class="image-div"
+                >
+                  <img v-bind:src="imgUrl + oneImage"/>
+                </div>
+              </div>
+              <label>答案：</label>{{oneQuestion.answer.content}}
+              <br/><br/>
+              <label>评分：</label>
+              <a-input-number :min="0" :max="100" v-model="oneQuestion.answer.score" placeholder="请输入评分"/>
+            </a-card>
+          </a-col>
+          <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+        </a-row>
       </div>
 
-      <!-- 4.如果是题目类型 -->
+      <!-- 4.如果是量表类型 -->
       <div v-if="oneQuestion.questionType==='questionType'" :style="{width:'900px',marginTop:'30PX'}">
-        <a-divider orientation="left">{{oneQuestion.title}}</a-divider>
+        <a-row>
+          <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+          <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
+            <a-divider orientation="left">{{oneQuestion.title}}</a-divider>
+          </a-col>
+          <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+        </a-row>
       </div>
 
       <!-- 5.如果是指导语 -->
       <div v-if="oneQuestion.questionType==='direction'">
-        <div :style="{marginTop:'15px',width:'900px'}">
-          <strong>指导语：</strong>{{oneQuestion.title}}<br/>
-        </div>
+        <a-row>
+          <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+          <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
+            <div :style="{marginTop:'15px',width:'900px'}">
+              <strong>指导语：</strong>{{oneQuestion.title}}<br/>
+            </div>
+          </a-col>
+          <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+        </a-row>
       </div>
     </div>
+    <!--    所有题目结束-->
 
     <!-- 保存 -->
-    <a-card :style="{height:'100%',marginTop:'15px',width:'900px',marginBottom:'20px'}" :bordered="false"
-            :hoverable="true">
-      <center>
+    <a-row>
+      <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+      <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
+        <a-card :style="{height:'100%',marginTop:'15px',marginBottom:'20px'}" :bordered="false"
+                :hoverable="true">
+          <center>
             <div>
-              <h3><strong><label >总得分：{{computedTotalScore}}</label></strong></h3>
+              <h3><strong><label>总得分：{{computedTotalScore}}</label></strong></h3>
             </div>
-        <h3 :style="{marginTop:'10px'}"><strong>量表评定完成，请保存！</strong></h3>
-        <a-button type="primary" @click="saveScore" :style="{marginTop:'15px'}">保存</a-button>
-      </center>
-    </a-card>
+            <h3 :style="{marginTop:'10px'}"><strong>量表评定完成，请保存！</strong></h3>
+            <a-button type="primary" @click="saveScore" :style="{marginTop:'15px'}">保存</a-button>
+          </center>
+        </a-card>
+      </a-col>
+      <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+    </a-row>
 
   </div>
   <!-- 试卷界面  结束 -->
@@ -183,8 +233,8 @@ export default {
       // 图片地址
       imgUrl: this.GLOBAL.serverUrl + 'file/download?fileNo=',
       examinationPaperInfo: {
-        scaleInfo: {scaleName: '',questionList:[]},
-        patientInfo:{name:''},
+        scaleInfo: { scaleName: '', questionList: [] },
+        patientInfo: { name: '' }
 
       },
 
@@ -203,14 +253,13 @@ export default {
 
   computed: {
     computedTotalScore () {
-      debugger
       let questionList = []
       questionList = this.examinationPaperInfo.scaleInfo.questionList
       var totalScore = 0
       for (var i = 0; i < questionList.length; i++) {
         totalScore = totalScore + questionList[i].answer.score
       }
-      if(isNaN(totalScore)){
+      if (isNaN(totalScore)) {
         totalScore = 0
       }
       this.JudgeInfo.totalScore = totalScore
@@ -220,16 +269,15 @@ export default {
 
   methods: {
 
-
     // 评分-----拿到数据
     fetch () {
       let that = this
-      debugger
+
       axios
         .post(
           this.serverUrl + '/paper/info/get',
 
-            this.$route.query,
+          this.$route.query,
 
           {
             headers: {
@@ -245,17 +293,25 @@ export default {
               that.JudgeInfo.checkUser = that.examinationPaperInfo.judgeInfo.checkUser
               that.JudgeInfo.totalScore = that.examinationPaperInfo.judgeInfo.totalScore
             }
-
+          } else if (response.data.retCode === '100001') {
+            if (localStorage.getItem('Token') === null) {
+              this.$message.error('未登录，即将跳转至登录页面', 5)
+              this.$router.push({ path: '/login' })
+            } else {
+              this.$message.error('登录超时', 5)
+              this.$router.push({ path: '/login' })
+            }
           } else {
-            this.$message.error('系统错误')
+            this.$message.error(response.data.retMsg, 5)
           }
+        }, err => {
+          alert('网络异常，请检查是否连接上网络')
         })
     },
     // 保存
     saveScore () {
       // 得到答卷Id
       this.JudgeInfo.examinationPaperId = this.examinationPaperInfo.examinationPaperId
-      debugger
 
       // 题目列表
       var questionList = this.examinationPaperInfo.scaleInfo.questionList
@@ -266,7 +322,7 @@ export default {
         }
         this.JudgeInfo.answerJudgeList.push(answer)
       }
-      debugger
+
       axios
         .post(this.serverUrl + 'paper/judge/commit', this.JudgeInfo, {
           headers: {
@@ -274,17 +330,24 @@ export default {
           }
         })
         .then(response => {
-          debugger
-          console.log(response)
-          if(response.data.retCode==='000000'){
+          if (response.data.retCode === '000000') {
             this.$message.success('保存成功', 4)
             this.$router.push({
               path: '/home/myAnswer'
             })
-          }else {
-            this.$message.error('保存失败', 4)
+          } else if (data.data.retCode === '100001') {
+            if (localStorage.getItem('Token') === null) {
+              this.$message.error('未登录，即将跳转至登录页面', 5)
+              this.$router.push({ path: '/login' })
+            } else {
+              this.$message.error('登录超时', 5)
+              this.$router.push({ path: '/login' })
+            }
+          } else {
+            this.$message.error(data.data.retMsg, 5)
           }
-
+        }, err => {
+          alert('网络异常，请检查是否连接上网络')
         })
     }
   }
@@ -292,24 +355,36 @@ export default {
 </script>
 
 <style scoped>
-  .judge-box {
+  .image-div img {
+    margin-left: 10px;
+    margin-bottom: 3vh;
+    /*margin-left: 2vh;*/
+    width: 30vh;
+    height: 30vh;
+    border: 1px solid #2d8cf0;
+  }
+
+  .img-box-preview {
     display: flex;
-    flex-direction: column;
+    /* 左右布局 */
+    justify-content: space-between;
+    /* //换行 */
+    flex-wrap: wrap;
+    /* //紧揍排列 */
+    align-content: flex-start;
+    width: 130vh;
+    height: auto;
+
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     margin: 0 auto;
-    background-color: #f8f8f9;
   }
 
-  .image-div img {
-    margin-bottom: 3vh;
-    margin-left: 2vh;
+  .draw-img {
     width: 30vh;
     height: 30vh;
-  }
-
-
-  .draw-img, .picture-img {
     border: 1px solid #2d8cf0;
   }
+
 </style>

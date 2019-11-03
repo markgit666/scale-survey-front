@@ -9,7 +9,7 @@ export const $axios = axios.create({ // 这里是配置项
 // 拦截请求
 $axios.interceptors.request.use(
     config => {
-        console.log(config);
+        (config);
 
         let t = localStorage.getItem('token')
         if (t) {
@@ -27,11 +27,11 @@ $axios.interceptors.request.use(
 // 拦截响应
 $axios.interceptors.response.use(
     response => {
-        console.log(response)
+
         return response
     },
     err => {
-        console.log(err);
+        (err);
         if (err.response) {
             switch (err.response.status) {
                 case 401:

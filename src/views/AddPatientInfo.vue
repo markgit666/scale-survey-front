@@ -1,10 +1,12 @@
 <template>
   <div class="info_box">
     <a-card title="添加基本信息">
+
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="175px" class="form-div">
         <!-- 姓名 -->
         <el-form-item label="姓名 :" class="form-item-div" prop="name">
-          <el-input v-model="ruleForm.name" size="medium" placeholder="请输入姓名"></el-input>
+          <el-input type="text" maxlength="10" show-word-limit v-model="ruleForm.name" size="medium"
+                    placeholder="请输入"></el-input>
         </el-form-item>
 
         <!-- 出生日期 -->
@@ -24,27 +26,31 @@
         <el-form-item label="性别 :" prop="gender" class="form-item-div">
           <el-select
             v-model="ruleForm.gender"
-            placeholder="请选择性别"
+            placeholder="请选择"
             style="width: 100%;"
             size="medium"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="男" value="1"></el-option>
             <el-option label="女" value="2"></el-option>
           </el-select>
         </el-form-item>
         <!-- 家庭地址 -->
         <el-form-item label="家庭地址 :" class="form-item-div" prop="familyAddress">
-          <el-input v-model="ruleForm.familyAddress" size="medium" placeholder="请输入家庭地址"></el-input>
+          <el-input type="text" maxlength="100" show-word-limit v-model="ruleForm.familyAddress" size="medium"
+                    placeholder="请输入"></el-input>
         </el-form-item>
 
         <!-- 联系方式 -->
         <el-form-item label="联系方式 :" class="form-item-div" prop="telephoneNumber">
-          <el-input v-model="ruleForm.telephoneNumber" size="medium" placeholder="请输入联系方式"></el-input>
+          <el-input type="text" maxlength="11" show-word-limit v-model="ruleForm.telephoneNumber" size="medium"
+                    placeholder="请输入"></el-input>
         </el-form-item>
 
         <!-- 利手 -->
         <el-form-item label="利手 :" class="form-item-div">
           <el-select v-model="ruleForm.hand" placeholder="请选择" style="width: 100%;" size="medium">
+            <el-option label="" value=""></el-option>
             <el-option label="左" value="左手"></el-option>
             <el-option label="右" value="右手"></el-option>
           </el-select>
@@ -54,10 +60,11 @@
         <el-form-item label="民族 :" class="form-item-div">
           <el-select
             v-model="ruleForm.nation"
-            placeholder="请选择民族"
+            placeholder="请选择"
             style="width: 100%;"
             size="medium"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="汉族" value="汉族"></el-option>
             <el-option label="其他" value="其他"></el-option>
           </el-select>
@@ -71,6 +78,7 @@
             style="width: 100%;"
             size="medium"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="未婚" value="未婚"></el-option>
             <el-option label="有配偶" value="有配偶"></el-option>
             <el-option label="离异" value="离异"></el-option>
@@ -87,6 +95,7 @@
             size="medium"
             @change="jobChange"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="退休" value="退休"></el-option>
             <el-option label="离休" value="离休"></el-option>
             <el-option label="在职" value="在职"></el-option>
@@ -95,7 +104,8 @@
 
         <!-- 如果是在职，输入职业 -->
         <el-form-item label="在职职业 :" class="form-item-div" v-if="showJob">
-          <el-input v-model="ruleForm.inServiceJob" size="medium" placeholder="请输入"></el-input>
+          <el-input type="text" maxlength="40" show-word-limit v-model="ruleForm.inServiceJob" size="medium"
+                    placeholder="请输入"></el-input>
         </el-form-item>
 
         <!-- 文化程度 -->
@@ -106,6 +116,7 @@
             style="width: 100%;"
             size="medium"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="未上学" value="未上学"></el-option>
             <el-option label="小学" value="小学"></el-option>
             <el-option label="初中" value="初中"></el-option>
@@ -130,6 +141,7 @@
             style="width: 100%;"
             size="medium"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="打呼噜" value="打呼噜"></el-option>
             <el-option label="不打呼噜" value="不打呼噜"></el-option>
             <el-option label="有时打呼噜" value="有时打呼噜"></el-option>
@@ -144,6 +156,7 @@
             style="width: 100%;"
             size="medium"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="独居" value="独居"></el-option>
             <el-option label="与子女同住" value="与子女同住"></el-option>
             <el-option label="与配偶同住" value="与配偶同住"></el-option>
@@ -162,6 +175,7 @@
             size="medium"
             @change="diseaseChange"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="高血压" value="高血压"></el-option>
             <el-option label="糖尿病" value="糖尿病"></el-option>
             <el-option label="冠心病" value="冠心病"></el-option>
@@ -172,7 +186,8 @@
 
         <!-- 如果是其他病史，输入其他病史  -->
         <el-form-item label="其他病史 :" class="form-item-div" v-if="showDisease">
-          <el-input v-model="ruleForm.otherMedicalHistory" size="medium" placeholder="请输入"></el-input>
+          <el-input type="text" maxlength="40" show-word-limit v-model="ruleForm.otherMedicalHistory" size="medium"
+                    placeholder="请输入"></el-input>
         </el-form-item>
 
         <!-- 吸烟史 -->
@@ -184,6 +199,7 @@
             size="medium"
             @change="smokingChange"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="没有吸烟史" value="没有吸烟史"></el-option>
             <el-option label="已戒" value="已戒"></el-option>
             <el-option label="仍在吸" value="仍在吸"></el-option>
@@ -217,6 +233,7 @@
             size="medium"
             @change="drinkingChange"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="没有饮酒史" value="没有饮酒史"></el-option>
             <el-option label="已戒" value="已戒"></el-option>
             <el-option label="仍在喝" value="仍在喝"></el-option>
@@ -230,6 +247,7 @@
             style="width: 100%;"
             size="medium"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="啤酒" value="啤酒"></el-option>
             <el-option label="黄酒" value="黄酒"></el-option>
             <el-option label="白酒" value="白酒"></el-option>
@@ -263,6 +281,7 @@
             size="medium"
             @change="mentalDiseaseChange"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="无" value="无"></el-option>
             <el-option label="有" value="有"></el-option>
           </el-select>
@@ -277,6 +296,7 @@
             size="medium"
             @change="otherMentalDiseaseChange"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="痴呆" value="痴呆"></el-option>
             <el-option label="抑郁症" value="抑郁症"></el-option>
             <el-option label="神经衰弱" value="神经衰弱"></el-option>
@@ -290,6 +310,7 @@
             v-model="ruleForm.otherMentalDiseaseFamilyHistory"
             size="medium"
             placeholder="请输入"
+            type="text" maxlength="40" show-word-limit
           ></el-input>
         </el-form-item>
         <!-- 现病史 -->
@@ -301,18 +322,21 @@
             size="medium"
             @change="memoryChange"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="无" value="无记忆力下降"></el-option>
             <el-option label="有" value="有记忆力下降"></el-option>
           </el-select>
         </el-form-item>
 
         <el-form-item label="记忆力下降多久 :" class="form-item-div" v-if="showMemory">
-          <el-input v-model="ruleForm.memoryLossTime" size="medium" placeholder="请输入"></el-input>
+          <el-input type="text" maxlength="40" show-word-limit v-model="ruleForm.memoryLossTime" size="medium"
+                    placeholder="请输入"></el-input>
         </el-form-item>
 
         <!-- 体格检查情况 -->
         <el-form-item label="体格检查情况 :" class="form-item-div">
-          <el-input v-model="ruleForm.physicalExamination" size="medium" placeholder="请输入"></el-input>
+          <el-input type="text" maxlength="300" show-word-limit v-model="ruleForm.physicalExamination" size="medium"
+                    placeholder="请输入"></el-input>
         </el-form-item>
 
         <!-- 是否合并使用促认知药物 -->
@@ -324,13 +348,15 @@
             size="medium"
             @change="cognitiveDrugChange"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="无" value="无合并使用促认知药物"></el-option>
             <el-option label="有" value="有合并使用促认知药物"></el-option>
           </el-select>
         </el-form-item>
 
         <el-form-item label="具体促认知药物 :" class="form-item-div" v-if="showCognitiveDrug">
-          <el-input v-model="ruleForm.drugsType " size="medium" placeholder="请输入"></el-input>
+          <el-input type="text" maxlength="40" show-word-limit v-model="ruleForm.drugsType " size="medium"
+                    placeholder="请输入"></el-input>
         </el-form-item>
 
         <el-form-item
@@ -341,12 +367,6 @@
         >
           <a-input-number v-model="ruleForm.drugsDosage" placeholder="请输入数字值" :style="{width:'100%'}"/>
 
-          <!--          <el-input-->
-          <!--            v-model.number="ruleForm.drugsDosage"-->
-          <!--            size="medium"-->
-          <!--            placeholder="请输入"-->
-          <!--            autocomplete="off"-->
-          <!--          ></el-input>-->
         </el-form-item>
 
         <!-- 保存按钮 -->
@@ -387,8 +407,8 @@ export default {
         educationYears: '',
         isSnoring: '',
         livingWay: '',
-        medicalHistory: '',//既往病史
-        otherMedicalHistory: '',//其他既往病史
+        medicalHistory: '', // 既往病史
+        otherMedicalHistory: '', // 其他既往病史
         smokingHistory: '',
         smokingNumEachDay: '',
         smokingYears: '',
@@ -396,16 +416,15 @@ export default {
         drinkingType: '',
         drinkingNumEachDay: '',
         drinkingYears: '',
-        isMentalDiseaseFamilyHistory: '',//有无精神疾病家族史
-        mentalDiseaseFamilyHistory: '', //精神疾病家族史
-        otherMentalDiseaseFamilyHistory: '',//其他精神病史
+        isMentalDiseaseFamilyHistory: '', // 有无精神疾病家族史
+        mentalDiseaseFamilyHistory: '', // 精神疾病家族史
+        otherMentalDiseaseFamilyHistory: '', // 其他精神病史
         currentMedicalHistoryMemoryLoss: '', // 现病史（有无记忆下降）
-        memoryLossTime: '',//记忆力下降多久
-        physicalExamination: '',//体格检查情况
-        isUseCognitiveDrugs: '',//是否合并使用促认知药物
-        drugsType: '',//具体促认知药物
-        drugsDosage: '', //具体药物的剂量
-
+        memoryLossTime: '', // 记忆力下降多久
+        physicalExamination: '', // 体格检查情况
+        isUseCognitiveDrugs: '', // 是否合并使用促认知药物
+        drugsType: '', // 具体促认知药物
+        drugsDosage: '' // 具体药物的剂量
 
       },
       rules: {
@@ -512,9 +531,7 @@ export default {
 
     // 保存个人信息
     saveInfo (formName) {
-      console.log(this.ruleForm)
       this.$refs[formName].validate(valid => {
-
         var reg = /^[1-9]+[0-9]*]*$/
         if (valid) {
           this.$http
@@ -525,12 +542,21 @@ export default {
             })
             .then(function (data) {
               if ((data.body.retCode === '000000')) {
-                console.log(data)
                 this.$router.push({ path: '/home/myPatients' })
                 this.$message.success('保存成功！', 5)
+              } else if (data.body.retCode === '100001') {
+                if (localStorage.getItem('Token') === null) {
+                  this.$message.error('未登录，即将跳转至登录页面', 5)
+                  this.$router.push({ path: '/login' })
+                } else {
+                  this.$message.error('登录超时', 5)
+                  this.$router.push({ path: '/login' })
+                }
               } else {
                 this.$message.error('保存失败', 5)
               }
+            }, err => {
+              alert('网络异常，请检查是否连接上网络')
             })
         } else {
           alert('格式错误！请检查')
@@ -538,46 +564,13 @@ export default {
         }
       })
     }
-    // 保存数据到数据库
-    // submitInfo(e) {
-    //   ;
-    //   e.preventDefault();
-    //   this.form.validateFields((err, values) => {
-    //     ;
-    //     if (!err) {
-    //       values.birthday = values.birthday.format("YYYY-MM-DD");
-    //       this.$http
-    //         .post(this.serverUrl + "patient/info/save", values, {
-    //           headers: {
-    //             Token: localStorage.getItem("Token")
-    //           }
-    //         })
-    //         .then(function(data) {
-    //           console.log(data);
-    //           this.$message.success("保存成功！");
-    //           this.$router.push({ path: "/home/myPatients" });
-    //         });
-    //     }
-    //   });
-    // }
   }
 }
 </script>
 
 <style scoped>
   .info_box {
-    /* border: 1px solid saddlebrown; */
-    /* width: 100%; */
     text-align: center;
-  }
-
-  .form {
-    border: 1px solid springgreen;
-  }
-
-  .text {
-    color: #2d8cf0;
-    font-size: 2.5vh;
   }
 
   .form-div {
@@ -585,8 +578,6 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* border: 1px solid saddlebrown; */
-    /* margin-left: -90px; */
     width: 100%;
   }
 

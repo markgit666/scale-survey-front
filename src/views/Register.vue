@@ -9,7 +9,8 @@
         class="demo-dynamic"
       >
         <el-form-item prop="email" label="邮箱:">
-          <el-input v-model="ruleForm.email" size="medium" placeholder="请输入邮箱"></el-input>
+          <el-input type="text" maxlength="40" show-word-limit v-model="ruleForm.email" size="medium"
+                    placeholder="请输入邮箱"></el-input>
         </el-form-item>
 
         <el-form-item label="密码:" prop="password1">
@@ -34,7 +35,8 @@
 
         <el-form-item prop="verifyCode" label="验证码:">
           <div class="verifyCode">
-            <el-input v-model="ruleForm.verifyCode" size="medium" placeholder="请输入验证码"
+            <el-input type="text" maxlength="6" show-word-limit v-model="ruleForm.verifyCode" size="medium"
+                      placeholder="请输入验证码"
                       class="verifyCode-input"></el-input>
             <a @click="sendMessage" class="verifyCode-a">{{verifyCodeText}}</a>
           </div>
@@ -171,14 +173,16 @@ export default {
           {
             emailAddress: this.ruleForm.email
           }).then(response => {
-          debugger
           if (response.data.retCode === '000003') {
             this.$message.success(response.data.retMsg, 5)
           } else if (response.data.retCode === '100008') {
             this.$message.error('验证码错误', 5)
+            this.ruleForm.verifyCode = ''
           } else {
             this.$message.error('获取验证码失败，请稍后重试', 5)
           }
+        }, err => {
+          alert('网络异常，请检查是否连接上网络')
         })
       }
     },
@@ -210,23 +214,20 @@ Xrej5WAcEy7ThIi17wIDAQAB` // 把之前生成的贴进来，实际开发过程中
               verifyCode: this.ruleForm.verifyCode
             })
             .then(response => {
-              debugger
               if (response.data.retCode === '100004') {
                 this.$message.error('用户名已被注册！', 5)
               } else if (response.data.retCode === '000002') {
                 this.$message.success('注册成功！', 5)
                 this.$router.push({ path: '/Login' })
-              } else if (response.data.retCode === '100008'){
+              } else if (response.data.retCode === '100008') {
                 this.$message.error('验证码不正确！', 5)
               } else {
                 this.$message.error('注册失败！', 5)
               }
+            }, err => {
+              alert('网络异常，请检查是否连接上网络')
             })
         }
-        // else {
-        //   this.$message.error('注册失败！', 5)
-        //   return false
-        // }
       })
     }
   }
@@ -250,7 +251,6 @@ Xrej5WAcEy7ThIi17wIDAQAB` // 把之前生成的贴进来，实际开发过程中
     width: 100%;
     display: flex;
     flex-direction: row;
-    /*border: 1px solid red;*/
   }
 
   .verifyCode-input {

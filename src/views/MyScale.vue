@@ -1,20 +1,17 @@
 <template>
   <div class="box">
     <a-card :hoverable="true" :bordered="false">
-      <a-input-search placeholder="根据量表名称搜索..." @search="onSearch" enterButton :style="{width:'30%',float:'right'}"/>
+      <a-input-search placeholder="根据量表名称搜索..." v-model="scaleName" @search="onSearch" enterButton :style="{width:'30%',float:'right'}"/>
       <br/><br/>
       <a-table
         :columns="columns"
         :rowKey="record => record.scaleId"
         :dataSource="data"
-        :pagination="pagination"
+        :pagination="false"
         :loading="loading"
-        @change="handleTableChange"
-        size="middle"
+        size="small"
       >
-        <!--        <template slot="title">-->
-        <!--          <h3>已添加的量表</h3>-->
-        <!--        </template>-->
+
         <!-- 操作 -->
         <template slot="operation" slot-scope="text, record, index">
           <div class="editable-row-operations">
@@ -50,6 +47,24 @@
         </template>
         <!-- 操作 结束 -->
       </a-table>
+
+      <!--      分页-->
+      <template>
+        <a-pagination
+          :pageSizeOptions="pageSizeOptions"
+          :total="total"
+          showSizeChanger
+          :pageSize="pageSize"
+          v-model="current"
+          @showSizeChange="onShowSizeChange"
+          :style="{marginTop:'15px',float:'right'}"
+        >
+          <template slot="buildOptionText" slot-scope="props">
+            <span>{{props.value}}条/页</span>
+          </template>
+        </a-pagination>
+      </template>
+
     </a-card>
   </div>
 </template>
@@ -97,11 +112,17 @@ const columns = [
 
 export default {
   mounted () {
-    this.fetch()
+    this.fetch({ pageNo: this.current, pageSize: this.pageSize })
   },
   data () {
     return {
-
+      // 搜索时的量表名称
+      scaleName: '',
+      // 分页数据
+      pageSizeOptions: ['10', '20', '30', '40', '50'],
+      current: 1,
+      pageSize: 10,
+      total: 50,
       visible: false,
       serverUrl: this.GLOBAL.serverUrl,
       imgUrl: this.GLOBAL.serverUrl + 'file/qrCode/image/download?',
@@ -113,26 +134,34 @@ export default {
       qrCodeShowSwitch: ''
     }
   },
-  methods: {
-    // 分页
-    handleTableChange (pagination, filters, sorter) {
-      pagination.pageSize = 3
-      console.log('pagination=', pagination)
-      const pager = { ...this.pagination }
-      pager.current = pagination.current
-      console.log('current是：', pager.current)
-      this.pagination = pager
+  // 监控分页的当前页
+  watch: {
+    current (val) {
       this.fetch({
-        pageNo: pagination.current,
-        sortField: sorter.field,
-        sortOrder: sorter.order,
-        ...filters
+        pageNo: val,
+        pageSize: this.pageSize,
+        data: {
+          scaleName: this.scaleName
+        }
       })
+    }
+  },
+  methods: {
+    // 选择一页几条数据
+    onShowSizeChange (current, pageSize) {
+      this.pageSize = pageSize
+      this.fetch({ pageNo: current, pageSize: pageSize })
     },
+    // 分页
+    // handleTableChange (pagination) {
+    //   const pager = { ...this.pagination }
+    //   this.pagination = pager
+    //   this.fetch({
+    //     pageNo: pagination.current
+    //   })
+    // },
     fetch (params = {}) {
-      debugger
-      // console.log("params:", params);
-      // console.log("fetch pagination=", this.pagination);
+      let that = this
       this.loading = true
       reqwest({
         url: this.serverUrl + 'scale/info/getList',
@@ -140,32 +169,28 @@ export default {
           Token: localStorage.getItem('Token')
         },
         method: 'post',
-        data: JSON.stringify({
-          pageNo: 1,
-          pageSize: 5,
-          data: params
-        }),
+        data: JSON.stringify(params),
         type: 'json',
         contentType: 'application/json'
       }).then(values => {
-        debugger
         if ((values.retCode === '000000')) {
-          const pagination = { ...this.pagination }
-          var page
-          if (values.data.totalNum % 5 === 0) {
-            page = values.data.totalNum / 5
-          } else {
-            page = Math.floor(values.data.totalNum / 5 + 1)
-          }
-          pagination.total = page * 10
-          console.log('total=', pagination.total)
+          that.total = values.data.totalNum
+          that.current = params.pageNo
           this.loading = false
           this.data = values.data.list
-          this.pagination = pagination
+        } else if (values.retCode === '100001') {
+          if (localStorage.getItem('Token') === null) {
+            this.$message.error('未登录，即将跳转至登录页面', 5)
+            this.$router.push({ path: '/login' })
+          } else {
+            this.$message.error('登录超时', 5)
+            this.$router.push({ path: '/login' })
+          }
         } else {
-          this.$message.error('未登录，即将跳转至登录页面', 5)
-          this.$router.push({ path: '/login' })
+          this.$message.error(values.retMsg, 5)
         }
+      }, err => {
+        alert('网络异常，请检查是否连接上网络')
       })
     },
 
@@ -193,14 +218,22 @@ export default {
           }
         )
         .then(response => {
-          console.log(response)
-
           if ((response.data.retCode === '000000')) {
             this.fetch()
             this.$message.success('删除成功！', 5)
+          } else if (response.data.retCode === '100001') {
+            if (localStorage.getItem('Token') === null) {
+              this.$message.error('未登录，即将跳转至登录页面', 5)
+              this.$router.push({ path: '/login' })
+            } else {
+              this.$message.error('登录超时', 5)
+              this.$router.push({ path: '/login' })
+            }
           } else {
-            this.$message.error('删除失败！', 5)
+            this.$message.error(response.data.retMsg, 5)
           }
+        }, err => {
+          alert('网络异常，请检查是否连接上网络')
         })
     },
 
@@ -210,16 +243,18 @@ export default {
       this.visible = true
     },
     handleOk (e) {
-      // console.log(e);
       this.visible = false
     },
 
     // 根据量表名称搜索
-    onSearch (value) {
+    onSearch () {
       this.fetch({
-        scaleName: value
+        pageNo: 1,
+        pageSize: this.pageSize,
+        data: {
+          scaleName: this.scaleName
+        }
       })
-      console.log(value)
     }
   }
 }
