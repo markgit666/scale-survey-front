@@ -1,6 +1,6 @@
 <template>
   <div id="main">
-    <a-card title="找回密码" hoverable style="width: 90vh">
+    <a-card title="找回密码" hoverable style="width: 35rem">
       <el-form
         :model="ruleForm"
         :rules="rules"
@@ -98,7 +98,7 @@ export default {
         return
       }
       this.next(formName)
-      this.getSecond(5)
+      this.getSecond(7)
     },
 
     // 刷新验证码

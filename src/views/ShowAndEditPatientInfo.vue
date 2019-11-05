@@ -29,6 +29,7 @@
             style="width: 100%;"
             size="medium"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="男" value="1"></el-option>
             <el-option label="女" value="2"></el-option>
           </el-select>
@@ -48,6 +49,7 @@
         <!-- 利手 -->
         <el-form-item label="利手 :" class="form-item-div">
           <el-select v-model="ruleForm.hand" placeholder="请选择" style="width: 100%;" size="medium">
+            <el-option label="" value=""></el-option>
             <el-option label="左" value="左手"></el-option>
             <el-option label="右" value="右手"></el-option>
           </el-select>
@@ -61,6 +63,7 @@
             style="width: 100%;"
             size="medium"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="汉族" value="汉族"></el-option>
             <el-option label="其他" value="其他"></el-option>
           </el-select>
@@ -74,6 +77,7 @@
             style="width: 100%;"
             size="medium"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="未婚" value="未婚"></el-option>
             <el-option label="有配偶" value="有配偶"></el-option>
             <el-option label="离异" value="离异"></el-option>
@@ -90,6 +94,7 @@
             size="medium"
             @change="jobChange"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="退休" value="退休"></el-option>
             <el-option label="离休" value="离休"></el-option>
             <el-option label="在职" value="在职"></el-option>
@@ -110,6 +115,7 @@
             style="width: 100%;"
             size="medium"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="未上学" value="未上学"></el-option>
             <el-option label="小学" value="小学"></el-option>
             <el-option label="初中" value="初中"></el-option>
@@ -134,6 +140,7 @@
             style="width: 100%;"
             size="medium"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="打呼噜" value="打呼噜"></el-option>
             <el-option label="不打呼噜" value="不打呼噜"></el-option>
             <el-option label="有时打呼噜" value="有时打呼噜"></el-option>
@@ -148,6 +155,7 @@
             style="width: 100%;"
             size="medium"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="独居" value="独居"></el-option>
             <el-option label="与子女同住" value="与子女同住"></el-option>
             <el-option label="与配偶同住" value="与配偶同住"></el-option>
@@ -166,6 +174,7 @@
             size="medium"
             @change="diseaseChange"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="高血压" value="高血压"></el-option>
             <el-option label="糖尿病" value="糖尿病"></el-option>
             <el-option label="冠心病" value="冠心病"></el-option>
@@ -189,6 +198,7 @@
             size="medium"
             @change="smokingChange"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="没有吸烟史" value="没有吸烟史"></el-option>
             <el-option label="已戒" value="已戒"></el-option>
             <el-option label="仍在吸" value="仍在吸"></el-option>
@@ -221,6 +231,7 @@
             size="medium"
             @change="drinkingChange"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="没有饮酒史" value="没有饮酒史"></el-option>
             <el-option label="已戒" value="已戒"></el-option>
             <el-option label="仍在喝" value="仍在喝"></el-option>
@@ -234,6 +245,7 @@
             style="width: 100%;"
             size="medium"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="啤酒" value="啤酒"></el-option>
             <el-option label="黄酒" value="黄酒"></el-option>
             <el-option label="白酒" value="白酒"></el-option>
@@ -267,6 +279,7 @@
             size="medium"
             @change="mentalDiseaseChange"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="无" value="无"></el-option>
             <el-option label="有" value="有"></el-option>
           </el-select>
@@ -281,6 +294,7 @@
             size="medium"
             @change="otherMentalDiseaseChange"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="痴呆" value="痴呆"></el-option>
             <el-option label="抑郁症" value="抑郁症"></el-option>
             <el-option label="神经衰弱" value="神经衰弱"></el-option>
@@ -309,6 +323,7 @@
             size="medium"
             @change="memoryChange"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="无" value="无记忆力下降"></el-option>
             <el-option label="有" value="有记忆力下降"></el-option>
           </el-select>
@@ -336,6 +351,7 @@
             size="medium"
             @change="cognitiveDrugChange"
           >
+            <el-option label="" value=""></el-option>
             <el-option label="无" value="无合并使用促认知药物"></el-option>
             <el-option label="有" value="有合并使用促认知药物"></el-option>
           </el-select>

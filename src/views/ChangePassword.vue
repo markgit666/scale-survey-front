@@ -1,15 +1,15 @@
 <template>
   <div id="main">
-    <a-card title="找回密码" hoverable style="width: 90vh">
+    <a-card title="找回密码" hoverable style="width: 35rem">
       <h4>邮箱验证码已发送至{{this.$route.query.email}}</h4>
       <el-form
         :model="ruleForm"
         :rules="rules"
         ref="ruleForm"
-        label-width="70px"
+        label-width="90px"
         class="demo-dynamic"
       >
-        <el-form-item prop="verificationCode" label="验证码:">
+        <el-form-item prop="verificationCode" label="邮箱验证:">
           <div class="verifyCode">
             <el-input type="text" maxlength="6" show-word-limit v-model="ruleForm.verificationCode" size="medium"
                       placeholder="请输入验证码" class="verifyCode-input"></el-input>

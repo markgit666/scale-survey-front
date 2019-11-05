@@ -1,6 +1,6 @@
 <template>
   <div id="register">
-    <a-card title="注册" hoverable style="width: 90vh;">
+    <a-card title="注册" hoverable style="width: 35rem;">
       <el-form
         :model="ruleForm"
         :rules="rules"
@@ -33,7 +33,7 @@
           ></el-input>
         </el-form-item>
 
-        <el-form-item prop="verifyCode" label="验证码:">
+        <el-form-item prop="verifyCode" label="邮箱验证:">
           <div class="verifyCode">
             <el-input type="text" maxlength="6" show-word-limit v-model="ruleForm.verifyCode" size="medium"
                       placeholder="请输入验证码"

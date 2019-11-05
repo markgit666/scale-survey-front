@@ -115,7 +115,7 @@
             </div>
             <!-- 指导语结束 -->
 
-            <!-- 3.题目类型 -->
+            <!-- 3.量表小类 -->
             <div v-if="value.questionType==='questionType'" :style="{marginTop:'10px'}">
               <a-row>
                 <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
@@ -139,6 +139,7 @@
                         <!-- 问题 -->
                         <strong>问题：</strong>
                         {{value.title}}<br/><br/>
+
                         <label>答案：</label>
                         <el-input type="text" show-word-limit maxlength="1000" size="small" placeholder="请记录答案!"
                                   v-model="one.content" :style="{width:'60%'}"/>
@@ -158,6 +159,7 @@
                     <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
                       <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
                         <h4 :style="{color:'#2d8cf0'}"><strong>（画图题）</strong></h4>
+                        <label><strong>作答要求：</strong></label>  {{value.title}}
                         <div class="img-box-preview">
                           <div
                             v-for="(oneImg,imgId) in value.attachmentList"
@@ -229,6 +231,7 @@
                 <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
                   <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
                     <h4 :style="{color:'#2d8cf0'}"><strong>（图片题）</strong></h4>
+                    <label><strong>作答要求：</strong></label>  {{value.title}}
                     <div v-for="(one, index) in answer.answerList" :key="index">
                       <div v-if="value.questionId === one.questionId">
                         <div class="img-box-preview">

@@ -8,7 +8,7 @@
       <a-menu theme="light" mode="inline" :defaultSelectedKeys="['1']" @click="handleClick">
         <a-menu-item key="questionType">
           <a-icon type="bars"/>
-          <span>量表类型</span>
+          <span>量表小类</span>
         </a-menu-item>
 
         <a-menu-item key="direction">
@@ -48,28 +48,33 @@
       <a-layout-content :style="{ margin: '24px 16px 0', overflow: 'initial' }">
         <router-view></router-view>
         <div>
+
           <!--量表名称-->
-          <a-card :hoverable="true" :bordered="false" :style="{height:'80px'}">
-            <label>&nbsp&nbsp&nbsp&nbsp量表名称：</label>
-            <el-input type="text" maxlength="256" size="small" show-word-limit v-model="oneScale.scaleName"
-                      placeholder="请输入量表名称" :style="{width:'70%'}"/>
+          <a-card :hoverable="true" :bordered="false" :style="{height:'100px'}">
+
+            <el-form :model="oneScale" :rules="rules" label-width="90px">
+              <el-form-item label="量表名称:" prop="scaleName">
+                <el-input maxlength="256" size="small" show-word-limit v-model="oneScale.scaleName"
+                          placeholder="请输入量表名称" :style="{width:'65%'}"/>
+              </el-form-item>
+            </el-form>
           </a-card>
 
           <!-- 一个量表里的各种题目 -->
           <div v-for="(value,subjectId) in oneScale.questionList" :key="subjectId" class="box">
 
-            <!-- 1.题目类型 -->
+            <!-- 1.量表小类 -->
             <div v-if="value.questionType==='questionType'" :style="{marginTop:'10px'}">
               <a-card :hoverable="true" :bordered="false" class="father" :style="{height:'80px'}">
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="del(subjectId)">删除</a>
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="down(subjectId)">下移&nbsp&nbsp|&nbsp&nbsp</a>
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="up(subjectId)">上移&nbsp&nbsp|&nbsp&nbsp</a>
-                <label>&nbsp&nbsp量表类型：</label>
-                <el-input type="text" show-word-limit maxlength="40" size="small" placeholder="请在此添加量表类型"
+                <label>&nbsp&nbsp量表小类：</label>
+                <el-input type="text" show-word-limit maxlength="40" minlength="10" size="small" placeholder="请在此添加量表类型"
                           v-model="value.title" autosize :style="{width:'60%'}"/>
               </a-card>
             </div>
-            <!-- .量表类型结束 -->
+            <!-- .量表小类结束 -->
 
             <!-- 2.指导语 -->
             <div v-if="value.questionType==='direction'" :style="{marginTop:'10px'}">
@@ -279,6 +284,12 @@ export default {
 
   data () {
     return {
+      // 规则校验
+      rules: {
+        scaleName: [
+          { required: true, message: '量表名称不能为空', trigger: 'blur' }
+        ]
+      },
       // 是否展示创建量表中间的那个box
       showMiddleBox: 'true',
       serverUrl: this.GLOBAL.serverUrl,
@@ -297,11 +308,16 @@ export default {
   },
 
   // 规则校验
-  beforeCreate () {
-    this.form = this.$form.createForm(this)
-  },
+  // beforeCreate () {
+  //   this.form = this.$form.createForm(this)
+  // },
 
   methods: {
+
+    // 规则校验
+    // resetForm (formName) {
+    //   this.$refs[formName].resetFields()
+    // },
     // 图片题上传题目---开始
     // 绑定在"选择图片"input上的函数
     pictureChoose (subjectId) {
@@ -462,31 +478,56 @@ export default {
 
     // 保存创建的量表
     submitScale () {
-      this.$http
-        .post(this.serverUrl + 'scale/info/add', this.oneScale, {
-          headers: {
-            Token: localStorage.getItem('Token')
-          }
-        })
-        .then(function (data) {
-          if ((data.body.retCode === '000000')) {
-            this.$message.success('保存成功！', 5)
-            this.$router.push({ path: '/home/myScale' })
-          } else if (data.body.retCode === '100001') {
-            if (localStorage.getItem('Token') === null) {
-              this.$message.error('未登录，即将跳转至登录页面', 5)
-              this.$router.push({ path: '/login' })
-            } else {
-              this.$message.error('登录超时', 5)
-              this.$router.push({ path: '/login' })
+      debugger
+      if (this.oneScale.scaleName != '') {
+        // for (var i=0;i<this.oneScale.questionList.length;i++){
+        //   if (this.oneScale.questionList[i].questionType === 'radio' || this.oneScale.questionList[i].questionType === 'checkBox'){
+        //     // 单选题选项有重复的
+        //     var hash ={}
+        //     for (var j in this.oneScale.questionList[i].items){
+        //       if (hash[this.oneScale.questionList[i].items[j].option]) {
+        //         this.$message.error("您添加的单选题有重复的选项",4)
+        //         return false;
+        //       }
+        //     }
+        //   }else {
+        this.$http
+          .post(this.serverUrl + 'scale/info/add', this.oneScale, {
+            headers: {
+              Token: localStorage.getItem('Token')
             }
-          } else {
-            this.$message.error(data.body.retMsg, 5)
-          }
-        }, err => {
-          alert('网络异常，请检查是否连接上网络')
-        })
+          })
+          .then(function (data) {
+            if ((data.body.retCode === '000000')) {
+              this.$message.success('保存成功！', 5)
+              this.$router.push({ path: '/home/myScale' })
+            } else if (data.body.retCode === '100001') {
+              if (localStorage.getItem('Token') === null) {
+                this.$message.error('未登录，即将跳转至登录页面', 5)
+                this.$router.push({ path: '/login' })
+              } else {
+                this.$message.error('登录超时', 5)
+                this.$router.push({ path: '/login' })
+              }
+            } else {
+              this.$message.error(data.body.retMsg, 5)
+            }
+          }, err => {
+            alert('网络异常，请检查是否连接上网络')
+          })
+
+        // }
+      } else {
+        this.$message.error('量表名称不能为空', 3)
+      }
     },
+
+    // else {
+    //   this.$message.error('提交失败')
+    //   return false
+    // }
+    // })
+    // },
     // 预览
     preview () {
       let oneScale = JSON.stringify(this.oneScale)
@@ -552,7 +593,7 @@ export default {
         }
         this.oneScale.questionList.push(pictureObject)
       } else if (e.key === 'questionType') {
-        // 一个量表中的量表类型
+        // 一个量表中的量表小类
         var questionTypeObject = {
           questionType: e.key,
           show: true,

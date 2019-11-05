@@ -61,7 +61,7 @@
         </div>
         <!-- 指导语结束 -->
 
-        <!-- 3.题目类型 -->
+        <!-- 3.量表小类 -->
         <div v-if="value.questionType==='questionType'" :style="{marginTop:'30px',width:'900px'}">
           <a-divider orientation="left">
             <strong>{{value.title}}</strong>

@@ -1,6 +1,6 @@
 <template>
   <div id="main">
-    <a-card title="登录" hoverable style="width: 90vh">
+    <a-card title="登录" hoverable style="width: 35rem">
       <el-form
         :model="ruleForm"
         :rules="rules"
