@@ -1,4 +1,5 @@
 <template>
+<div>
   <a-layout id="components-layout-demo-fixed-sider">
     <!-- 侧边栏 -->
     <a-layout-sider
@@ -48,6 +49,7 @@
       <a-layout-content :style="{ margin: '24px 16px 0', overflow: 'initial' }">
         <router-view></router-view>
         <div>
+          <a class="target" href="" target="_blank"></a>
 
           <!--量表名称-->
           <a-card :hoverable="true" :bordered="false" :style="{height:'100px'}">
@@ -78,13 +80,23 @@
 
             <!-- 2.指导语 -->
             <div v-if="value.questionType==='direction'" :style="{marginTop:'10px'}">
-              <a-card :hoverable="true" :bordered="false" class="father" :style="{height:'80px'}">
+              <a-card :hoverable="true" :bordered="false" class="father" :style="{height:'100%'}">
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="del(subjectId)">删除</a>
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="down(subjectId)">下移&nbsp&nbsp|&nbsp&nbsp</a>
                 <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="up(subjectId)">上移&nbsp&nbsp|&nbsp&nbsp</a>
-                <label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp指导语：</label>
-                <el-input type="text" show-word-limit maxlength="1000" size="small" placeholder="请输入指导语"
-                          v-model="value.title" :style="{width:'60%'}"/>
+                <el-form :style="{marginLeft:'25px'}">
+                  <el-form-item label="指导语:">
+                    <el-input
+                      type="textarea"
+                      show-word-limit
+                      maxlength="1000"
+                      autosize
+                      placeholder="请输入指导语"
+                      v-model="value.title"
+                      :style="{width:'60%'}">
+                    </el-input>
+                  </el-form-item>
+                </el-form>
               </a-card>
             </div>
             <!-- 指导语结束 -->
@@ -162,7 +174,7 @@
 
                 <label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp问题：</label>
                 <el-input type="text" show-word-limit maxlength="256" size="small" placeholder="请添加您的问题"
-                          v-model="value.title" :style="{width:'60%'}"/>
+                          v-model="value.title" :style="{width:'58%'}"/>
 
               </a-card>
             </div>
@@ -265,6 +277,10 @@
     <!-- 以上右边内容结束位置 -->
   </a-layout>
   <!--侧边栏+右侧内容结束-->
+</div>
+
+<!--预览-->
+
 </template>
 <style>
   #components-layout-demo-fixed-sider .logo {
@@ -277,7 +293,6 @@
 <script>
 import store from '../store'
 import $ from 'jquery'
-
 export default {
   // 引用store.js
   store,
@@ -530,13 +545,16 @@ export default {
     // },
     // 预览
     preview () {
+      debugger
       let oneScale = JSON.stringify(this.oneScale)
+      console.log(oneScale)
       let routeData = this.$router.resolve({
-        path: '/previewScale',
-        query: { oneScale: oneScale }
+        name: 'PreviewScale',
+        // query: { oneScale: oneScale }
+        params: { oneScale: oneScale }
         //  params:{catId:params.catId}
       })
-      this.$message.success('注意：预览页面仅仅是预览作用，不可答题！')
+      // this.$message.success('注意：预览页面仅仅是预览作用，不可答题！')
       // 新建个窗口来打开路由地址
       window.open(routeData.href, '_blank')
     },

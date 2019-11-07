@@ -57,7 +57,7 @@
               <br/>
 
               <label>答案：</label>
-              {{oneQuestion.answer.content}}
+              <strong :style="{color:'red'}">{{oneQuestion.answer.content}}</strong>
               <br/>
               <br/>
 
@@ -77,13 +77,13 @@
           <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
           <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
             <a-card :style="{height:'150px',marginTop:'15px'}" :bordered="false" :hoverable="true">
-
-              <label>（单选）题目：</label>
+<!--              <strong>（单选）</strong><br/><br/>-->
+              <label>题目：</label>
               <strong>{{oneQuestion.title}}</strong>
               <br/><br/>
 
               <label>答案：</label>
-              <strong>{{oneQuestion.answer.content}}</strong>
+              <strong :style="{color:'red'}">{{oneQuestion.answer.content}}</strong>
               <br/><br/>
 
               <label>评分：</label>
@@ -100,17 +100,19 @@
         <a-row>
           <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
           <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
-            <a-card :style="{height:'150px',marginTop:'15px'}" :bordered="false" :hoverable="true">
-
+            <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false" :hoverable="true">
+<!--              <strong>（多选）</strong><br/><br/>-->
               <label>题目：</label>
               <strong>{{oneQuestion.title}}</strong>
               <br/><br/>
 
               <label>答案：</label>
+              <strong :style="{color:'red'}">
               <span
                 v-for="(item,itemId) in oneQuestion.answer.chooseAnswerList"
                 :key="itemId"
               >{{item}}&nbsp;&nbsp;</span>
+              </strong>
               <br/><br/>
 
               <label>评分：</label>
@@ -129,6 +131,7 @@
           <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
           <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
             <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false" :hoverable="true">
+              <h4><strong :style="{color:'#2d8cf0',marginLeft:'20px'}">(画图题)</strong></h4>
               <div class="img-box-preview">
                 <div
                   v-for="(oneImage,oneImageId ) in oneQuestion.attachmentList"
@@ -159,6 +162,7 @@
           <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
           <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
             <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false" :hoverable="true">
+              <h4><strong :style="{color:'#2d8cf0',marginLeft:'20px'}">(图片题)</strong></h4>
               <div class="img-box-preview">
                 <div
                   v-for="(oneImage,oneImageId ) in oneQuestion.attachmentList"
@@ -168,7 +172,8 @@
                   <img v-bind:src="imgUrl + oneImage"/>
                 </div>
               </div>
-              <label>答案：</label>{{oneQuestion.answer.content}}
+              <label>答案：</label>
+              <strong :style="{color:'red'}">{{oneQuestion.answer.content}}</strong>
               <br/><br/>
               <label>评分：</label>
               <a-input-number :min="0" :max="100" v-model="oneQuestion.answer.score" placeholder="请输入评分"/>
@@ -179,11 +184,11 @@
       </div>
 
       <!-- 4.如果是量表小类 -->
-      <div v-if="oneQuestion.questionType==='questionType'" :style="{width:'900px',marginTop:'30PX'}">
+      <div v-if="oneQuestion.questionType==='questionType'" :style="{marginTop:'10px'}">
         <a-row>
           <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
           <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
-            <a-divider orientation="left">{{oneQuestion.title}}</a-divider>
+            <a-divider orientation="left"><strong>{{oneQuestion.title}}</strong></a-divider>
           </a-col>
           <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
         </a-row>
@@ -212,7 +217,7 @@
                 :hoverable="true">
           <center>
             <div>
-              <h3><strong><label>总得分：{{computedTotalScore}}</label></strong></h3>
+              <h3><strong :style="{color:'red'}"><label>总得分：{{computedTotalScore}}</label></strong></h3>
             </div>
             <h3 :style="{marginTop:'10px'}"><strong>如您已评定完量表，请保存！</strong></h3>
             <a-button type="primary" @click="saveScore" :style="{marginTop:'15px'}">保存</a-button>
@@ -385,13 +390,13 @@ export default {
     flex-wrap: wrap;
     /* //紧揍排列 */
     align-content: flex-start;
-    width: 130vh;
+    width: auto;
     height: auto;
-
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     margin: 0 auto;
+    margin-top: 20px;
   }
 
   .draw-img {

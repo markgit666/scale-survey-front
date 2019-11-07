@@ -53,8 +53,9 @@
                       <div v-if="value.questionId === one.questionId">
                         <div class="singleChoice">
 
+                          <strong :style="{color:'#2d8cf0'}">(单选)</strong>
                           <!-- 单选题标题 -->
-                          <strong>{{value.title}}&nbsp;&nbsp;&nbsp;(单选)</strong>
+                          <strong :style="{marginTop:'10px'}">{{value.title}}</strong>
                           <!-- 选项 -->
                           <el-radio-group v-model="one.content">
                             <div v-for="(item,optionId) in value.items" :key="optionId" class="radio-div">
@@ -81,8 +82,10 @@
                     <div v-for="(one, aindex) in answer.answerList" :key="aindex">
                       <div v-if="value.questionId === one.questionId">
                         <div class="singleChoice">
+
+                          <strong :style="{color:'#2d8cf0'}">(多选)</strong>
                           <!-- 标题 -->
-                          <strong>{{value.title}}&nbsp;&nbsp;&nbsp;(多选)</strong>
+                          <strong :style="{marginTop:'10px'}">{{value.title}}</strong>
                           <!--选项 -->
                           <el-checkbox-group v-model="one.chooseAnswerList">
                             <div v-for="(item,optionId) in value.items" :key="optionId" class="radio-div">
@@ -121,7 +124,7 @@
                 <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
                 <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
                   <a-divider orientation="left">
-                    <strong>{{value.title}}</strong>
+                    <strong >{{value.title}}</strong>
                   </a-divider>
                 </a-col>
                 <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
@@ -158,6 +161,7 @@
                     <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
                     <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
                       <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
+<!--                        <strong :style="{color:'#2d8cf0'}">(画图题)</strong><br/>-->
                         <h4 :style="{color:'#2d8cf0'}"><strong>（画图题）</strong></h4>
                         <label><strong>作答要求：</strong></label>  {{value.title}}
                         <div class="img-box-preview">
@@ -604,108 +608,6 @@ export default {
     width: 30vh;
     height: 30vh;
     border: 1px solid #2d8cf0;
-  }
-
-  /* 多选题样式 */
-  input[type="checkbox"] {
-    /*同样，首先去除浏览器默认样式*/
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    /*编辑我们自己的样式*/
-    position: relative;
-    vertical-align: top;
-    width: 18px;
-    height: 18px;
-    background: transparent;
-    border: 1px solid #2d8cf0;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    outline: none;
-    cursor: pointer;
-  }
-
-  input[type="checkbox"]:after {
-    content: "√";
-    position: absolute;
-    display: block;
-    width: 100%;
-    height: 100%;
-    background: #2d8cf0;
-    color: #fff;
-    text-align: center;
-    line-height: 18px;
-    /*增加动画*/
-    -webkit-transition: all ease-in-out 300ms;
-    -moz-transition: all ease-in-out 300ms;
-    transition: all ease-in-out 300ms;
-    /*利用border-radius和opacity达到填充的假象，首先隐藏此元素*/
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    border-radius: 20px;
-    opacity: 0;
-  }
-
-  input[type="checkbox"]:checked:after {
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
-    opacity: 1;
-  }
-
-  /* 单选题样式 */
-  input[type="radio"] {
-    /*去除浏览器默认样式*/
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    /*自定义样式*/
-    position: relative;
-    display: inline-block;
-    vertical-align: top;
-    width: 18px;
-    height: 18px;
-    border: 1px solid #2d8cf0;
-    outline: none;
-    cursor: pointer;
-    /*设置为圆形，看起来是个单选框*/
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    border-radius: 20px;
-  }
-
-  /**
-      * 单选框 选中之后的样式
-      **/
-  input[type="radio"]:after {
-    content: "";
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    display: block;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    background: #2d8cf0;
-    -webkit-border-radius: 12px;
-    -moz-border-radius: 12px;
-    border-radius: 12px;
-    -webkit-transform: scale(0);
-    -moz-transform: scale(0);
-    transform: scale(0);
-    /*增加一些动画*/
-    -webkit-transition: all ease-in-out 300ms;
-    -moz-transition: all ease-in-out 300ms;
-    transition: all ease-in-out 300ms;
-  }
-
-  input[type="radio"]:checked:after {
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    transform: scale(1);
   }
 
   .radio-div {

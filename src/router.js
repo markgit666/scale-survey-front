@@ -45,7 +45,7 @@ export default new Router({
         { path: '/home/showAndEditPatientInfo', name: 'showAndEditPatientInfo', component: ShowAndEditPatientInfo },
       ]
     },
-    { path: '/previewScale', name: 'previewScale', component: PreviewScale },
+    { path: '/previewScale', name: 'PreviewScale', component: PreviewScale },
 
     { path: '/home/answer', name: 'answer', component: Answer },
 

@@ -90,7 +90,7 @@
 
           <!-- 2.指导语 -->
           <div v-if="value.questionType==='direction'" :style="{marginTop:'10px'}">
-            <a-card :hoverable="true" :bordered="false" class="father" :style="{height:'80px'}">
+            <a-card :hoverable="true" :bordered="false" class="father" :style="{height:'100%'}">
               <a-row>
             <a-col :xs="2" :sm="4" :md="1" :lg="1" :xl="1"></a-col>
             <a-col :xs="20" :sm="16" :md="22" :lg="22" :xl="22">
@@ -98,10 +98,25 @@
                   <a :style="{float:'right',marginTop:'-15px'}" class="child" @click="down(subjectId)">下移&nbsp&nbsp|&nbsp&nbsp</a>
                   <a :style="{float:'right',marginTop:'-15px'}" class="child"
                      @click="up(subjectId)">上移&nbsp&nbsp|&nbsp&nbsp</a>
-                  <label>&nbsp&nbsp&nbsp&nbsp&nbsp指导语：</label>
 
-                  <el-input type="text" show-word-limit maxlength="1000" size="small" placeholder="请输入指导语"
-                            v-model="value.title" :style="{width:'60%'}"/>
+              <el-form :style="{marginLeft:'20px'}">
+                <el-form-item label="指导语:">
+                  <el-input
+                    type="textarea"
+                    show-word-limit
+                    maxlength="1000"
+                    autosize
+                    placeholder="请输入指导语"
+                    v-model="value.title"
+                    :style="{width:'60%'}">
+                  </el-input>
+                </el-form-item>
+              </el-form>
+
+<!--                  <label>&nbsp&nbsp&nbsp&nbsp&nbsp指导语：</label>-->
+
+<!--                  <el-input type="text" show-word-limit maxlength="1000" size="small" placeholder="请输入指导语"-->
+<!--                            v-model="value.title" :style="{width:'60%'}"/>-->
                 </a-col>
 
                 </a-col>
@@ -306,353 +321,353 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import $ from 'jquery'
-  import LabelWrap from 'element-ui/packages/form/src/label-wrap'
+import axios from 'axios'
+import $ from 'jquery'
+import LabelWrap from 'element-ui/packages/form/src/label-wrap'
 
-  export default {
-    components: { LabelWrap },
-    data () {
-      return {
-        value: '',
-        serverUrl: this.GLOBAL.serverUrl,
+export default {
+  components: { LabelWrap },
+  data () {
+    return {
+      value: '',
+      serverUrl: this.GLOBAL.serverUrl,
 
-        disabled: true,
-        // 存放题目的数组
-        oneScale: {
-          doctorId: '',
-          // 量表名称
-          scaleName: ''
-          // 量表内容
+      disabled: true,
+      // 存放题目的数组
+      oneScale: {
+        doctorId: '',
+        // 量表名称
+        scaleName: ''
+        // 量表内容
 
+      }
+    }
+  },
+
+  mounted () {
+    this.fetch()
+  },
+  methods: {
+
+    // 查看量表------接口
+    fetch () {
+      let that = this
+      axios
+        .post(this.serverUrl + '/scale/info/get', this.$route.query, {
+          headers: {
+            Token: localStorage.getItem('Token')
+          }
+        })
+        .then(response => {
+          if (response.data.retCode === '000000') {
+            that.oneScale = response.data.data
+          } else if (response.data.retCode === '100001') {
+            if (localStorage.getItem('Token') === null) {
+              this.$message.error('未登录，即将跳转至登录页面', 5)
+              this.$router.push({ path: '/login' })
+            } else {
+              this.$message.error('登录超时', 5)
+              this.$router.push({ path: '/login' })
+            }
+          } else {
+            this.$message.error(response.data.retMsg, 5)
+          }
+        }, err => {
+          alert('网络异常，请检查是否连接上网络')
+        })
+        .catch(function (error) {
+          // 请求失败处理
+        })
+    },
+
+    // 删除选项(单选，多选)
+    delOption (subjectId, optionId) {
+      var option = this.oneScale.questionList[subjectId].items
+      option.splice(optionId, 1)
+    },
+
+    // 增加选项（单选，多选）
+    addOption (subjectId) {
+      var items = this.oneScale.questionList[subjectId].items
+      if (items.length <= 20) {
+        var newitems = {}
+        items = items.push(newitems)
+      } else {
+        this.$message.warning('选项不允许超过20个！', 5)
+      }
+    },
+
+    // 删除题目
+    del (subjectId) {
+      this.oneScale.questionList.splice(subjectId, 1)
+    },
+
+    delQuestion (index) {
+      this.oneScale.questionList.splice(index, 1)
+    },
+    // 上移题目
+    up (subjectId) {
+      if (subjectId > 0) {
+        this.oneScale.questionList.splice(
+          subjectId,
+          1,
+          ...this.oneScale.questionList.splice(
+            subjectId - 1,
+            1,
+            this.oneScale.questionList[subjectId]
+          )
+        )
+      } else {
+        alert('这是第一题，请勿上移！')
+      }
+    },
+    // 下移题目
+    down (subjectId) {
+      if (subjectId < this.oneScale.questionList.length - 1) {
+        this.oneScale.questionList.splice(
+          subjectId,
+          1,
+          ...this.oneScale.questionList.splice(
+            subjectId + 1,
+            1,
+            this.oneScale.questionList[subjectId]
+          )
+        )
+      } else {
+        alert('这是最后一题，请勿再移动！')
+      }
+    },
+
+    // 画图题上传题目---开始
+
+    // 绑定在"选择图片"input上的函数
+    drawImageChoose (subjectId) {
+      // 存放文件名的数组，用于显示
+      var fileNameArray = []
+      // 获取文件名称
+      var filename = document.getElementById('file' + subjectId)
+      for (var i = 0; i < filename.files.length; i++) {
+        var temp = filename.files[i].name
+        fileNameArray.push(temp)
+      }
+      // 拼接
+      var idTemp = '#' + 'fileName' + subjectId
+      $(idTemp).text(fileNameArray)
+    },
+
+    // 动态绑定Id---画图题---选择文件
+    drawIdFile (subjectId) {
+      return 'file' + subjectId
+    },
+
+    // 动态绑定Id---画图题---显示文件名
+    drawIdFileName (subjectId) {
+      return 'fileName' + subjectId
+    },
+
+    // 画图题---图片上传
+    drawUnload (subjectId) {
+      // FormDat对象
+      var formobj = new FormData()
+      // 获取表单中的数据
+      var myfile = document.getElementById('file' + subjectId).files
+      for (var i = 0; i < myfile.length; i++) {
+        // 向对象中添加要发送的数据
+        formobj.append('file', myfile[i])
+      }
+
+      // XMLHttpRequest对象
+      var xmlobj = new XMLHttpRequest()
+
+      // 指定提交类型（post）和选择要发送的地址
+      var serverUrlTemp = this.serverUrl
+      var pictureServerUrl = serverUrlTemp + 'file/upload'
+      xmlobj.open('post', pictureServerUrl)
+
+      // 发送数据
+      xmlobj.send(formobj)
+      let that = this
+      xmlobj.onload = function () {
+        if (xmlobj.readyState == 4 && xmlobj.status == 200) {
+          // alert(xmlobj.responseText)
+          that.$message.success('上传成功', 5)
+          // 将json对象转化成字符串
+          var responseText = JSON.parse(xmlobj.responseText)
+          // 将response返回的图片二进制数据放入自己构造的list中
+          that.oneScale.questionList[subjectId].attachmentList = responseText.data
         }
       }
     },
 
-    mounted () {
-      this.fetch()
+    // 图片题上传题目---开始
+    // 绑定在"选择图片"input上的函数
+    pictureChoose (subjectId) {
+      // 存放文件名的数组，用于显示
+      var fileNameArray = []
+      // 获取文件名称
+      var filename = document.getElementById('file' + subjectId)
+      for (var i = 0; i < filename.files.length; i++) {
+        var temp = filename.files[i].name
+        fileNameArray.push(temp)
+      }
+      // 拼接
+      var idTemp = '#' + 'fileName' + subjectId
+      $(idTemp).text(fileNameArray)
     },
-    methods: {
 
-      // 查看量表------接口
-      fetch () {
-        let that = this
-        axios
-          .post(this.serverUrl + '/scale/info/get', this.$route.query, {
-            headers: {
-              Token: localStorage.getItem('Token')
-            }
-          })
-          .then(response => {
-            if (response.data.retCode === '000000') {
-              that.oneScale = response.data.data
-            } else if (response.data.retCode === '100001') {
-              if (localStorage.getItem('Token') === null) {
-                this.$message.error('未登录，即将跳转至登录页面', 5)
-                this.$router.push({ path: '/login' })
-              } else {
-                this.$message.error('登录超时', 5)
-                this.$router.push({ path: '/login' })
-              }
+    // 动态绑定Id---图片题---选择文件
+    idFile (subjectId) {
+      return 'file' + subjectId
+    },
+
+    // 动态绑定Id---图片题---显示文件名
+    idFileName (subjectId) {
+      return 'fileName' + subjectId
+    },
+
+    // 图片题---图片上传
+    unload (subjectId) {
+      // FormDat对象
+      var formobj = new FormData()
+      // 获取表单中的数据
+      var myfile = document.getElementById('file' + subjectId).files
+      for (var i = 0; i < myfile.length; i++) {
+        // 向对象中添加要发送的数据
+        formobj.append('file', myfile[i])
+      }
+
+      // XMLHttpRequest对象
+      var xmlobj = new XMLHttpRequest()
+
+      // 指定提交类型（post）和选择要发送的地址
+      var serverUrlTemp = this.serverUrl
+      var pictureServerUrl = serverUrlTemp + 'file/upload'
+      xmlobj.open('post', pictureServerUrl)
+
+      // 发送数据
+      xmlobj.send(formobj)
+      let that = this
+      xmlobj.onload = function () {
+        if (xmlobj.readyState == 4 && xmlobj.status == 200) {
+          // alert(xmlobj.responseText)
+          that.$message.success('上传成功', 5)
+          // 将json对象转化成字符串
+          var responseText = JSON.parse(xmlobj.responseText)
+          // 将response返回的图片二进制数据放入自己构造的list中
+          that.oneScale.questionList[subjectId].attachmentList = responseText.data
+        }
+      }
+    },
+    // 图片题上传题目---结束
+
+    // 更新 有问题修改中,20190912已解决
+    updataScale () {
+      // this.oneScale.questionList.pop();
+      this.$http
+        .post(this.serverUrl + 'scale/info/add', this.oneScale, {
+          headers: {
+            Token: localStorage.getItem('Token')
+          }
+        })
+        .then(function (data) {
+          if ((data.body.retCode === '000000')) {
+            this.$message.success('更新成功！', 5)
+            this.$router.push({ path: '/Home/Myscale' })
+          } else if (data.data.retCode === '100001') {
+            if (localStorage.getItem('Token') === null) {
+              this.$message.error('未登录，即将跳转至登录页面', 5)
+              this.$router.push({ path: '/login' })
             } else {
-              this.$message.error(response.data.retMsg, 5)
+              this.$message.error('登录超时', 5)
+              this.$router.push({ path: '/login' })
             }
-          }, err => {
-            alert('网络异常，请检查是否连接上网络')
-          })
-          .catch(function (error) {
-            // 请求失败处理
-          })
-      },
-
-      // 删除选项(单选，多选)
-      delOption (subjectId, optionId) {
-        var option = this.oneScale.questionList[subjectId].items
-        option.splice(optionId, 1)
-      },
-
-      // 增加选项（单选，多选）
-      addOption (subjectId) {
-        var items = this.oneScale.questionList[subjectId].items
-        if (items.length <= 20) {
-          var newitems = {}
-          items = items.push(newitems)
-        } else {
-          this.$message.warning('选项不允许超过20个！', 5)
-        }
-      },
-
-      // 删除题目
-      del (subjectId) {
-        this.oneScale.questionList.splice(subjectId, 1)
-      },
-
-      delQuestion (index) {
-        this.oneScale.questionList.splice(index, 1)
-      },
-      // 上移题目
-      up (subjectId) {
-        if (subjectId > 0) {
-          this.oneScale.questionList.splice(
-            subjectId,
-            1,
-            ...this.oneScale.questionList.splice(
-              subjectId - 1,
-              1,
-              this.oneScale.questionList[subjectId]
-            )
-          )
-        } else {
-          alert('这是第一题，请勿上移！')
-        }
-      },
-      // 下移题目
-      down (subjectId) {
-        if (subjectId < this.oneScale.questionList.length - 1) {
-          this.oneScale.questionList.splice(
-            subjectId,
-            1,
-            ...this.oneScale.questionList.splice(
-              subjectId + 1,
-              1,
-              this.oneScale.questionList[subjectId]
-            )
-          )
-        } else {
-          alert('这是最后一题，请勿再移动！')
-        }
-      },
-
-      // 画图题上传题目---开始
-
-      // 绑定在"选择图片"input上的函数
-      drawImageChoose (subjectId) {
-        // 存放文件名的数组，用于显示
-        var fileNameArray = []
-        // 获取文件名称
-        var filename = document.getElementById('file' + subjectId)
-        for (var i = 0; i < filename.files.length; i++) {
-          var temp = filename.files[i].name
-          fileNameArray.push(temp)
-        }
-        // 拼接
-        var idTemp = '#' + 'fileName' + subjectId
-        $(idTemp).text(fileNameArray)
-      },
-
-      // 动态绑定Id---画图题---选择文件
-      drawIdFile (subjectId) {
-        return 'file' + subjectId
-      },
-
-      // 动态绑定Id---画图题---显示文件名
-      drawIdFileName (subjectId) {
-        return 'fileName' + subjectId
-      },
-
-      // 画图题---图片上传
-      drawUnload (subjectId) {
-        // FormDat对象
-        var formobj = new FormData()
-        // 获取表单中的数据
-        var myfile = document.getElementById('file' + subjectId).files
-        for (var i = 0; i < myfile.length; i++) {
-          // 向对象中添加要发送的数据
-          formobj.append('file', myfile[i])
-        }
-
-        // XMLHttpRequest对象
-        var xmlobj = new XMLHttpRequest()
-
-        // 指定提交类型（post）和选择要发送的地址
-        var serverUrlTemp = this.serverUrl
-        var pictureServerUrl = serverUrlTemp + 'file/upload'
-        xmlobj.open('post', pictureServerUrl)
-
-        // 发送数据
-        xmlobj.send(formobj)
-        let that = this
-        xmlobj.onload = function () {
-          if (xmlobj.readyState == 4 && xmlobj.status == 200) {
-            // alert(xmlobj.responseText)
-            that.$message.success('上传成功', 5)
-            // 将json对象转化成字符串
-            var responseText = JSON.parse(xmlobj.responseText)
-            // 将response返回的图片二进制数据放入自己构造的list中
-            that.oneScale.questionList[subjectId].attachmentList = responseText.data
+          } else {
+            this.$message.error(data.body.retMsg, 5)
           }
+        }, err => {
+          alert('网络异常，请检查是否连接上网络')
+        })
+    },
+
+    // 返回量表汇总
+    backTotalScale () {
+      this.$router.push({ path: '/home/myScale' })
+    },
+
+    // test(e){
+    //   console.log(e.toElement.innerText)
+    // },
+
+    //  添加题目
+    typeChange (e) {
+      debugger
+      //  单选
+      if (e.toElement.innerText === '单选题') {
+        var chooseQuestionObject = {
+          questionType: 'radio',
+          show: true,
+          title: '',
+          items: [{ option: '' }, { option: '' }, { option: '' }]
         }
-      },
-
-      // 图片题上传题目---开始
-      // 绑定在"选择图片"input上的函数
-      pictureChoose (subjectId) {
-        // 存放文件名的数组，用于显示
-        var fileNameArray = []
-        // 获取文件名称
-        var filename = document.getElementById('file' + subjectId)
-        for (var i = 0; i < filename.files.length; i++) {
-          var temp = filename.files[i].name
-          fileNameArray.push(temp)
+        this.oneScale.questionList.push(chooseQuestionObject)
+      } else if (e.toElement.innerText === '多选题') {
+        // 多选题
+        var checkBoxObject = {
+          questionType: 'checkBox',
+          show: true,
+          title: '',
+          items: [{ option: '' }, { option: '' }, { option: '' }]
         }
-        // 拼接
-        var idTemp = '#' + 'fileName' + subjectId
-        $(idTemp).text(fileNameArray)
-      },
-
-      // 动态绑定Id---图片题---选择文件
-      idFile (subjectId) {
-        return 'file' + subjectId
-      },
-
-      // 动态绑定Id---图片题---显示文件名
-      idFileName (subjectId) {
-        return 'fileName' + subjectId
-      },
-
-      // 图片题---图片上传
-      unload (subjectId) {
-        // FormDat对象
-        var formobj = new FormData()
-        // 获取表单中的数据
-        var myfile = document.getElementById('file' + subjectId).files
-        for (var i = 0; i < myfile.length; i++) {
-          // 向对象中添加要发送的数据
-          formobj.append('file', myfile[i])
+        this.oneScale.questionList.push(checkBoxObject)
+      } else if (e.toElement.innerText === '指导语') {
+        // 指导语
+        var directionObject = {
+          show: true,
+          id: this.oneScale.questionList.length,
+          questionType: 'direction',
+          title: ''
+        }
+        this.oneScale.questionList.push(directionObject)
+      } else if (e.toElement.innerText === '画图题') {
+        // 画图题
+        var drawObject = {
+          questionType: 'draw',
+          status: 'noNeed',
+          show: true,
+          title: '',
+          attachmentList: this.fileNoList
         }
 
-        // XMLHttpRequest对象
-        var xmlobj = new XMLHttpRequest()
-
-        // 指定提交类型（post）和选择要发送的地址
-        var serverUrlTemp = this.serverUrl
-        var pictureServerUrl = serverUrlTemp + 'file/upload'
-        xmlobj.open('post', pictureServerUrl)
-
-        // 发送数据
-        xmlobj.send(formobj)
-        let that = this
-        xmlobj.onload = function () {
-          if (xmlobj.readyState == 4 && xmlobj.status == 200) {
-            // alert(xmlobj.responseText)
-            that.$message.success('上传成功', 5)
-            // 将json对象转化成字符串
-            var responseText = JSON.parse(xmlobj.responseText)
-            // 将response返回的图片二进制数据放入自己构造的list中
-            that.oneScale.questionList[subjectId].attachmentList = responseText.data
-          }
+        this.oneScale.questionList.push(drawObject)
+      } else if (e.toElement.innerText === '图片题') {
+        // 图片题
+        var pictureObject = {
+          questionType: 'picture',
+          status: 'noNeed',
+          show: true,
+          title: '',
+          pictureAttachmentList: this.pictureFileNoList
         }
-      },
-      // 图片题上传题目---结束
-
-      // 更新 有问题修改中,20190912已解决
-      updataScale () {
-        // this.oneScale.questionList.pop();
-        this.$http
-          .post(this.serverUrl + 'scale/info/add', this.oneScale, {
-            headers: {
-              Token: localStorage.getItem('Token')
-            }
-          })
-          .then(function (data) {
-            if ((data.body.retCode === '000000')) {
-              this.$message.success('更新成功！', 5)
-              this.$router.push({ path: '/Home/Myscale' })
-            } else if (data.data.retCode === '100001') {
-              if (localStorage.getItem('Token') === null) {
-                this.$message.error('未登录，即将跳转至登录页面', 5)
-                this.$router.push({ path: '/login' })
-              } else {
-                this.$message.error('登录超时', 5)
-                this.$router.push({ path: '/login' })
-              }
-            } else {
-              this.$message.error(data.body.retMsg, 5)
-            }
-          }, err => {
-            alert('网络异常，请检查是否连接上网络')
-          })
-      },
-
-      // 返回量表汇总
-      backTotalScale () {
-        this.$router.push({ path: '/home/myScale' })
-      },
-
-      // test(e){
-      //   console.log(e.toElement.innerText)
-      // },
-
-      //  添加题目
-      typeChange (e) {
-        debugger
-        //  单选
-        if (e.toElement.innerText === '单选题') {
-          var chooseQuestionObject = {
-            questionType: 'radio',
-            show: true,
-            title: '',
-            items: [{ option: '' }, { option: '' }, { option: '' }]
-          }
-          this.oneScale.questionList.push(chooseQuestionObject)
-        } else if (e.toElement.innerText === '多选题') {
-          // 多选题
-          var checkBoxObject = {
-            questionType: 'checkBox',
-            show: true,
-            title: '',
-            items: [{ option: '' }, { option: '' }, { option: '' }]
-          }
-          this.oneScale.questionList.push(checkBoxObject)
-        } else if (e.toElement.innerText === '指导语') {
-          // 指导语
-          var directionObject = {
-            show: true,
-            id: this.oneScale.questionList.length,
-            questionType: 'direction',
-            title: ''
-          }
-          this.oneScale.questionList.push(directionObject)
-        } else if (e.toElement.innerText === '画图题') {
-          // 画图题
-          var drawObject = {
-            questionType: 'draw',
-            status: 'noNeed',
-            show: true,
-            title: '',
-            attachmentList: this.fileNoList
-          }
-
-          this.oneScale.questionList.push(drawObject)
-        } else if (e.toElement.innerText === '图片题') {
-          // 图片题
-          var pictureObject = {
-            questionType: 'picture',
-            status: 'noNeed',
-            show: true,
-            title: '',
-            pictureAttachmentList: this.pictureFileNoList
-          }
-          this.oneScale.questionList.push(pictureObject)
-        } else if (e.toElement.innerText === '量表小类') {
-          // 一个量表中的量表小类
-          var questionTypeObject = {
-            questionType: 'questionType',
-            show: true,
-            title: ''
-          }
-          this.oneScale.questionList.push(questionTypeObject)
-        } else if (e.toElement.innerText === '问答题') {
-          // 问答题
-          var questionObject = {
-            questionType: 'QandA',
-            show: true
-          }
-          this.oneScale.questionList.push(questionObject)
+        this.oneScale.questionList.push(pictureObject)
+      } else if (e.toElement.innerText === '量表小类') {
+        // 一个量表中的量表小类
+        var questionTypeObject = {
+          questionType: 'questionType',
+          show: true,
+          title: ''
         }
+        this.oneScale.questionList.push(questionTypeObject)
+      } else if (e.toElement.innerText === '问答题') {
+        // 问答题
+        var questionObject = {
+          questionType: 'QandA',
+          show: true
+        }
+        this.oneScale.questionList.push(questionObject)
       }
     }
   }
+}
 </script>
 
 <style scoped>
