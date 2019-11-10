@@ -119,7 +119,7 @@ export default {
     // logo跳转
     homeLogoClick () {
       this.$router.push({
-        path: '/home/noCreate'
+        path: '/Home/noCreate'
       })
     }
   }

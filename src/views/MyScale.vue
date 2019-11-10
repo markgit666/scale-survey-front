@@ -198,8 +198,9 @@ export default {
     editScale (scaleId) {
       this.$router.push({
         path: '/Home/ShowAndEditScale',
-        // patients:patientId
         query: { scaleId: scaleId }
+        // name: 'ShowAndEditScale',
+        // params: { scaleId: scaleId }
       })
     },
 

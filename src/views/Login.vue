@@ -146,7 +146,7 @@ Xrej5WAcEy7ThIi17wIDAQAB` // 把之前生成的贴进来，实际开发过程中
             .then(response => {
               if (response.data.retCode === '000001') {
                 localStorage.setItem('Token', response.data.data)
-                this.$router.push({ path: '/home/noCreate' })
+                this.$router.push({ path: '/Home/noCreate' })
               } else if (response.data.retCode === '100008') {
                 this.$message.error('验证码错误', 5)
                 this.ruleForm.verificationCode = ''

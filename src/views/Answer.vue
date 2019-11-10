@@ -2,8 +2,8 @@
   <div>
     <div>
       <a-row>
-        <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-        <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+        <a-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
           <center>
           <a-card v-if="patientIdShow" :bordered="false" >
             <label>被试者Id：</label>
@@ -13,15 +13,15 @@
           </a-card>
           </center>
         </a-col>
-        <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
       </a-row>
 
       <!-- 答题界面 -->
       <div v-show="show">
         <div>
           <a-row>
-            <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-            <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+        <a-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
               <!--量表名称-->
               <center>
                 <div :style="{marginTop:'15px'}">
@@ -38,16 +38,16 @@
                 </div>
               </a-card>
             </a-col>
-            <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-          </a-row>
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+      </a-row>
 
           <!-- 一个量表里的各种题目 -->
           <div v-for="(value,subjectId) in oneScale.questionList" :key="subjectId">
             <!-- 1.单选 -->
             <div v-if=" value.questionType==='radio'">
               <a-row>
-                <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-                <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+        <a-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
                   <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
                     <div v-for="(one, index) in answer.answerList" :key="index">
                       <div v-if="value.questionId === one.questionId">
@@ -68,16 +68,16 @@
                     </div>
                   </a-card>
                 </a-col>
-                <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-              </a-row>
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+      </a-row>
             </div>
             <!-- 单选结束 -->
 
             <!-- 2.多选 -->
             <div v-if=" value.questionType==='checkBox'">
               <a-row>
-                <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-                <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+        <a-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
                   <a-card :bordered="false" :style="{marginTop:'10px'}">
                     <div v-for="(one, aindex) in answer.answerList" :key="aindex">
                       <div v-if="value.questionId === one.questionId">
@@ -98,44 +98,44 @@
                     </div>
                   </a-card>
                 </a-col>
-                <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-              </a-row>
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+      </a-row>
             </div>
             <!-- 多选结束 -->
 
             <!-- 2.指导语 -->
             <div v-if="value.questionType==='direction'">
               <a-row>
-                <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-                <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+        <a-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
                   <div :style="{marginTop:'10px'}">
                     <strong>指导语：</strong>
                     {{value.title}}
                   </div>
                 </a-col>
-                <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-              </a-row>
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+      </a-row>
             </div>
             <!-- 指导语结束 -->
 
             <!-- 3.量表小类 -->
             <div v-if="value.questionType==='questionType'" :style="{marginTop:'10px'}">
               <a-row>
-                <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-                <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+        <a-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
                   <a-divider orientation="left">
                     <strong >{{value.title}}</strong>
                   </a-divider>
                 </a-col>
-                <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-              </a-row>
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+      </a-row>
             </div>
 
             <!-- 4.问答题 -->
             <div v-if="value.questionType==='QandA'">
               <a-row>
-                <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-                <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+        <a-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
                   <a-card :style="{marginTop:'10px'}" :bordered="false">
                     <div v-for="(one, index) in answer.answerList" :key="index">
                       <div v-if="value.questionId === one.questionId">
@@ -150,16 +150,16 @@
                     </div>
                   </a-card>
                 </a-col>
-                <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-              </a-row>
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+      </a-row>
             </div>
             <!-- 5.画图 -->
             <div v-if="value.questionType ==='draw'">
               <div v-for="(one, index) in answer.answerList" :key="index">
                 <div v-if="value.questionId === one.questionId">
                   <a-row>
-                    <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-                    <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+        <a-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
                       <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
 <!--                        <strong :style="{color:'#2d8cf0'}">(画图题)</strong><br/>-->
                         <h4 :style="{color:'#2d8cf0'}"><strong>（画图题）</strong></h4>
@@ -176,8 +176,8 @@
                         </div>
                       </a-card>
                     </a-col>
-                    <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-                  </a-row>
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+      </a-row>
 
                   <center>
                     <div class="canvasDiv">
@@ -199,8 +199,8 @@
                   </center>
 
                   <a-row>
-                    <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-                    <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+        <a-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
                       <a-card :bordered="false">
                         <a-row type="flex" justify="space-around">
                           <a-col :span="4">
@@ -219,8 +219,8 @@
                         </a-row>
                       </a-card>
                     </a-col>
-                    <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-                  </a-row>
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+      </a-row>
 
                 </div>
               </div>
@@ -231,8 +231,8 @@
             <!-- 图片题 -->
             <div v-if="value.questionType ==='picture'">
               <a-row>
-                <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-                <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+        <a-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
                   <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
                     <h4 :style="{color:'#2d8cf0'}"><strong>（图片题）</strong></h4>
                     <label><strong>作答要求：</strong></label>  {{value.title}}
@@ -255,8 +255,8 @@
                     </div>
                   </a-card>
                 </a-col>
-                <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-              </a-row>
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+      </a-row>
             </div>
             <!-- 图片题结束 -->
           </div>
@@ -264,8 +264,8 @@
 
           <!-- 提交 -->
           <a-row>
-            <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-            <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+        <a-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
               <a-card :style="{height:'130px',marginTop:'10px',marginBottom:'20px'}" :bordered="false">
                 <center><h3><strong>如您已完成此量表，请保存！</strong></h3></center>
                 <center>
@@ -275,8 +275,8 @@
                 </center>
               </a-card>
             </a-col>
-            <a-col :xs="2" :sm="4" :md="2" :lg="2" :xl="2"></a-col>
-          </a-row>
+        <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
+      </a-row>
           <!-- 一个量表的里所有题目 结束 -->
 
         </div>
@@ -365,8 +365,6 @@ export default {
           } else {
             this.$message.warning('不存在该病人Id', 2)
           }
-        }, err => {
-          alert('网络异常，请检查是否连接上网络')
         })
     },
 

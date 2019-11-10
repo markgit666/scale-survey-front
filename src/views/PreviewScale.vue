@@ -258,7 +258,9 @@
       debugger
       console.log(this.oneScale)
 
-      this.oneScale = JSON.parse(this.$route.params.oneScale)
+      // this.oneScale = JSON.parse(this.$route.params.oneScale)
+      this.oneScale = JSON.parse(localStorage.getItem('oneScale'))
+
       this.oneImg = this.oneScale.questionList[0].attachmentList
     },
     updated () {

@@ -547,16 +547,20 @@ export default {
     preview () {
       debugger
       let oneScale = JSON.stringify(this.oneScale)
-      console.log(oneScale)
-      let routeData = this.$router.resolve({
-        name: 'PreviewScale',
-        // query: { oneScale: oneScale }
-        params: { oneScale: oneScale }
-        //  params:{catId:params.catId}
-      })
-      // this.$message.success('注意：预览页面仅仅是预览作用，不可答题！')
-      // 新建个窗口来打开路由地址
-      window.open(routeData.href, '_blank')
+      // localStorage.oneScale = ''
+      localStorage.setItem('oneScale' , oneScale)
+      window.open('/previewScale')
+
+      // console.log(oneScale)
+      // let routeData = this.$router.resolve({
+      //   name: 'PreviewScale',
+      //   // query: { oneScale: oneScale }
+      //   params: { oneScale: oneScale }
+      //   //  params:{catId:params.catId}
+      // })
+      // // this.$message.success('注意：预览页面仅仅是预览作用，不可答题！')
+      // // 新建个窗口来打开路由地址
+      // window.open(routeData.href, '_blank')
     },
 
     //  选题题型 ----添加---侧边栏
@@ -568,7 +572,7 @@ export default {
           questionType: e.key,
           show: true,
           title: '',
-          items: [{ option: '' }, { option: '' }, { option: '' }]
+          items: [{ option: '' }, { option: '' }, { option: '' }, { option: '' }]
         }
         this.oneScale.questionList.push(chooseQuestionObject)
       } else if (e.key === 'checkBox') {
@@ -577,7 +581,7 @@ export default {
           questionType: e.key,
           show: true,
           title: '',
-          items: [{ option: '' }, { option: '' }, { option: '' }]
+          items: [{ option: '' }, { option: '' }, { option: '' }, { option: '' }]
         }
         this.oneScale.questionList.push(checkBoxObject)
       } else if (e.key === 'direction') {
