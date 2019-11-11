@@ -53,9 +53,9 @@
                       <div v-if="value.questionId === one.questionId">
                         <div class="singleChoice">
 
-                          <strong :style="{color:'#2d8cf0'}">(单选)</strong>
+<!--                          <strong :style="{color:'#2d8cf0'}">(单选)</strong>-->
                           <!-- 单选题标题 -->
-                          <strong :style="{marginTop:'10px'}">{{value.title}}</strong>
+                          <strong :style="{marginTop:'10px'}">(单选题)&nbsp&nbsp{{value.title}}</strong>
                           <!-- 选项 -->
                           <el-radio-group v-model="one.content">
                             <div v-for="(item,optionId) in value.items" :key="optionId" class="radio-div">
@@ -83,9 +83,9 @@
                       <div v-if="value.questionId === one.questionId">
                         <div class="singleChoice">
 
-                          <strong :style="{color:'#2d8cf0'}">(多选)</strong>
+<!--                          <strong :style="{color:'#2d8cf0'}">(多选)</strong>-->
                           <!-- 标题 -->
-                          <strong :style="{marginTop:'10px'}">{{value.title}}</strong>
+                          <strong :style="{marginTop:'10px'}">(多选题)&nbsp&nbsp{{value.title}}</strong>
                           <!--选项 -->
                           <el-checkbox-group v-model="one.chooseAnswerList">
                             <div v-for="(item,optionId) in value.items" :key="optionId" class="radio-div">
@@ -140,7 +140,7 @@
                     <div v-for="(one, index) in answer.answerList" :key="index">
                       <div v-if="value.questionId === one.questionId">
                         <!-- 问题 -->
-                        <strong>问题：</strong>
+                        <strong>(问答题)&nbsp&nbsp问题：</strong>
                         {{value.title}}<br/><br/>
 
                         <label>答案：</label>
@@ -162,8 +162,8 @@
         <a-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
                       <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
 <!--                        <strong :style="{color:'#2d8cf0'}">(画图题)</strong><br/>-->
-                        <h4 :style="{color:'#2d8cf0'}"><strong>（画图题）</strong></h4>
-                        <label><strong>作答要求：</strong></label>  {{value.title}}
+<!--                        <h4 :style="{color:'#2d8cf0'}"><strong>（画图题）</strong></h4>-->
+                        <label><strong>(画图题)&nbsp&nbsp作答要求：</strong></label>  {{value.title}}
                         <div class="img-box-preview">
                           <div
                             v-for="(oneImg,imgId) in value.attachmentList"
@@ -234,8 +234,8 @@
         <a-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></a-col>
         <a-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
                   <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
-                    <h4 :style="{color:'#2d8cf0'}"><strong>（图片题）</strong></h4>
-                    <label><strong>作答要求：</strong></label>  {{value.title}}
+<!--                    <h4 :style="{color:'#2d8cf0'}"><strong>（图片题）</strong></h4>-->
+                    <label><strong>(图片题)&nbsp&nbsp作答要求：</strong></label>  {{value.title}}
                     <div v-for="(one, index) in answer.answerList" :key="index">
                       <div v-if="value.questionId === one.questionId">
                         <div class="img-box-preview">

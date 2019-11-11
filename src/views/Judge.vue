@@ -51,7 +51,7 @@
           <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
             <a-card :style="{height:'150px',marginTop:'15px'}" :bordered="false" :hoverable="true">
 
-              <label>问题：</label>
+              <label>(问答题)&nbsp&nbsp问题：</label>
               <strong>{{oneQuestion.title}}</strong>
               <br/>
               <br/>
@@ -78,7 +78,7 @@
           <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
             <a-card :style="{height:'150px',marginTop:'15px'}" :bordered="false" :hoverable="true">
 <!--              <strong>（单选）</strong><br/><br/>-->
-              <label>题目：</label>
+              <label>(单选题)&nbsp&nbsp题目：</label>
               <strong>{{oneQuestion.title}}</strong>
               <br/><br/>
 
@@ -102,7 +102,7 @@
           <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
             <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false" :hoverable="true">
 <!--              <strong>（多选）</strong><br/><br/>-->
-              <label>题目：</label>
+              <label>(多选题)&nbsp&nbsp题目：</label>
               <strong>{{oneQuestion.title}}</strong>
               <br/><br/>
 

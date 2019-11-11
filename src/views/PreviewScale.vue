@@ -26,8 +26,7 @@
               <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
                 <div class="singleChoice">
                   <!-- 单选题标题 -->
-                  <strong :style="{color:'#2d8cf0'}">(单选)</strong>
-                  <strong :style="{marginTop:'10px'}">{{value.title}}</strong>
+                  <strong :style="{marginTop:'10px'}" >(单选)&nbsp&nbsp{{value.title}}</strong>
 
                   <!-- 单选题选项 -->
                   <a-radio-group name="radioGroup" :style="{marginTop:'2vh'}">
@@ -50,9 +49,9 @@
             <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
               <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
                 <div class="singleChoice">
-                  <strong :style="{color:'#2d8cf0'}">(多选)</strong>
+<!--                  <strong :style="{color:'#2d8cf0'}">(多选)</strong>-->
                   <!-- 标题 -->
-                  <strong :style="{marginTop:'10px'}">{{value.title}}</strong>
+                  <strong :style="{marginTop:'10px'}">(多选)&nbsp&nbsp{{value.title}}</strong>
                   <!--选项 -->
                   <a-radio-group name="radioGroup" :style="{marginTop:'2vh'}">
                     <div v-for="(item,optionId) in value.items" :key="optionId" class="radio">
@@ -101,7 +100,7 @@
             <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
               <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
                 <div class="question">
-                  <strong>问题：</strong>
+                  <strong>(问答题)&nbsp&nbsp问题：</strong>
                   {{value.title}}
                 </div>
                 <label>&nbsp&nbsp&nbsp&nbsp&nbsp答案：</label>
@@ -121,8 +120,8 @@
             <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
               <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
                 <div >
-                  <h4><strong :style="{color:'#2d8cf0',marginLeft:'20px'}">(画图题)</strong></h4>
-                  <strong :style="{marginLeft:'20px'}">作答要求：</strong>
+<!--                  <h4><strong :style="{color:'#2d8cf0',marginLeft:'20px'}">(画图题)</strong></h4>-->
+                  <strong :style="{marginLeft:'20px'}">(画图题)&nbsp&nbsp作答要求：</strong>
                   {{value.title}}
                 </div>
                 <div class="img-box-preview">
@@ -185,8 +184,7 @@
             <a-col :xs="20" :sm="16" :md="20" :lg="20" :xl="20">
               <a-card :style="{height:'100%',marginTop:'15px'}" :bordered="false">
                 <div>
-                  <h4><strong :style="{color:'#2d8cf0',marginLeft:'20px'}">(图片题)</strong></h4>
-                  <strong :style="{marginLeft:'20px'}">作答要求：</strong>
+                  <strong :style="{marginLeft:'20px'}">(图片题)&nbsp&nbsp作答要求：</strong>
                   {{value.title}}
                 </div>
                 <div class="img-box-preview">
