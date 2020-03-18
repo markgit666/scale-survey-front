@@ -180,7 +180,7 @@ const columns = [
 export default {
   components: { ACol },
   mounted () {
-    this.fetch()
+    this.fetch({pageNo: this.current, pageSize: this.pageSize} )
   },
 
   data () {

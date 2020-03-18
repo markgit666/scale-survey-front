@@ -106,7 +106,7 @@
                 <label>&nbsp&nbsp&nbsp&nbsp&nbsp答案：</label>
                 <el-input type="text" show-word-limit maxlength="1000" size="small" placeholder="请输入回答内容！"
                           :style="{width:'60%',marginTop:'10px'}"/>
-                </a-form>
+             
 
               </a-card>
             </a-col>
@@ -252,13 +252,7 @@
     },
 
     mounted () {
-      // this.oneScale = JSON.parse(this.$route.query.oneScale)
-      debugger
-      console.log(this.oneScale)
-
-      // this.oneScale = JSON.parse(this.$route.params.oneScale)
       this.oneScale = JSON.parse(localStorage.getItem('oneScale'))
-
       this.oneImg = this.oneScale.questionList[0].attachmentList
     },
     updated () {
@@ -397,15 +391,6 @@
   }
 </script>
 <style scoped>
-
-  /*.previewBox {*/
-  /*  display: flex;*/
-  /*  flex-direction: column;*/
-  /*  justify-content: center;*/
-  /*  align-items: center;*/
-  /*  margin: 0 auto;*/
-  /*  background-color: #f8f8f9;*/
-  /*}*/
 
   .singleChoice {
     margin-left: 20px;

@@ -175,7 +175,6 @@ Xrej5WAcEy7ThIi17wIDAQAB` // 把之前生成的贴进来，实际开发过程中
     width: 90%;
     align-items: center;
     margin: 0 auto;
-    margin-left: 10px;
   }
 
   /* 登录按钮*/

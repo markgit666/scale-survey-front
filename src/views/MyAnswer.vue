@@ -268,7 +268,6 @@ export default {
           that.current = params.pageNo
           that.loading = false
           that.data = values.data.list
-          debugger
           that.doctorId = values.data.list[0].patientInfo.doctorId
           // 当null时，显示未评定
           for (var i = 0; i < values.data.list.length; i++) {

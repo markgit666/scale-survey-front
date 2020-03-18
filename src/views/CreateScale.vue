@@ -489,7 +489,6 @@
 
       // 保存创建的量表
       submitScale () {
-        debugger
         // 如果量表名称为空，提示
         if (this.oneScale.scaleName === '') {
           this.$message.error('量表名称不能为空', 3)
@@ -566,22 +565,11 @@
       // },
       // 预览
       preview () {
-        debugger
         let oneScale = JSON.stringify(this.oneScale)
-        // localStorage.oneScale = ''
+        // 容量大、安全、永久存储、跨页面
         localStorage.setItem('oneScale', oneScale)
+        // 新窗口打开
         window.open('/previewScale')
-
-        // console.log(oneScale)
-        // let routeData = this.$router.resolve({
-        //   name: 'PreviewScale',
-        //   // query: { oneScale: oneScale }
-        //   params: { oneScale: oneScale }
-        //   //  params:{catId:params.catId}
-        // })
-        // // this.$message.success('注意：预览页面仅仅是预览作用，不可答题！')
-        // // 新建个窗口来打开路由地址
-        // window.open(routeData.href, '_blank')
       },
 
       //  选题题型 ----添加---侧边栏
@@ -660,7 +648,6 @@
 
       // 删除选项(单选，多选)
       delOption (subjectId, optionId) {
-        debugger
         var option = this.oneScale.questionList[subjectId].items
         if (option.length < 3) {
           this.$message.error('选项至少为2个', 3)
@@ -774,13 +761,6 @@
   }
 
   /*图片题选择图片按钮--结束*/
-
-  .singleChoice,
-  {
-    display: flex;
-    flex-direction: row;
-  }
-
   .icons-list >>> .anticon {
     margin-left: 28px;
     font-size: 17px;

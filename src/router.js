@@ -12,9 +12,13 @@ import AddPatientInfo from './views/AddPatientInfo.vue'
 import CreateScale from './views/CreateScale.vue'
 import MyPatients from './views/MyPatients.vue'
 import MyScale from './views/MyScale.vue'
+import MyReport from './views/MyReport.vue'
+import ReportDetails from './views/ReportDetails.vue'
 import ShowAndEditPatientInfo from './views/ShowAndEditPatientInfo.vue'
 import ShowAndEditScale from './views/ShowAndEditScale.vue'
-import Answer from './views/Answer.vue'
+import AnswerSteps from './views/AnswerSteps.vue'
+import AnswerReport from './views/AnswerReport.vue'
+import IdCard from './views/IdCard.vue'
 import PreviewScale from './views/PreviewScale.vue'
 import MyAnswer from './views/MyAnswer.vue'
 import AnswerSubmitSuccess from './views/AnswerSubmitSuccess.vue'
@@ -40,6 +44,8 @@ export default new Router({
         { path: '/home/createScale', name: 'createScale', component: CreateScale },
         { path: '/home/myPatients', name: 'myPatients', component: MyPatients },
         { path: '/home/myScale', name: 'myScale', component: MyScale },
+        { path: '/home/myReport', name: 'myReport', component: MyReport },
+        { path: '/home/myReport/ReportDetails', name: 'ReportDetails', component: ReportDetails },
         { path: '/home/myAnswer', name: 'myAnswer', component: MyAnswer },
         { path: '/home/ShowAndEditScale', name: 'ShowAndEditScale', component: ShowAndEditScale },
         { path: '/home/showAndEditPatientInfo', name: 'showAndEditPatientInfo', component: ShowAndEditPatientInfo },
@@ -47,7 +53,9 @@ export default new Router({
     },
     { path: '/previewScale', name: 'PreviewScale', component: PreviewScale },
 
-    { path: '/home/answer', name: 'answer', component: Answer },
+    { path: '/home/AnswerSteps', name: 'AnswerSteps', component: AnswerSteps },
+    { path: '/home/AnswerReport', name: 'AnswerReport', component: AnswerReport },
+    { path: '/home/IdCard', name: 'IdCard', component: IdCard },
 
     { path: '/home/answerSubmitSuccess', name: 'answerSubmitSuccess', component: AnswerSubmitSuccess },
 

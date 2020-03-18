@@ -383,7 +383,6 @@
 
       // 增加选项（单选，多选）
       addOption (subjectId) {
-        debugger
         var items = this.oneScale.questionList[subjectId].items
         if (items.length <= 20) {
           var newitems = {option: ''}
@@ -558,7 +557,6 @@
 
       // 更新 有问题修改中,20190912已解决
       updataScale () {
-        debugger
         // 如果量表名称为空，提示
         if (this.oneScale.scaleName === '') {
           this.$message.error('量表名称不能为空', 3)
@@ -633,14 +631,13 @@
 
       //  添加题目
       typeChange (e) {
-        debugger
         //  单选
         if (e.toElement.innerText === '单选题') {
           var chooseQuestionObject = {
             questionType: 'radio',
             show: true,
             title: '',
-            items: [{ option: '' }, { option: '' }, { option: '' }]
+            items: [{ option: '' }, { option: '' }, { option: '' }, { option: '' }]
           }
           this.oneScale.questionList.push(chooseQuestionObject)
         } else if (e.toElement.innerText === '多选题') {
@@ -649,7 +646,7 @@
             questionType: 'checkBox',
             show: true,
             title: '',
-            items: [{ option: '' }, { option: '' }, { option: '' }]
+            items: [{ option: '' }, { option: '' }, { option: '' }, { option: '' }]
           }
           this.oneScale.questionList.push(checkBoxObject)
         } else if (e.toElement.innerText === '指导语') {
@@ -769,9 +766,5 @@
 
   }
 
-  .questionType {
-    display: flex;
-    flex-direction: row;
-  }
 
 </style>

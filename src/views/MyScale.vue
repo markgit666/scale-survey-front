@@ -35,8 +35,12 @@
               <div v-if="qrCodeShowSwitch === record.scaleId ">
                 <a-modal title="请扫描下方二维码答题" v-model="visible" @ok="handleOk">
                   <div class="img_box">
-                    <img
+                    <!-- <img
                       v-bind:src="imgUrl + 'url=Home/Answer&scaleId=' + record.scaleId"
+                      class="img"
+                    /> -->
+                     <img
+                      v-bind:src="imgUrl + 'url=Home/IdCard&scaleId=' + record.scaleId"
                       class="img"
                     />
                   </div>
