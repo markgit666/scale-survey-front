@@ -57,6 +57,8 @@
         let that = this
         reqwest({
           url: this.serverUrl + 'report/doctor/person/list',
+
+          // 需要登录时
           headers: {
             Token: localStorage.getItem('Token')
           },

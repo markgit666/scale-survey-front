@@ -344,7 +344,7 @@
       fetch () {
         let that = this
         axios
-          .post(this.serverUrl + '/scale/info/get', this.$route.query, {
+          .post(this.serverUrl + 'scale/info/get', this.$route.query, {
             headers: {
               Token: localStorage.getItem('Token')
             }
