@@ -866,6 +866,7 @@
           rightMember: '1', // 法定代表
           mainTest: '1' // 主试者
         },
+        reportId:'',
         patientId: '',
         patientIdShow: true,
 
@@ -942,7 +943,8 @@
     mounted () {
       // 获取idCard.vue文件传过来的IdCard值
       this.ruleForm.patientInfo.idCard = sessionStorage.getItem('idCard')
-      this.ruleForm.patientInfo.doctorId = this.$route.query.dortorId
+      this.ruleForm.patientInfo.doctorId = this.$route.query.doctorId
+      this.reportId = this.$route.query.reportId
 
       let that = this
 
@@ -1029,15 +1031,20 @@
 
       //保存个人信息
       saveInfo () {
+       console.log(this.reportId)
+       var url = '/home/AnswerReport'+'?reportId=' + this.reportId +'&doctorId='+ this.ruleForm.patientInfo.doctorId
         this.formatPatientRelationInfo()
         this.$http
           .post(this.serverUrl + 'patient/relation/info/save', this.ruleForm)
           .then(
             function (data) {
               if (data.body.retCode === '000000') {
+                console.log(data)
+                this.patientId = data.body.data.patientId
+                sessionStorage.setItem('patientId', this.patientId) //存储patientId
                 this.$message.success('保存成功！', 5)
                 this.$router.push({
-                  path: '/home/AnswerReport',
+                  path: url,
                   query: {
                     reportId: this.$route.query.reportId
                   }

@@ -41,6 +41,10 @@
             <a-icon type="area-chart"/>
             <span>图片题</span>
           </a-menu-item>
+          <a-menu-item key="special">
+            <a-icon type="area-chart"/>
+            <span>特殊题型</span>
+          </a-menu-item>
         </a-menu>
       </a-layout-sider>
 
@@ -117,6 +121,14 @@
                   <label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp标题：</label>
                   <el-input type="text" show-word-limit maxlength="256" size="small" placeholder="请输入标题！"
                             v-model="value.title" :style="{width:'60%'}"/>
+                  <el-switch
+                    v-model="value.recordScore"
+                    :style="{marginLeft:'20px'}"
+                    active-text="计入总分"
+                    inactive-text="不计入总分">
+                  </el-switch>
+                  <el-input type="text" show-word-limit maxlength="256" size="small" placeholder="请添加组类型！"
+                            v-model="value.groupType" :style="{width:'15%' , marginLeft:'15px'}"/>
 
                   <div v-for="(item,optionId) in value.items" :key="optionId" :style="{marginTop:'10px'}">
                     <label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp选项：</label>
@@ -129,6 +141,9 @@
                       twoToneColor="#ed3f14"
                       @click="delOption(subjectId, optionId)"
                     />
+                    <el-input-number size="small" :min="0" v-model="item.optionScore"
+                                     :style="{width:'15%',marginLeft:'10px'}" label="请输入分数！"></el-input-number>
+
                   </div>
                 </a-card>
               </div>
@@ -150,6 +165,14 @@
 
                   <el-input type="text" show-word-limit maxlength="256" size="small" placeholder="请输入标题！"
                             v-model="value.title" :style="{width:'60%'}"/>
+                  <el-switch
+                    v-model="value.recordScore"
+                    :style="{marginLeft:'20px'}"
+                    active-text="计入总分"
+                    inactive-text="不计入总分"
+                  >
+                  </el-switch>
+
                   <div v-for="(item,optionId) in value.items" :key="optionId" :style="{marginTop:'10px'}">
                     <label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp选项：</label>
                     <el-input type="text" show-word-limit maxlength="256" size="small" placeholder="请输入选项！"
@@ -161,6 +184,8 @@
                       twoToneColor="#ed3f14"
                       @click="delOption(subjectId, optionId)"
                     />
+                    <el-input-number size="small" :min="0" v-model="item.optionScore"
+                                     :style="{width:'15%',marginLeft:'10px'}" label="请输入分数！"></el-input-number>
                   </div>
                 </a-card>
               </div>
@@ -245,7 +270,10 @@
 
                 </a-card>
               </div>
+
               <!-- 图片题结束 -->
+
+
             </div>
             <!-- 一个量表的里所有题目 结束 -->
           </div>
@@ -298,16 +326,16 @@
     // 引用store.js
     store,
 
-    data () {
+    data() {
       return {
         direction: '',
         // 规则校验
         rules: {
           scaleName: [
-            { required: true, message: '量表名称不能为空', trigger: 'blur' }
+            {required: true, message: '量表名称不能为空', trigger: 'blur'}
           ],
           direction: [
-            { required: true, message: '指导语不能为空', trigger: 'blur' }
+            {required: true, message: '指导语不能为空', trigger: 'blur'}
           ]
         },
         // 是否展示创建量表中间的那个box
@@ -323,7 +351,9 @@
           scaleName: '',
           // 量表内容
           questionList: []
-        }
+        },
+
+
       }
     },
 
@@ -331,7 +361,7 @@
 
       // 图片题上传题目---开始
       // 绑定在"选择图片"input上的函数
-      pictureChoose (subjectId) {
+      pictureChoose(subjectId) {
         // 存放文件名的数组，用于显示
         var fileNameArray = []
         // 获取文件
@@ -360,17 +390,17 @@
       },
 
       // 动态绑定Id---图片题---选择文件
-      idFile (subjectId) {
+      idFile(subjectId) {
         return 'file' + subjectId
       },
 
       // 动态绑定Id---图片题---显示文件名
-      idFileName (subjectId) {
+      idFileName(subjectId) {
         return 'fileName' + subjectId
       },
 
       // 图片题---图片上传
-      unload (subjectId) {
+      unload(subjectId) {
         // FormDat对象
         var formobj = new FormData()
         // 获取表单中的数据
@@ -411,7 +441,7 @@
       // 画图题上传题目---开始
 
       // 绑定在"选择图片"input上的函数
-      drawImageChoose (subjectId) {
+      drawImageChoose(subjectId) {
         // 存放文件名的数组，用于显示
         var fileNameArray = []
         // 获取文件名称
@@ -439,17 +469,17 @@
       },
 
       // 动态绑定Id---画图题---选择文件
-      drawIdFile (subjectId) {
+      drawIdFile(subjectId) {
         return 'file' + subjectId
       },
 
       // 动态绑定Id---画图题---显示文件名
-      drawIdFileName (subjectId) {
+      drawIdFileName(subjectId) {
         return 'fileName' + subjectId
       },
 
       // 画图题---图片上传
-      drawUnload (subjectId) {
+      drawUnload(subjectId) {
         // FormDat对象
         var formobj = new FormData()
         // 获取表单中的数据
@@ -488,7 +518,7 @@
       // 画图题上传题目---结束
 
       // 保存创建的量表
-      submitScale () {
+      submitScale() {
         // 如果量表名称为空，提示
         if (this.oneScale.scaleName === '') {
           this.$message.error('量表名称不能为空', 3)
@@ -539,21 +569,22 @@
           .then(function (data) {
             if ((data.body.retCode === '000000')) {
               this.$message.success('保存成功！', 5)
-              this.$router.push({ path: '/home/myScale' })
+              this.$router.push({path: '/home/myScale'})
             } else if (data.body.retCode === '100001') {
               if (localStorage.getItem('Token') === null) {
                 this.$message.error('未登录，即将跳转至登录页面', 5)
-                this.$router.push({ path: '/login' })
+                this.$router.push({path: '/login'})
               } else {
                 this.$message.error('登录超时', 5)
-                this.$router.push({ path: '/login' })
+                this.$router.push({path: '/login'})
               }
             } else {
               this.$message.error(data.body.retMsg, 5)
             }
           }, err => {
-            alert('网络异常，请检查是否连接上网络')
-          })
+          alert('网络异常，请检查是否连接上网络'
+      )
+      })
 
       },
 
@@ -564,7 +595,7 @@
       // })
       // },
       // 预览
-      preview () {
+      preview() {
         let oneScale = JSON.stringify(this.oneScale)
         // 容量大、安全、永久存储、跨页面
         localStorage.setItem('oneScale', oneScale)
@@ -573,7 +604,7 @@
       },
 
       //  选题题型 ----添加---侧边栏
-      handleClick (e) {
+      handleClick(e) {
         this.showMiddleBox = false
         //  单选
         if (e.key === 'radio') {
@@ -581,7 +612,13 @@
             questionType: e.key,
             show: true,
             title: '',
-            items: [{ option: '' }, { option: '' }, { option: '' }, { option: '' }]
+            // 单选题处，题目分数是否记录总分
+            recordScore: true,
+            groupType: '', //单选题的类型
+            items: [{option: '', optionScore: 0}, {option: '', optionScore: 0}, {
+              option: '',
+              optionScore: 0
+            }, {option: '', optionScore: 0}]
           }
           this.oneScale.questionList.push(chooseQuestionObject)
         } else if (e.key === 'checkBox') {
@@ -589,8 +626,9 @@
           var checkBoxObject = {
             questionType: e.key,
             show: true,
+            recordScore: true, //是否计入总分
             title: '',
-            items: [{ option: '' }, { option: '' }, { option: '' }, { option: '' }]
+            items: [{option: '', optionScore: 1}, {option: '', optionScore:1}, {option: '',optionScore: 1}, {option: '', optionScore: 1}]
           }
           this.oneScale.questionList.push(checkBoxObject)
         } else if (e.key === 'direction') {
@@ -647,7 +685,7 @@
       // 画图题 ————上传图片结束
 
       // 删除选项(单选，多选)
-      delOption (subjectId, optionId) {
+      delOption(subjectId, optionId) {
         var option = this.oneScale.questionList[subjectId].items
         if (option.length < 3) {
           this.$message.error('选项至少为2个', 3)
@@ -657,10 +695,12 @@
       },
 
       // 增加选项（单选，多选）
-      addOption (subjectId) {
+      addOption(subjectId) {
+        debugger
         var items = this.oneScale.questionList[subjectId].items
+
         if (items.length <= 20) {
-          var newitems = {}
+          var newitems = {option: '', optionScore: 0} //添加单选题，构造数据结构
           items = items.push(newitems)
         } else {
           this.$message.warning('选项不允许超过20个！', 5)
@@ -668,28 +708,28 @@
       },
 
       // 删除题目
-      del (subjectId) {
+      del(subjectId) {
         this.oneScale.questionList.splice(subjectId, 1)
         if (this.oneScale.questionList.length === 0) {
           this.showMiddleBox = true
         }
       },
 
-      delQuestion (index) {
+      delQuestion(index) {
         this.oneScale.questionList.splice(index, 1)
       },
       // 上移题目
-      up (subjectId) {
+      up(subjectId) {
         if (subjectId > 0) {
           this.oneScale.questionList.splice(
             subjectId,
             1,
             ...this.oneScale.questionList.splice(
-              subjectId - 1,
-              1,
-              this.oneScale.questionList[subjectId]
-            )
+            subjectId - 1,
+            1,
+            this.oneScale.questionList[subjectId]
           )
+        )
           for (var i = 0; i < this.oneScale.questionList.length; i++) {
             this.oneScale.questionList[i].markSubjectId = i
           }
@@ -698,17 +738,17 @@
         }
       },
       // 下移题目
-      down (subjectId) {
+      down(subjectId) {
         if (subjectId < this.oneScale.questionList.length - 1) {
           this.oneScale.questionList.splice(
             subjectId,
             1,
             ...this.oneScale.questionList.splice(
-              subjectId + 1,
-              1,
-              this.oneScale.questionList[subjectId]
-            )
+            subjectId + 1,
+            1,
+            this.oneScale.questionList[subjectId]
           )
+        )
           for (var i = 0; i < this.oneScale.questionList.length; i++) {
             this.oneScale.questionList[i].markSubjectId = i
           }

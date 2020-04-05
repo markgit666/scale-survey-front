@@ -99,16 +99,17 @@
               .then(response => {
 
                 if (response.data.retCode === '000000') {
-
+                  var urlFirst = '/home/AnswerSteps' + '?reportId=' +this.$route.query.reportId + '&doctorId='+'that.$route.query.doctorId'
+                  var urlNotFirst = '/home/AnswerReport' + '?reportId=' +this.$route.query.reportId + '&doctorId='+'that.$route.query.doctorId'
 
                   // 如果第一次答题
                   if (response.data.data === null) {
                     console.log('第一次：', response.data)
                     // var dortorIdParam = that.$route.query.doctorId
                     this.$router.push({
-                      path: '/home/AnswerSteps',
+                      path: urlFirst,
                       query: {
-
+                        reportId: that.$route.query.reportId,//获取当前URL的参数reportId，传到下一个页面
                         doctorId: that.$route.query.doctorId  //获取当前URL的参数doctorId，传到下一个页面
                       }
                     })
@@ -118,15 +119,16 @@
                     this.patientId = response.data.data.patientId //得到返回的patientId
                     sessionStorage.setItem('patientId', this.patientId) //存储patientId
                     this.$router.push({
-                      path: '/home/AnswerReport',
+                      path: urlNotFirst,
                       query: {
-                        doctorId: that.$route.query.doctorId,
                         reportId: that.$route.query.reportId,//获取当前URL的参数reportId，传到下一个页面
+                        doctorId: that.$route.query.doctorId,
+
                       }
                     })
                   }
                 } else {
-                  this.$message.warning('不存在该病人Id', 2)
+                  this.$message.warning(response.data.retMsg, 2)
                 }
               })
           } else {
