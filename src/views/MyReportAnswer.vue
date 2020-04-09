@@ -3,7 +3,7 @@
     <a-card :bordered="false" :hoverable="true">
       <a-row>
         <a-col :span="6">
-          <label>量表名称：</label>
+          <label>报告表名称：</label>
           <el-input type="text" maxlength="256" show-word-limit :style="{width:'70%'}" size="small"
                     v-model="answerResearchData.scaleName"></el-input>
         </a-col>
@@ -53,7 +53,7 @@
         <template slot="operation" slot-scope="text, record, index">
           <div class="editable-row-operations">
             <span>
-              <a @click="() =>score(record.examinationPaperId)">评分</a>
+              <a @click="() =>seeDetails(record.examinationPaperId)">查看详情</a>
             </span>
           </div>
         </template>
@@ -86,55 +86,38 @@ import ACol from 'ant-design-vue/es/grid/Col'
 
 const columns = [
   {
-    title: '答卷编号',
+    title: '报告表编号',
     dataIndex: 'examinationPaperId',
     // sorter: true,
     width: '8%'
   },
   {
-    title: '量表名称',
-    dataIndex: 'scaleInfo.scaleName',
+    title: '报告表名称',
+    dataIndex: 'reportName',
     // sorter: true,
-    width: '23%'
+    width: '35%'
   },
 
   {
-    title: '答题时间',
-    dataIndex: 'createTime',
-    // sorter: true,
-    width: '16%'
-  },
-
-  {
-    title: '答题者',
-    dataIndex: 'patientInfo.name',
-    // sorter: true,
-    width: '8%'
-  },
-  {
-    title: '用时',
-    width: '13%',
-    dataIndex: 'useTime'
-  },
-  {
-    title: '题目总数',
-    dataIndex: 'scaleInfo.questionCount',
-    width: '8%'
-  },
-  {
-    title: '评分状态',
-    dataIndex: 'judgeStatus',
+    title: '所含量表数量',
+    dataIndex: 'scaleNum',
     width: '10%'
   },
   {
-    title: '总分',
-    dataIndex: 'judgeInfo.totalScore',
-    width: '6%'
+    title: '答题者',
+    dataIndex: 'patientName',
+    // sorter: true,
+    width: '8%'
+  },
+  {
+    title: '创建时间',
+    dataIndex: 'createTime',
+    width: '10%'
   },
 
   {
     title: '操作',
-    width: '30%',
+    width: '20%',
     dataIndex: 'operation',
     scopedSlots: { customRender: 'operation' }
   }
@@ -296,11 +279,11 @@ export default {
       })
     },
 
-    // 评分
-    score (examinationPaperId) {
+    // 查看详情
+    seeDetails (examinationPaperId) {
+      debugger
       this.$router.push({
-        path: '/Home/myAnswer/judge',
-        // patients:patientId
+        path: '/Home/myReportAnswer/myScaleAnswer',
         query: { examinationPaperId: examinationPaperId }
       })
     },

@@ -20,7 +20,9 @@ import AnswerSteps from './views/AnswerSteps.vue'
 import AnswerReport from './views/AnswerReport.vue'
 import IdCard from './views/IdCard.vue'
 import PreviewScale from './views/PreviewScale.vue'
-import MyAnswer from './views/MyAnswer.vue'
+import MyReportAnswer from './views/MyReportAnswer.vue'
+import MyScaleAnswer from './views/MyScaleAnswer.vue'
+
 import AnswerSubmitSuccess from './views/AnswerSubmitSuccess.vue'
 import Judge from './views/Judge.vue'
 import FindPassword from './views/FindPassword.vue'
@@ -46,7 +48,11 @@ export default new Router({
         { path: '/home/myScale', name: 'myScale', component: MyScale },
         { path: '/home/myReport', name: 'myReport', component: MyReport },
         { path: '/home/myReport/ReportDetails', name: 'ReportDetails', component: ReportDetails },
-        { path: '/home/myAnswer', name: 'myAnswer', component: MyAnswer },
+
+        { path: '/home/myReportAnswer', name: 'myReportAnswer', component: MyReportAnswer },
+        { path: '/home/myReportAnswer/myScaleAnswer', name: 'myScaleAnswer', component: MyScaleAnswer },
+
+
         { path: '/home/ShowAndEditScale', name: 'ShowAndEditScale', component: ShowAndEditScale },
         { path: '/home/showAndEditPatientInfo', name: 'showAndEditPatientInfo', component: ShowAndEditPatientInfo },
       ]
