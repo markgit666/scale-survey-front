@@ -25,6 +25,8 @@ import MyScaleAnswer from './views/MyScaleAnswer.vue'
 
 import AnswerSubmitSuccess from './views/AnswerSubmitSuccess.vue'
 import Judge from './views/Judge.vue'
+import AnswerJudge from './views/AnswerJudge.vue'
+
 import FindPassword from './views/FindPassword.vue'
 import ChangePassword from './views/ChangePassword.vue'
 import NoCreate from './views/NoCreate'
@@ -66,6 +68,8 @@ export default new Router({
     { path: '/home/answerSubmitSuccess', name: 'answerSubmitSuccess', component: AnswerSubmitSuccess },
 
     { path: '/home/myAnswer/judge', name: 'judge', component: Judge },
+    { path: '/home/myReportAnswer/myScaleAnswer/answerJudge', name: 'answerJudge', component: AnswerJudge },
+
 
     {
       path: '/login',

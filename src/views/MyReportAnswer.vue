@@ -86,7 +86,7 @@ import ACol from 'ant-design-vue/es/grid/Col'
 
 const columns = [
   {
-    title: '报告表编号',
+    title: '报告表答卷编号',
     dataIndex: 'examinationPaperId',
     // sorter: true,
     width: '8%'
@@ -110,10 +110,15 @@ const columns = [
     width: '8%'
   },
   {
-    title: '创建时间',
+    title: '作答时间',
     dataIndex: 'createTime',
     width: '10%'
   },
+  // {
+  //   title: '评定人',
+  //   dataIndex: 'createTime',
+  //   width: '10%'
+  // },
 
   {
     title: '操作',
@@ -251,18 +256,18 @@ export default {
           that.current = params.pageNo
           that.loading = false
           that.data = values.data.list
-          that.doctorId = values.data.list[0].patientInfo.doctorId
+          // that.doctorId = values.data.list[0].patientInfo.doctorId
           // 当null时，显示未评定
-          for (var i = 0; i < values.data.list.length; i++) {
-            if (values.data.list[i].judgeStatus === '1') {
-              values.data.list[i].judgeStatus = '已评分'
-            } else {
-              values.data.list[i].judgeStatus = '未评分'
-            }
+          // for (var i = 0; i < values.data.list.length; i++) {
+            // if (values.data.list[i].judgeStatus === '1') {
+            //   values.data.list[i].judgeStatus = '已评分'
+            // } else {
+            //   values.data.list[i].judgeStatus = '未评分'
+            // }
             // 将秒数变成分钟
             // values.data.list[i].useTime = (values.data.list[i].useTime / 60).toFixed(2);
-            values.data.list[i].useTime = values.data.list[i].useTime + '分钟'
-          }
+            // values.data.list[i].useTime = values.data.list[i].useTime + '分钟'
+          // }
         } else if (values.retCode === '100001') {
           if (localStorage.getItem('Token') === null) {
             this.$message.error('未登录，即将跳转至登录页面', 5)
@@ -281,7 +286,6 @@ export default {
 
     // 查看详情
     seeDetails (examinationPaperId) {
-      debugger
       this.$router.push({
         path: '/Home/myReportAnswer/myScaleAnswer',
         query: { examinationPaperId: examinationPaperId }
