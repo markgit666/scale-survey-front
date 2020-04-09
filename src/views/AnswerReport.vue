@@ -55,7 +55,10 @@
 
               <!--指导语-->
               <div v-if="item.questionType ==='direction'">
-                <span>指导语：{{item.title}}</span>
+                <div :style="{marginTop:'20px'}">
+                  <span >指导语：{{item.title}}</span>
+                </div>
+
               </div>
 
               <!--问答题-->
@@ -63,13 +66,13 @@
                 <div v-for="(value,index) in answer.answerList" :key="index">
                   <div v-if="item.questionId === value.questionId ">
                     <el-row :gutter="10">
-                      <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                      <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="10">
                         {{item.title}}
                       </el-col>
-                      <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                        <el-input v-model="value.content"></el-input>
+                      <el-col :xs="9" :sm="9" :md="9" :lg="9" :xl="9">
+                        <el-input v-model="value.content" placeholder="请输入答案"></el-input>
                       </el-col>
-                      <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                      <el-col :xs="5" :sm="5" :md="5" :lg="8" :xl="5">
                         <el-select v-model="value.score" clearable placeholder="请评分">
                           <el-option
                             v-for="item in scoreOptions"
@@ -148,10 +151,10 @@
                     </el-checkbox-group>
                     <el-form>
                       <el-form-item label="插入:" :style="{marginTop:'15px'}">
-                        <el-input placeholder="请输入插入内容..." v-model="value.insertContent" :style="{width:'30%'}"></el-input>
+                        <el-input placeholder="请输入插入内容..." v-model="value.insertContent" :style="{width:'50%'}"></el-input>
                       </el-form-item>
                       <el-form-item label="正确:">
-                        <el-select v-model="value.score" clearable placeholder="请输入" style="width: 80%;">
+                        <el-select v-model="value.score" clearable placeholder="请选择正确个数" style="width: 50%;">
                           <el-option
                             v-for="item in checkBoxOption"
                             :key="item.value"
@@ -187,7 +190,7 @@
                       <el-col :xs="12" :sm="12" :md="10" :lg="10" :xl="10">
                         <el-form>
                           <el-form-item label="答案:">
-                            <el-input type="textarea" autosize v-model="value.content" style="width: 80%;"></el-input>
+                            <el-input type="textarea" autosize v-model="value.content" style="width: 80%;" placeholder="请输入答案"></el-input>
                           </el-form-item>
                           <el-form-item label="评分:">
                             <el-select v-model="value.score" clearable placeholder="请评分" style="width: 80%;">
@@ -299,7 +302,7 @@
               <!--所有题目结束-->
 
 
-          <div v-if="scaleInfo.scaleName!='特殊单选题测试' "  >
+          <div v-if="scaleInfo.scaleName!='神经精神科量表（NPI）' "  >
             <h3><strong :style="{color:'red'}"><label>总得分：{{computedTotalScore}}</label></strong></h3>
           </div>
 
@@ -336,7 +339,7 @@
             <h3><strong :style="{color:'red'}"><label>正确个数：{{PVLTTotalScore}}</label></strong></h3>
           </div>
 
-          <div v-if="scaleInfo.scaleName==='特殊单选题测试'">
+          <div v-if="scaleInfo.scaleName==='神经精神科量表（NPI）'">
             <h3><strong :style="{color:'red'}"><label>"频率"总分：{{frequencyTotalScore}}</label></strong></h3>
             <h3><strong :style="{color:'red'}"><label>"严重程度"总分：{{seriousTotalScore}}</label></strong></h3>
             <h3><strong :style="{color:'red'}"><label>"频率*严重程度"总分：{{frequencyAndSeriousTotalScore}}</label></strong></h3>
@@ -468,7 +471,7 @@
       answer: {
           handler(val, oldVal){
             if (val.answerList != null && val.answerList.length > 0){
-
+              debugger
               for (var index in val.answerList) {
                 var patientAnswer = val.answerList[index];
                 var answerQuestion = patientAnswer.question;
@@ -478,7 +481,7 @@
                   //将问题列表中的其他相同组题目的可见性设置为0，即不可见
                   for (var index in this.scaleInfo.questionList){
                     var question = this.scaleInfo.questionList[index];
-                      if (question.questionId != answerQuestion.questionId && question.groupType.charAt(0) === answerQuestion.groupType.charAt(0)) {
+                      if (question.questionId != answerQuestion.questionId && question.groupType != null && question.groupType.charAt(0) === answerQuestion.groupType.charAt(0)) {
                         question.display = '0';
                       }
                   }
@@ -489,13 +492,14 @@
                   //将问题列表中的其他相同组题目的可见性设置为1，即可见
                   for (var index in this.scaleInfo.questionList){
                     var question = this.scaleInfo.questionList[index];
-                    if (question.questionId != answerQuestion.questionId && question.groupType.charAt(0) === answerQuestion.groupType.charAt(0)) {
+                    if (question.questionId != answerQuestion.questionId && question.groupType != null && question.groupType.charAt(0) === answerQuestion.groupType.charAt(0)) {
                       question.display = '1';
                     }
                   }
                 }
               }
             }
+            this.computedTotalScore()
           },
           deep:true
       }
