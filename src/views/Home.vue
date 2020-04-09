@@ -48,7 +48,7 @@
           </a-sub-menu>-->
 
           <a-menu-item key="3">
-            <router-link to="/Home/MyAnswer">
+            <router-link to="/Home/MyReportAnswer">
               <i class="el-icon-view"></i>
               查看答案
             </router-link>

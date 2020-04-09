@@ -378,189 +378,189 @@
           <el-button type="primary" @click="updateInfo('ruleForm')" class="saveButton">保存</el-button>
         </el-form-item>
       </el-form>
-      <!-- 表单结束位置 -->
+      表单结束位置
+
     </a-card>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+  import axios from 'axios'
 
-export default {
-  data () {
-    // 手机号
-    var validatePhone = (rule, value, callback) => {
-      if (/^1[34578]{1}\d{9}$/.test(value) == false) {
-        callback(new Error('请输入正确的手机号'))
-      } else {
-        callback()
-      }
-    }
+  export default {
+    data () {
 
-    return {
-      ruleForm: {},
-      rules: {
-        name: [{ required: true, message: '不能为空！', trigger: 'blur' }],
-        birthday: [{ required: true, message: '不能为空！', trigger: 'blur' }],
-        gender: [{ required: true, message: '不能为空！', trigger: 'blur' }],
-        familyAddress: [
-          { required: true, message: '不能为空！', trigger: 'blur' }
-        ],
-        telephoneNumber: [
-          { required: true, message: '不能为空！', trigger: 'blur' },
-          { validator: validatePhone, trigger: 'blur' }
-        ]
-
-      },
-      // 服务器地址
-      serverUrl: this.GLOBAL.serverUrl,
-      // 个人信息
-      name: 'zoujiem',
-      birthday: null,
-      educationYears: '',
-      gender: '',
-      config: {
-        rules: [
-          { type: 'object', required: true, message: 'Please select time!' }
-        ]
-      }
-    }
-  },
-
-  mounted () {
-    this.fetch()
-  },
-  resetForm (formName) {
-    this.$refs[formName].resetFields()
-  },
-
-  methods: {
-    handleChange () {
-    },
-    //   如果是在职，输入职业
-    jobChange (value) {
-      if (value == '在职') {
-        this.showJob = true
-      } else {
-        this.showJob = false
-      }
-    },
-    diseaseChange (value) {
-      if (value == '其他疾病') {
-        this.showDisease = true
-      } else {
-        this.showDisease = false
-      }
-    },
-    smokingChange (value) {
-      if (value == '仍在吸') {
-        this.showSmoke = true
-      } else {
-        this.showSmoke = false
-      }
-    },
-    drinkingChange (value) {
-      if (value == '仍在喝') {
-        this.showDrink = true
-      } else {
-        this.showDrink = false
-      }
-    },
-    mentalDiseaseChange (value) {
-      if (value == '有') {
-        this.showMentalDisease = true
-      } else {
-        this.showMentalDisease = false
-        this.showOtherMentalDisease = false
-      }
-    },
-    otherMentalDiseaseChange (value) {
-      if (value == '其他精神病史') {
-        this.showOtherMentalDisease = true
-      } else {
-        this.showOtherMentalDisease = false
-      }
-    },
-    memoryChange (value) {
-      if (value == '有记忆力下降') {
-        this.showMemory = true
-      } else {
-        this.showMemory = false
-      }
-    },
-    cognitiveDrugChange (value) {
-      if (value == '有合并使用促认知药物') {
-        this.showCognitiveDrug = true
-      } else {
-        this.showCognitiveDrug = false
-      }
-    },
-
-    // 查看/编辑
-    fetch () {
-      let that = this
-
-      axios
-        .post(this.serverUrl + '/patient/info/get', this.$route.query, {
-          headers: {
-            Token: localStorage.getItem('Token')
-          }
-        })
-        .then(response => {
-          if ((response.data.retCode === '000000')) {
-            that.ruleForm = response.data.data
-          } else if (response.data.retCode === '100001') {
-            if (localStorage.getItem('Token') === null) {
-              this.$message.error('未登录，即将跳转至登录页面', 5)
-              this.$router.push({ path: '/login' })
-            } else {
-              this.$message.error('登录超时', 5)
-              this.$router.push({ path: '/login' })
-            }
-          }
-        }, err => {
-          alert('网络异常，请检查是否连接上网络')
-        })
-        .catch(function (error) {
-          // 请求失败处理
-        })
-    },
-
-    // 编辑后的保存功能
-    updateInfo (formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          this.$http
-            .post(this.serverUrl + '/patient/info/save', this.ruleForm, {
-              headers: {
-                Token: localStorage.getItem('Token')
-              }
-            })
-            .then(function (data) {
-              if (data.data.retCode === '000000') {
-                this.$message.success('更新成功', 5)
-                this.$router.push({ path: '/Home/MyPatients' })
-              } else if (data.data.retCode === '100001') {
-                if (localStorage.getItem('Token') === null) {
-                  this.$message.error('未登录，即将跳转至登录页面', 5)
-                  this.$router.push({ path: '/login' })
-                } else {
-                  this.$message.error('登录超时', 5)
-                  this.$router.push({ path: '/login' })
-                }
-              } else {
-                this.$message.error(values.retMsg, 5)
-              }
-            }, err => {
-              alert('网络异常，请检查是否连接上网络')
-            })
+      // 手机号
+      var validatePhone = (rule, value, callback) => {
+        if (/^1[34578]{1}\d{9}$/.test(value) == false) {
+          callback(new Error('请输入正确的手机号'))
         } else {
-          this.$message.error('格式错误', 5)
+          callback()
         }
-      })
+      }
+
+      return {
+        labelPosition: 'left',
+        ruleForm: {},
+        rules: {
+          name: [{ required: true, message: '不能为空！', trigger: 'blur' }],
+          birthday: [{ required: true, message: '不能为空！', trigger: 'blur' }],
+          gender: [{ required: true, message: '不能为空！', trigger: 'blur' }],
+          familyAddress: [
+            { required: true, message: '不能为空！', trigger: 'blur' }
+          ],
+          telephoneNumber: [
+            { required: true, message: '不能为空！', trigger: 'blur' },
+            { validator: validatePhone, trigger: 'blur' }
+          ]
+
+        },
+        // 服务器地址
+        serverUrl: this.GLOBAL.serverUrl,
+        // 个人信息
+        name: 'zoujiem',
+        birthday: null,
+        educationYears: '',
+        gender: '',
+        config: {
+          rules: [
+            { type: 'object', required: true, message: 'Please select time!' }
+          ]
+        }
+      }
+    },
+
+    mounted () {
+      this.fetch()
+    },
+
+    methods: {
+      handleChange () {
+      },
+      //   如果是在职，输入职业
+      jobChange (value) {
+        if (value == '在职') {
+          this.showJob = true
+        } else {
+          this.showJob = false
+        }
+      },
+      diseaseChange (value) {
+        if (value == '其他疾病') {
+          this.showDisease = true
+        } else {
+          this.showDisease = false
+        }
+      },
+      smokingChange (value) {
+        if (value == '仍在吸') {
+          this.showSmoke = true
+        } else {
+          this.showSmoke = false
+        }
+      },
+      drinkingChange (value) {
+        if (value == '仍在喝') {
+          this.showDrink = true
+        } else {
+          this.showDrink = false
+        }
+      },
+      mentalDiseaseChange (value) {
+        if (value == '有') {
+          this.showMentalDisease = true
+        } else {
+          this.showMentalDisease = false
+          this.showOtherMentalDisease = false
+        }
+      },
+      otherMentalDiseaseChange (value) {
+        if (value == '其他精神病史') {
+          this.showOtherMentalDisease = true
+        } else {
+          this.showOtherMentalDisease = false
+        }
+      },
+      memoryChange (value) {
+        if (value == '有记忆力下降') {
+          this.showMemory = true
+        } else {
+          this.showMemory = false
+        }
+      },
+      cognitiveDrugChange (value) {
+        if (value == '有合并使用促认知药物') {
+          this.showCognitiveDrug = true
+        } else {
+          this.showCognitiveDrug = false
+        }
+      },
+
+      // 查看/编辑
+      fetch () {
+        let that = this
+        axios
+          .post(this.serverUrl + '/patient/info/get', this.$route.query, {
+            headers: {
+              Token: localStorage.getItem('Token')
+            }
+          })
+          .then(response => {
+            debugger
+            if ((response.data.retCode === '000000')) {
+              that.ruleForm = response.data.data
+            } else if (response.data.retCode === '100001') {
+              if (localStorage.getItem('Token') === null) {
+                this.$message.error('未登录，即将跳转至登录页面', 5)
+                this.$router.push({ path: '/login' })
+              } else {
+                this.$message.error('登录超时', 5)
+                this.$router.push({ path: '/login' })
+              }
+            }
+          }, err => {
+            alert('网络异常，请检查是否连接上网络')
+          })
+          .catch(function (error) {
+            // 请求失败处理
+          })
+      },
+
+      // 编辑后的保存功能
+      updateInfo (formName) {
+        this.$refs[formName].validate(valid => {
+          if (valid) {
+            this.$http
+              .post(this.serverUrl + '/patient/info/save', this.ruleForm, {
+                headers: {
+                  Token: localStorage.getItem('Token')
+                }
+              })
+              .then(function (data) {
+                if (data.data.retCode === '000000') {
+                  this.$message.success('更新成功', 5)
+                  this.$router.push({ path: '/Home/MyPatients' })
+                } else if (data.data.retCode === '100001') {
+                  if (localStorage.getItem('Token') === null) {
+                    this.$message.error('未登录，即将跳转至登录页面', 5)
+                    this.$router.push({ path: '/login' })
+                  } else {
+                    this.$message.error('登录超时', 5)
+                    this.$router.push({ path: '/login' })
+                  }
+                } else {
+                  this.$message.error(values.retMsg, 5)
+                }
+              }, err => {
+                alert('网络异常，请检查是否连接上网络')
+              })
+          } else {
+            this.$message.error('格式错误', 5)
+          }
+        })
+      }
     }
   }
-}
 </script>
 
 <style scoped>
