@@ -25,7 +25,7 @@ import MyScaleAnswer from './views/MyScaleAnswer.vue'
 
 import AnswerSubmitSuccess from './views/AnswerSubmitSuccess.vue'
 import Judge from './views/Judge.vue'
-import AnswerJudge from './views/AnswerJudge.vue'
+import AnswerJudge from './views/AnswerJudge1.vue'
 
 import FindPassword from './views/FindPassword.vue'
 import ChangePassword from './views/ChangePassword.vue'

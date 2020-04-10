@@ -109,7 +109,7 @@ const columns = [
     width: '8%'
   },
   {
-    title: '创建时间',
+    title: '作答时间',
     dataIndex: 'createTime',
     width: '10%'
   },
