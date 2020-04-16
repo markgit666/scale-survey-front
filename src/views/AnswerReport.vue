@@ -667,9 +667,7 @@
             patientId: sessionStorage.getItem('patientId')
           }
         ).then(response => {
-
-          if(response.data.retCode === '000000'
-      )
+          if(response.data.retCode === '000000')
         {
 
           that.scaleIdList = response.data.data.reportInfoVO.scaleIdList

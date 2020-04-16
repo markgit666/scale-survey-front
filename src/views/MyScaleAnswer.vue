@@ -95,14 +95,15 @@ const columns = [
     title: '量表名称',
     dataIndex: 'scaleName',
     // sorter: true,
-    width: '35%'
+    width: '30%'
   },
 
-  {
-    title: '所含题目数量',
-    dataIndex: 'scaleNum',
-    width: '10%'
-  },
+  // {
+  //   title: '题目数量',
+  //   dataIndex: 'scaleNum',
+  //   width: '10%'
+  // },
+
   {
     title: '答题用时',
     dataIndex: 'useTime',
@@ -111,6 +112,16 @@ const columns = [
   {
     title: '作答时间',
     dataIndex: 'createTime',
+    width: '10%'
+  },
+  {
+    title: '评定人',
+    dataIndex: '',
+    width: '10%'
+  },
+  {
+    title: '总分',
+    dataIndex: '',
     width: '10%'
   },
 
@@ -246,6 +257,7 @@ export default {
           type: 'json',
           contentType: 'application/json'
         }).then(values => {
+          debugger
           // that.examinationPaperId = that.$route.query.examinationPaperId
           if ((values.retCode === '000000')) {
             console.log('ddd', JSON.stringify(values))
@@ -262,8 +274,8 @@ export default {
                 values.data.list[i].judgeStatus = '未评分'
               }
               // 将秒数变成分钟
-              // values.data.list[i].useTime = (values.data.list[i].useTime / 60).toFixed(2);
-              values.data.list[i].useTime = values.data.list[i].useTime + '分钟'
+              values.data.list[i].useTime = (values.data.list[i].useTime / 60).toFixed(2) + '分钟';
+              // values.data.list[i].useTime = values.data.list[i].useTime + '分钟'
             }
           } else if (values.retCode === '100001') {
             if (localStorage.getItem('Token') === null) {

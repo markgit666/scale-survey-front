@@ -32,7 +32,7 @@
         </a-col>
 
         <a-col :span="3">
-          <a-button type="primary" icon="arrow-up" @click="myAnswerExport" :style="{marginLeft:'20px'}">信息导出</a-button>
+          <a-button type="primary" icon="arrow-up" @click="myReportAnswerExport" :style="{marginLeft:'20px'}">信息导出</a-button>
         </a-col>
 
         <!--        <a-col :span="3">-->
@@ -53,7 +53,7 @@
         <template slot="operation" slot-scope="text, record, index">
           <div class="editable-row-operations">
             <span>
-              <a @click="() =>seeDetails(record.examinationPaperId)">查看详情</a>
+              <a @click="() =>seeDetails(record.examinationPaperId)">查看量表详情</a>
             </span>
           </div>
         </template>
@@ -95,14 +95,15 @@ const columns = [
     title: '报告表名称',
     dataIndex: 'reportName',
     // sorter: true,
-    width: '35%'
+    width: '39%'
+  },
+  {
+    title: '量表张数',
+    dataIndex: 'scaleNum',
+    // sorter: true,
+    width: '8%'
   },
 
-  {
-    title: '所含量表数量',
-    dataIndex: 'scaleNum',
-    width: '10%'
-  },
   {
     title: '答题者',
     dataIndex: 'patientName',
@@ -112,13 +113,9 @@ const columns = [
   {
     title: '作答时间',
     dataIndex: 'createTime',
-    width: '10%'
+    width: '15%'
   },
-  // {
-  //   title: '评定人',
-  //   dataIndex: 'createTime',
-  //   width: '10%'
-  // },
+
 
   {
     title: '操作',
@@ -191,11 +188,13 @@ export default {
     },
     // 选中的某一行或某些行的信息
     onSelectChange (selectedRowKeys) {
+      debugger
       ('selectedRowKeys changed: ', selectedRowKeys)
       this.selectedRowKeys = selectedRowKeys
     },
     // 导出答案
-    myAnswerExport () {
+    myReportAnswerExport () {
+      debugger
       if (this.selectedRowKeys.length === 0) {
         this.$message.error('请选择需要操作的记录')
       } else {
@@ -251,12 +250,13 @@ export default {
         type: 'json',
         contentType: 'application/json'
       }).then(values => {
+        debugger
         if ((values.retCode === '000000')) {
           that.total = values.data.totalNum
           that.current = params.pageNo
           that.loading = false
           that.data = values.data.list
-          // that.doctorId = values.data.list[0].patientInfo.doctorId
+          that.doctorId = values.data.content.doctorId
           // 当null时，显示未评定
           // for (var i = 0; i < values.data.list.length; i++) {
             // if (values.data.list[i].judgeStatus === '1') {

@@ -286,6 +286,7 @@ export default {
           this.loading = false
           this.data = values.data.list
           this.doctorId = values.data.list[0].doctorId
+
           for (var i = 0; i < values.data.list.length; i++) {
             if (values.data.list[i].gender === '1') {
               values.data.list[i].gender = '男'

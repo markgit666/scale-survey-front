@@ -71,6 +71,7 @@
             console.log(res)
             that.loading = false
             that.data = res.data
+
           } else if (values.retCode === '100001') {
             if (localStorage.getItem('Token') === null) {
               this.$message.error('未登录，即将跳转至登录页面', 5)
