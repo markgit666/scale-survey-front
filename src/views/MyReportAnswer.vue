@@ -2,31 +2,31 @@
   <div class="box">
     <a-card :bordered="false" :hoverable="true">
       <a-row>
-        <a-col :span="6">
-          <label>报告表名称：</label>
+        <a-col :span="8">
+          <label>报告表答卷名称：</label>
           <el-input type="text" maxlength="256" show-word-limit :style="{width:'70%'}" size="small"
-                    v-model="answerResearchData.scaleName"></el-input>
+                    v-model="answerResearchData.reportName"></el-input>
         </a-col>
-        <a-col :span="5">
+        <a-col :span="8">
           <label>答题者：</label>
           <el-input type="text" maxlength="10" show-word-limit :style="{width:'60%'}" size="small"
                     v-model="answerResearchData.patientName"></el-input>
         </a-col>
 
-        <a-col :span="6">
-          <label>是否评分：</label>
-          <el-select
-            v-model="answerResearchData.judgeStatus"
-            style="width:60%;"
-            size="small"
-          >
-            <el-option label="" value=""></el-option>
-            <el-option label="已评分" value="1"></el-option>
-            <el-option label="未评分" value="0"></el-option>
+        <!--<a-col :span="6">-->
+          <!--<label>是否评分：</label>-->
+          <!--<el-select-->
+            <!--v-model="answerResearchData.judgeStatus"-->
+            <!--style="width:60%;"-->
+            <!--size="small"-->
+          <!--&gt;-->
+            <!--<el-option label="" value=""></el-option>-->
+            <!--<el-option label="已评分" value="1"></el-option>-->
+            <!--<el-option label="未评分" value="0"></el-option>-->
 
-          </el-select>
+          <!--</el-select>-->
 
-        </a-col>
+        <!--</a-col>-->
         <a-col :span="2">
           <a-button type="primary" icon="search" @click="answerSearch" :style="{marginLeft:'15px'}">查找</a-button>
         </a-col>
@@ -159,9 +159,9 @@ export default {
       id: 0,
       qrCodeShowSwitch: '',
       answerResearchData: {
-        scaleName: '',
+        reportName: '',
         patientName: '',
-        judgeStatus: ''
+        // judgeStatus: ''
       },
       doctorId: ''
     }
@@ -173,9 +173,9 @@ export default {
         pageNo: val,
         pageSize: this.pageSize,
         data: {
-          scaleName: this.answerResearchData.scaleName,
+          scaleName: this.answerResearchData.reportName,
           patientName: this.answerResearchData.patientName,
-          judgeStatus: this.answerResearchData.judgeStatus
+          // judgeStatus: this.answerResearchData.judgeStatus
         }
       })
     }
@@ -238,6 +238,7 @@ export default {
     // },
 
     fetch (params = {}) {
+      debugger
       let that = this
       this.loading = true
       reqwest({
@@ -286,6 +287,12 @@ export default {
 
     // 查看详情
     seeDetails (examinationPaperId) {
+      debugger
+      for (var i in this.data){
+        if (this.data[i].examinationPaperId === examinationPaperId) {
+          sessionStorage.setItem('patientName', this.data[i].patientName)
+        }
+      }
       this.$router.push({
         path: '/Home/myReportAnswer/myScaleAnswer',
         query: { examinationPaperId: examinationPaperId }
@@ -298,9 +305,9 @@ export default {
         pageNo: 1,
         pageSize: this.pageSize,
         data: {
-          scaleName: this.answerResearchData.scaleName,
+          reportName: this.answerResearchData.reportName,
           patientName: this.answerResearchData.patientName,
-          judgeStatus: this.answerResearchData.judgeStatus
+          // judgeStatus: this.answerResearchData.judgeStatus
         }
       })
     }

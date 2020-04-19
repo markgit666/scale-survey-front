@@ -7,8 +7,10 @@
       <a-col :lg="1" :md="1" :sm="1" :xl="1" :xs="1"></a-col>
       <a-col :lg="22" :md="22" :sm="22" :xl="22" :xs="22">
         <a-card>
+          <h2>
           <p :style="{fontFamily:'SimHei',fontWeight:'bold',textAlign:'center' }">
             {{scaleAnswerInfo.scaleInfo.scaleName}}</p>
+          </h2>
           <el-row :gutter="10">
             <!--评定人-->
             <el-col :lg="12" :md="12" :sm="12" :xl="12" :xs="12">
@@ -16,7 +18,7 @@
             </el-col>
             <!--答题人-->
             <el-col :lg="12" :md="12" :sm="12" :xl="12" :xs="12">
-              <p :style="{fontFamily:'SimHei',fontWeight:'bold',textAlign:'center' }">答题人：</p>
+              <p :style="{fontFamily:'SimHei',fontWeight:'bold',textAlign:'center' }">答题人：{{patientName}}</p>
             </el-col>
 
           </el-row>
@@ -42,7 +44,7 @@
                 </el-col>
                 <!--答案-->
                 <el-col :lg="8" :md="8" :sm="8" :xl="8" :xs="8">
-                  <p :style="{fontFamily:'SimHei'}">答案：{{oneQuestion.answer.content}}</p>
+                  <p :style="{fontFamily:'SimHei'}">【答案】{{oneQuestion.answer.content}}</p>
 
                 </el-col>
                 <!--评分-->
@@ -66,7 +68,7 @@
                 </el-col>
                 <!--答案-->
                 <el-col :lg="8" :md="8" :sm="8" :xl="8" :xs="8">
-                  <p :style="{fontFamily:'SimHei'}">答案：{{oneQuestion.answer.content}}</p>
+                  <p :style="{fontFamily:'SimHei'}">【答案】{{oneQuestion.answer.content}}</p>
                 </el-col>
                 <!--评分-->
                 <el-col :lg="8" :md="8" :sm="8" :xl="8" :xs="8">
@@ -87,7 +89,7 @@
                 </el-col>
                 <!--答案-->
                 <el-col :lg="8" :md="8" :sm="8" :xl="8" :xs="8">
-                  <p :style="{fontFamily:'SimHei'}">答案：</p>
+                  <p :style="{fontFamily:'SimHei'}">【答案】</p>
                   <p
                     v-for="(item,itemId) in oneQuestion.answer.chooseAnswerList"
                     :key="itemId"
@@ -117,7 +119,7 @@
                 </el-col>
                 <!--答案-->
                 <el-col :lg="8" :md="8" :sm="8" :xl="8" :xs="8">
-                  <p :style="{fontFamily:'SimHei'}">答案：</p>
+                  <p :style="{fontFamily:'SimHei'}">【答案】</p>
                   <img v-bind:src="imgUrl + oneQuestion.answer.content" class="draw-img"/>
                 </el-col>
                 <!--评分-->
@@ -145,7 +147,7 @@
                 </el-col>
                 <!--答案-->
                 <el-col :lg="8" :md="8" :sm="8" :xl="8" :xs="8">
-                  <p :style="{fontFamily:'SimHei'}">答案：</p>
+                  <p :style="{fontFamily:'SimHei'}">【答案】</p>
                   <p :style="{fontFamily:'SimHei'}">{{oneQuestion.answer.content}}</p>
                 </el-col>
                 <!--评分-->
@@ -156,6 +158,9 @@
               </el-row>
             </div>
           </div>
+          <!--所有题目结束-->
+          <a-divider></a-divider>
+          <h2> <p  :style="{fontFamily:'SimHei', fontWeight:'bold'}">总分：</p></h2>
         </a-card>
       </a-col>
       <a-col :lg="1" :md="1" :sm="1" :xl="1" :xs="1"></a-col>
@@ -171,7 +176,7 @@
   export default {
     data () {
       return {
-
+        patientName:'',
         // 规则校验
         rules: {
           checkUser: [
@@ -219,6 +224,7 @@
             debugger
             if (response.data.retCode === '000000') {
               that.scaleAnswerInfo = response.data.data
+              that.patientName = sessionStorage.getItem('patientName')
             } else if (response.data.retCode === '100001') {
               if (localStorage.getItem('Token') === null) {
                 this.$message.error('未登录，即将跳转至登录页面', 5)

@@ -1,32 +1,34 @@
 <template>
   <div class="box">
     <a-card :bordered="false" :hoverable="true">
+
+      <!--查找-->
       <a-row>
         <a-col :span="6">
-          <label>报告表名称：</label>
+          <label>量表答卷名称：</label>
           <el-input type="text" maxlength="256" show-word-limit :style="{width:'70%'}" size="small"
                     v-model="answerResearchData.scaleName"></el-input>
         </a-col>
-        <a-col :span="5">
-          <label>答题者：</label>
-          <el-input type="text" maxlength="10" show-word-limit :style="{width:'60%'}" size="small"
-                    v-model="answerResearchData.patientName"></el-input>
-        </a-col>
+        <!--<a-col :span="5">-->
+          <!--<label>答题者：</label>-->
+          <!--<el-input type="text" maxlength="10" show-word-limit :style="{width:'60%'}" size="small"-->
+                    <!--v-model="answerResearchData.patientName"></el-input>-->
+        <!--</a-col>-->
 
-        <a-col :span="6">
-          <label>是否评分：</label>
-          <el-select
-            v-model="answerResearchData.judgeStatus"
-            style="width:60%;"
-            size="small"
-          >
-            <el-option label="" value=""></el-option>
-            <el-option label="已评分" value="1"></el-option>
-            <el-option label="未评分" value="0"></el-option>
+        <!--<a-col :span="6">-->
+          <!--<label>是否评分：</label>-->
+          <!--<el-select-->
+            <!--v-model="answerResearchData.judgeStatus"-->
+            <!--style="width:60%;"-->
+            <!--size="small"-->
+          <!--&gt;-->
+            <!--<el-option label="" value=""></el-option>-->
+            <!--<el-option label="已评分" value="1"></el-option>-->
+            <!--<el-option label="未评分" value="0"></el-option>-->
 
-          </el-select>
+          <!--</el-select>-->
 
-        </a-col>
+        <!--</a-col>-->
         <a-col :span="2">
           <a-button type="primary" icon="search" @click="answerSearch" :style="{marginLeft:'15px'}">查找</a-button>
         </a-col>
@@ -168,8 +170,8 @@ export default {
         qrCodeShowSwitch: '',
         answerResearchData: {
           scaleName: '',
-          patientName: '',
-          judgeStatus: ''
+          // patientName: '',
+          // judgeStatus: ''
         },
         doctorId: ''
       }
@@ -181,10 +183,10 @@ export default {
           pageNo: val,
           pageSize: this.pageSize,
           data: {
-
             scaleName: this.answerResearchData.scaleName,
-            patientName: this.answerResearchData.patientName,
-            judgeStatus: this.answerResearchData.judgeStatus
+            examinationPaperId:this.$route.query.examinationPaperId
+            // patientName: this.answerResearchData.patientName,
+            // judgeStatus: this.answerResearchData.judgeStatus
           }
         })
       }
@@ -245,6 +247,7 @@ export default {
       // },
 
       fetch (params = {}) {
+        debugger
         let that = this
         this.loading = true
         reqwest({
@@ -257,10 +260,9 @@ export default {
           type: 'json',
           contentType: 'application/json'
         }).then(values => {
-          debugger
           // that.examinationPaperId = that.$route.query.examinationPaperId
           if ((values.retCode === '000000')) {
-            console.log('ddd', JSON.stringify(values))
+            debugger
             that.total = values.data.totalNum
             that.current = params.pageNo
             that.loading = false
@@ -308,9 +310,10 @@ export default {
           pageNo: 1,
           pageSize: this.pageSize,
           data: {
+            examinationPaperId:this.$route.query.examinationPaperId,
             scaleName: this.answerResearchData.scaleName,
-            patientName: this.answerResearchData.patientName,
-            judgeStatus: this.answerResearchData.judgeStatus
+            // patientName: this.answerResearchData.patientName,
+            // judgeStatus: this.answerResearchData.judgeStatus
           }
         })
       }

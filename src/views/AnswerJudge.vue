@@ -58,7 +58,7 @@
               <br/>
               <br/>
 
-              <label>答案：</label>
+              <label>【答案】</label>
               <strong :style="{color:'red'}">{{oneQuestion.answer}}</strong>
               <br/>
               <br/>
@@ -83,7 +83,7 @@
               <strong>{{oneQuestion.title}}</strong>
               <br/><br/>
 
-              <label>答案：</label>
+              <label>【答案】</label>
               <strong :style="{color:'red'}">{{oneQuestion.answer.content}}</strong>
               <br/><br/>
 
@@ -107,7 +107,7 @@
               <strong>{{oneQuestion.title}}</strong>
               <br/><br/>
 
-              <label>答案：</label>
+              <label>【答案】</label>
               <strong :style="{color:'red'}">
               <span
                 v-for="(item,itemId) in oneQuestion.answer.chooseAnswerList"
@@ -173,7 +173,7 @@
                   <img v-bind:src="imgUrl + oneImage"/>
                 </div>
               </div>
-              <label>答案：</label>
+              <label>【答案】</label>
               <strong :style="{color:'red'}">{{oneQuestion.answer.content}}</strong>
               <br/><br/>
               <label>评分：</label>

@@ -471,7 +471,7 @@
       answer: {
           handler(val, oldVal){
             if (val.answerList != null && val.answerList.length > 0){
-              debugger
+
               for (var index in val.answerList) {
                 var patientAnswer = val.answerList[index];
                 var answerQuestion = patientAnswer.question;
@@ -514,7 +514,7 @@
     computed: {
       // 计算总分，除了“神经精神科量表”
       computedTotalScore () {
-        debugger
+
         if (this.scaleInfo === '' || this.scaleInfo === null  ) {
           return
         }
@@ -535,7 +535,7 @@
 
       // 频率总分
       frequencyTotalScore(){
-        debugger
+
         if (this.scaleInfo === '' || this.scaleInfo === null  ) {
           return
         }
@@ -555,7 +555,7 @@
 
       // 严重程度总分
       seriousTotalScore(){
-        debugger
+
         if (this.scaleInfo === '' || this.scaleInfo === null  ) {
           return
         }
@@ -577,7 +577,7 @@
 
       // 频率*严重程度
       frequencyAndSeriousTotalScore(){
-        debugger
+
         if (this.scaleInfo === '' || this.scaleInfo === null  ) {
           return
         }
@@ -604,7 +604,7 @@
 
       // 使照料者苦恼程度总分
       tortureTotalScore(){
-        debugger
+
         if (this.scaleInfo === '' || this.scaleInfo === null  ) {
           return
         }
@@ -628,7 +628,7 @@
 
       // 单选题radio事件绑定
       radioChange(questionId, optionScore){
-        debugger
+
         let list = []
         list = this.answer.answerList
 
@@ -641,7 +641,7 @@
 
       // 多选题绑定事件
       // checkBoxChange(questionId, optionScore){
-      //   debugger
+      //
       //   let list = []
       //   list = this.answer.answerList
       //
@@ -738,6 +738,8 @@
           if(res.data.retCode === '000000'){
           this.answer.answerList.splice(0,this.answer.answerList.length)
           this.getScaleInfo(this.active)
+        }else{
+            // this.$message.warn(res.data.retMsg)
         }
         })
 
@@ -745,15 +747,15 @@
 
       // 下一步
       next() {
-        if (this.active < this.scaleIdList.length-1) {
-// debugger
+debugger
+        if (this.active < this.scaleIdList.length) {
           this.saveScaleInfo(this.active)
           this.active++
           this.answer.totalScore = 0
           // this.getScaleInfo(this.active)
           this.newActive = this.active
-
-        }else {
+        }
+        if(this.active === this.scaleIdList.length){
 
  var url = './IdCard?reportId=' + this.reportId + '&doctorId='+this.doctorId
           //调用elementUI的加载层
