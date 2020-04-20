@@ -287,6 +287,7 @@
 
       // 评分-----拿到数据
       fetch () {
+        debugger
         let that = this
         axios
           .post(

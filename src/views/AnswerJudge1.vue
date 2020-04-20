@@ -160,7 +160,7 @@
           </div>
           <!--所有题目结束-->
           <a-divider></a-divider>
-          <h2> <p  :style="{fontFamily:'SimHei', fontWeight:'bold'}">总分：</p></h2>
+          <h2> <p :style="{fontFamily:'SimHei', fontWeight:'bold'}">总分：{{computedTotalScore}}</p></h2>
         </a-card>
       </a-col>
       <a-col :lg="1" :md="1" :sm="1" :xl="1" :xs="1"></a-col>
@@ -204,11 +204,27 @@
     mounted () {
       this.fetch()
     },
+    // computed:{
+    //   computedTotalScore () {
+    //     debugger
+    //     let questionList = []
+    //     questionList = this.scaleAnswerInfo.scaleInfo.questionList
+    //     var totalScore = 0
+    //     for (var i = 0; i < questionList.length; i++) {
+    //       totalScore = totalScore + questionList[i].answer.score
+    //     }
+    //     if (isNaN(totalScore)) {
+    //       totalScore = 0
+    //     }
+    //     this.JudgeInfo.totalScore = totalScore
+    //     return totalScore
+    //   }
+    // },
 
     methods: {
-
       // 评分-----拿到数据
       fetch () {
+        debugger
         let that = this
         axios
           .post(

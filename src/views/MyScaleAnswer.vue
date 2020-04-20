@@ -4,7 +4,7 @@
 
       <!--查找-->
       <a-row>
-        <a-col :span="6">
+        <a-col :span="12">
           <label>量表答卷名称：</label>
           <el-input type="text" maxlength="256" show-word-limit :style="{width:'70%'}" size="small"
                     v-model="answerResearchData.scaleName"></el-input>
@@ -44,7 +44,7 @@
       <br/>
       <a-table
         :columns="columns"
-        :rowKey="record => record.examinationPaperId"
+        :rowKey="record => record.scalePaperId"
         :dataSource="data"
         :pagination="false"
         :loading="loading"
@@ -204,6 +204,7 @@ export default {
       },
       // 导出答案
       myAnswerExport () {
+        debugger
         if (this.selectedRowKeys.length === 0) {
           this.$message.error('请选择需要操作的记录')
         } else {
@@ -211,10 +212,10 @@ export default {
           form.attr('style', 'display:none')
           form.attr('target', '')
           form.attr('method', 'post')
-          form.attr('action', this.serverUrl + 'excel/export/examinationPaper/info')
+          form.attr('action', this.serverUrl + 'excel/export/scalePaper/info')
           var input1 = $('<input>')
           input1.attr('type', 'hidden')
-          input1.attr('name', 'examinationPaperIdArray')
+          input1.attr('name', 'scalePaperIdArray')
           input1.attr('value', this.selectedRowKeys)
 
           var input2 = $('<input>')
@@ -267,6 +268,7 @@ export default {
             that.current = params.pageNo
             that.loading = false
             that.data = values.data.list
+            that.doctorId = sessionStorage.getItem('doctorId')
             // that.doctorId = values.data.list[0].patientInfo.doctorId
             // 当null时，显示未评定
             for (var i = 0; i < values.data.list.length; i++) {
