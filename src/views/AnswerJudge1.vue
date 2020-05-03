@@ -14,7 +14,7 @@
           <el-row :gutter="10">
             <!--评定人-->
             <el-col :lg="12" :md="12" :sm="12" :xl="12" :xs="12">
-              <p :style="{fontFamily:'SimHei',fontWeight:'bold',textAlign:'center' }">评定人：</p>
+              <p :style="{fontFamily:'SimHei',fontWeight:'bold',textAlign:'center' }">评定人：{{checkUser}}</p>
             </el-col>
             <!--答题人-->
             <el-col :lg="12" :md="12" :sm="12" :xl="12" :xs="12">
@@ -160,7 +160,11 @@
           </div>
           <!--所有题目结束-->
           <a-divider></a-divider>
-          <h2> <p :style="{fontFamily:'SimHei', fontWeight:'bold'}">总分：{{computedTotalScore}}</p></h2>
+          <h2> <p :style="{fontFamily:'SimHei', fontWeight:'bold'}">总分：{{computedTotalScore}}
+            <el-button type="primary" :style="{marginLeft:'20px'}" @click="saveModifyScore">保存</el-button>
+          </p>
+
+          </h2>
         </a-card>
       </a-col>
       <a-col :lg="1" :md="1" :sm="1" :xl="1" :xs="1"></a-col>
@@ -176,6 +180,7 @@
   export default {
     data () {
       return {
+        checkUser:'',
         patientName:'',
         // 规则校验
         rules: {
@@ -198,28 +203,32 @@
           totalScore: 0,
           answerJudgeList: []
         }
+
       }
     },
 
     mounted () {
       this.fetch()
     },
-    // computed:{
-    //   computedTotalScore () {
-    //     debugger
-    //     let questionList = []
-    //     questionList = this.scaleAnswerInfo.scaleInfo.questionList
-    //     var totalScore = 0
-    //     for (var i = 0; i < questionList.length; i++) {
-    //       totalScore = totalScore + questionList[i].answer.score
-    //     }
-    //     if (isNaN(totalScore)) {
-    //       totalScore = 0
-    //     }
-    //     this.JudgeInfo.totalScore = totalScore
-    //     return totalScore
-    //   }
-    // },
+    computed:{
+      computedTotalScore () {
+        debugger
+        let questionList = []
+        questionList = this.scaleAnswerInfo.scaleInfo.questionList
+        var totalScore = 0
+       
+        for (var i = 0; i < questionList.length; i++) {
+          if (questionList[i].questionType != "questionType" && questionList[i].questionType != "direction") {
+            totalScore = totalScore + questionList[i].answer.score
+          }
+        }
+        if (isNaN(totalScore)) {
+          totalScore = 0
+        }
+        this.JudgeInfo.totalScore = totalScore
+        return totalScore
+      }
+    },
 
     methods: {
       // 评分-----拿到数据
@@ -240,6 +249,7 @@
             debugger
             if (response.data.retCode === '000000') {
               that.scaleAnswerInfo = response.data.data
+              that.checkUser =  that.scaleAnswerInfo.judgeInfo.checkUser
               that.patientName = sessionStorage.getItem('patientName')
             } else if (response.data.retCode === '100001') {
               if (localStorage.getItem('Token') === null) {
@@ -256,6 +266,47 @@
             alert('网络异常，请检查是否连接上网络')
           })
       },
+      saveModifyScore(){
+        let that = this
+        debugger
+        that.JudgeInfo.examinationPaperId = sessionStorage.getItem('examinationPaperId')
+        var answerJudgeList = [] // 构建保存修改的评分传参数
+        var questionList = this.scaleAnswerInfo.scaleInfo.questionList
+        for(var i=0;i<questionList.length;i++){
+          if (questionList[i].questionType != "questionType" && questionList[i].questionType != "direction") {
+            var answerJudge = {
+              answerId: questionList[i].answer.answerId,
+              questionId: questionList[i].questionId,
+              score: questionList[i].answer.score
+            }
+            answerJudgeList.push(answerJudge)
+          }
+        }
+        axios.post(
+          this.serverUrl + '/paper/judge/commit',
+          {
+            scalePaperId:this.$route.query.scalePaperId,
+            checkUser : this.checkUser,
+            totalScore: this.JudgeInfo.totalScore,
+            answerJudgeList:answerJudgeList
+          },
+          {
+            headers: {
+              Token: localStorage.getItem('Token')
+            }
+          }
+        ).then(res=>{
+            if(res.data.retCode === '000000'){
+          this.$message.success("保存成功！",3)
+          var path = "/home/myReportAnswer/myScaleAnswer?examinationPaperId=" + that.JudgeInfo.examinationPaperId
+          this.$router.push({ path: path })
+        }else{
+          this.$message.success(res.data.retMsg,3)
+        }
+        }, err => {
+          alert('网络异常，请检查是否连接上网络')
+        })
+      }
 
     }
   }

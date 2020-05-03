@@ -118,12 +118,12 @@ const columns = [
   },
   {
     title: '评定人',
-    dataIndex: '',
+    dataIndex: 'checkUser',
     width: '10%'
   },
   {
     title: '总分',
-    dataIndex: '',
+    dataIndex: 'totalScore',
     width: '10%'
   },
 
@@ -269,7 +269,9 @@ export default {
             that.loading = false
             that.data = values.data.list
             that.doctorId = sessionStorage.getItem('doctorId')
-            // that.doctorId = values.data.list[0].patientInfo.doctorId
+            sessionStorage.setItem('examinationPaperId', that.$route.query.examinationPaperId) //存储examinationPaperId
+
+          // that.doctorId = values.data.list[0].patientInfo.doctorId
             // 当null时，显示未评定
             for (var i = 0; i < values.data.list.length; i++) {
               if (values.data.list[i].judgeStatus === '1') {
