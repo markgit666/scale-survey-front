@@ -308,7 +308,8 @@
 
           <!--不计分的单选题在此处-->
           <div v-for="(item, subjectId) in scaleInfo.questionList " :key="'s-'+subjectId">
-            <div v-if="item.recordScore === false ">
+            <div v-if="item.recordScore === false"  >
+              <div  v-if="scaleInfo.scaleName!='病人健康问卷（PHQ-9）' ">
 
               <!--单选题-->
               <div v-if="item.questionType ==='radio'">
@@ -328,7 +329,7 @@
 
                   </div>
                 </div>
-
+              </div>
               </div>
             </div>
           </div>
@@ -471,6 +472,7 @@
       answer: {
           handler(val, oldVal){
             if (val.answerList != null && val.answerList.length > 0){
+              debugger
 
               for (var index in val.answerList) {
                 var patientAnswer = val.answerList[index];
@@ -483,6 +485,10 @@
                     var question = this.scaleInfo.questionList[index];
                       if (question.questionId != answerQuestion.questionId && question.groupType != null && question.groupType.charAt(0) === answerQuestion.groupType.charAt(0)) {
                         question.display = '0';
+                        question.recordScore = false;
+                        patientAnswer.score = 0;
+                        patientAnswer.content =" ";
+
                       }
                   }
                 }
@@ -494,6 +500,7 @@
                     var question = this.scaleInfo.questionList[index];
                     if (question.questionId != answerQuestion.questionId && question.groupType != null && question.groupType.charAt(0) === answerQuestion.groupType.charAt(0)) {
                       question.display = '1';
+                      question.recordScore = true;
                     }
                   }
                 }
@@ -522,7 +529,10 @@
         answerList = this.answer.answerList
         var totalScore = 0
         for (var i =0 ;i<answerList.length;i++){
-          totalScore = Number(totalScore) + Number(answerList[i].score)
+          if(answerList[i].question.recordScore === true){
+            totalScore = Number(totalScore) + Number(answerList[i].score)
+          }
+
         }
 
         if (isNaN(totalScore)) {
@@ -544,7 +554,7 @@
         var totalScore = 0
         for(var i =0 ;i<answerList.length;i++){
           var length = answerList[i].question.groupType.length
-          if (answerList[i].question.groupType.charAt(length-1) === '2' ) {
+          if (answerList[i].question.recordScore === true && answerList[i].question.groupType.charAt(length-1) === '2' ) {
             totalScore = Number(totalScore) + Number(answerList[i].score)
           }
 
@@ -566,7 +576,7 @@
 
         for(var i =0 ;i<answerList.length;i++){
           var length = answerList[i].question.groupType.length
-          if (answerList[i].question.groupType.charAt(length-1) === '3' ) {
+          if (answerList[i].question.recordScore === true && answerList[i].question.groupType.charAt(length-1) === '3' ) {
             totalScore = Number(totalScore) + Number(answerList[i].score)
           }
 
@@ -577,25 +587,32 @@
 
       // 频率*严重程度
       frequencyAndSeriousTotalScore(){
-
+        debugger
         if (this.scaleInfo === '' || this.scaleInfo === null  ) {
           return
         }
         let answerList = []
         answerList = this.answer.answerList
         var totalScore = 0
-        var totalScore1 = 0
-        var totalScore2 = 0
+
+        var groupTypeArray = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"];
+        for(var j = 0; j<groupTypeArray.length; j++){
+          var totalScore1 = 0
+          var totalScore2 = 0
         for(var i =0 ;i<answerList.length;i++){
           var length = answerList[i].question.groupType.length
-          if (answerList[i].question.groupType.charAt(length-1) === '2' ) {
-            totalScore1 = Number(totalScore) + Number(answerList[i].score)
-          }
-          if (answerList[i].question.groupType.charAt(length-1) === '3' ) {
-            totalScore2 = Number(totalScore) + Number(answerList[i].score)
-          }
-          totalScore = totalScore1 * totalScore2
+          if ( answerList[i].question.recordScore === true && answerList[i].question.groupType.charAt(0) === groupTypeArray[j] ){
 
+            if (answerList[i].question.groupType.charAt(length-1) === '2' ) {
+              totalScore1 = Number(answerList[i].score)
+            }
+            if (answerList[i].question.groupType.charAt(length-1) === '3' ) {
+              totalScore2 = Number(answerList[i].score)
+            }
+
+          }
+        }
+          totalScore = totalScore + totalScore1 * totalScore2
         }
         this.answer.totalScore = totalScore
         return totalScore
@@ -613,7 +630,7 @@
         var totalScore = 0
         for(var i =0 ;i<answerList.length;i++){
           var length = answerList[i].question.groupType.length
-          if (answerList[i].question.groupType.charAt(length-1) === '5' ) {
+          if (answerList[i].question.recordScore === true && answerList[i].question.groupType.charAt(length-1) === '4' ) {
             totalScore = Number(totalScore) + Number(answerList[i].score)
           }
 
