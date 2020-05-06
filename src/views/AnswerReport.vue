@@ -309,8 +309,7 @@
           <!--不计分的单选题在此处-->
           <div v-for="(item, subjectId) in scaleInfo.questionList " :key="'s-'+subjectId">
             <div v-if="item.recordScore === false"  >
-              <div  v-if="scaleInfo.scaleName!='病人健康问卷（PHQ-9）' ">
-
+              <div  v-if="scaleInfo.scaleName === '病人健康问卷（PHQ-9）' ">
               <!--单选题-->
               <div v-if="item.questionType ==='radio'">
                 <div v-for="(value,index) in answer.answerList" :key="index">
@@ -481,13 +480,11 @@
                 if (answerQuestion.questionType === 'radio' && answerQuestion.groupType != null && answerQuestion.groupType != '' && answerQuestion.groupType.charAt(answerQuestion.groupType.length - 1) === '1' && patientAnswer.content === '无') {
                   console.log("我执行了")
                   //将问题列表中的其他相同组题目的可见性设置为0，即不可见
-                  for (var index in this.scaleInfo.questionList){
-                    var question = this.scaleInfo.questionList[index];
+                  for (var j in this.scaleInfo.questionList){
+                    var question = this.scaleInfo.questionList[j];
                       if (question.questionId != answerQuestion.questionId && question.groupType != null && question.groupType.charAt(0) === answerQuestion.groupType.charAt(0)) {
                         question.display = '0';
                         question.recordScore = false;
-                        patientAnswer.score = 0;
-                        patientAnswer.content =" ";
 
                       }
                   }
