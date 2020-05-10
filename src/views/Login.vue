@@ -30,7 +30,7 @@
             <el-image class="verifyCode-image" :src="imageCode" @click="fetchVertifyCode"></el-image>
           </div>
         </el-form-item>
-
+        <el-checkbox v-model="rememberMe">下次自动登录</el-checkbox>
         <el-form-item>
           <el-button type="primary" @click="login('ruleForm')" class="login-form-button">登录</el-button>
         </el-form-item>
@@ -60,6 +60,7 @@ export default {
     }
 
     return {
+      rememberMe:false,
       // 表单 邮箱校验
       ruleForm: {
         email: '',
@@ -141,7 +142,8 @@ Xrej5WAcEy7ThIi17wIDAQAB` // 把之前生成的贴进来，实际开发过程中
               loginName: this.ruleForm.email,
               password: this.passwordEncrypt,
               captchaToken: this.captchaToken,
-              captcha: this.ruleForm.verificationCode
+              captcha: this.ruleForm.verificationCode,
+              rememberMe:this.rememberMe
             })
             .then(response => {
               if (response.data.retCode === '000001') {
