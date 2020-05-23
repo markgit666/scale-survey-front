@@ -81,7 +81,7 @@
         sessionStorage.setItem('idCard', this.ruleForm.idCard)
         let that = this
         this.$refs[formName].validate(valid => {
-
+          // debugger
           if (valid) {
             axios
               .post(
@@ -97,7 +97,8 @@
                 }
               )
               .then(response => {
-
+              // debugger
+              // console.log(this.ruleForm.idCard)
                 if (response.data.retCode === '000000') {
                   var urlFirst = '/home/AnswerSteps' + '?reportId=' +this.$route.query.reportId + '&doctorId='+'that.$route.query.doctorId'
                   var urlNotFirst = '/home/AnswerReport' + '?reportId=' +this.$route.query.reportId + '&doctorId='+'that.$route.query.doctorId'

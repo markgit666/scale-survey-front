@@ -272,6 +272,15 @@
               >
                 <!-- --------------------------------- ----------------------->
                 <a-row :gutter="10">
+                  <a-col :xs="18" :sm="18" :md="18" :lg="18" :xl="18">
+                    <!-- 身份证号 -->
+                    <div  :style="{marginTop:'15px'}">
+                      <strong> <label>身份证号：{{ruleForm.patientInfo.idCard}}</label></strong>
+                    </div>
+                  </a-col>
+                </a-row>
+                <!-- --------------------------------- ----------------------->
+                <a-row :gutter="10">
                   <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <!-- 姓名 -->
                     <el-form-item label="姓名 :" prop="name" :style="{marginTop:'20px'}">
@@ -874,7 +883,7 @@
         ruleForm: {
           // 被试者基本资料
           patientInfo: {
-            IdCard: '',
+            idCard: '',
             doctorId: '',
             name: '',
             birthday: '',
@@ -941,7 +950,7 @@
     },
 
     mounted () {
-      // 获取idCard.vue文件传过来的IdCard值
+      // 获取IdCard.vue文件传过来的IdCard值
       this.ruleForm.patientInfo.idCard = sessionStorage.getItem('idCard')
       this.ruleForm.patientInfo.doctorId = this.$route.query.doctorId
       this.reportId = this.$route.query.reportId
@@ -1037,7 +1046,9 @@
         this.$http
           .post(this.serverUrl + 'patient/relation/info/save', this.ruleForm)
           .then(
+
             function (data) {
+              console.log(this.ruleForm)
               if (data.body.retCode === '000000') {
                 console.log(data)
                 this.patientId = data.body.data.patientId

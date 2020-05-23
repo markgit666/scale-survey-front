@@ -503,22 +503,20 @@
                 }
               }
             }
-            this.computedTotalScore()
+            computedTotalScore()
           },
           deep:true
       }
     },
 
     mounted() {
-
       this.getReportInfo()
-
     },
 
     computed: {
       // 计算总分，除了“神经精神科量表”
       computedTotalScore () {
-
+        debugger
         if (this.scaleInfo === '' || this.scaleInfo === null  ) {
           return
         }
