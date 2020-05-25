@@ -168,7 +168,7 @@
         <a-row :gutter="10">
           <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
             <!-- 职业 -->
-            <el-form-item label="职业 :" v-if="ruleForm.workStatus==='在职'">
+            <el-form-item label="职业 :" >
               <el-select
                 v-model="ruleForm.workStatus"
                 placeholder="请选择"
@@ -303,7 +303,7 @@
         <a-row :gutter="15">
           <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
             <!-- 饮酒史 -->
-            <el-form-item label="一天几两 :" v-if="showDrink">
+            <el-form-item label="一天几两 :" v-if="ruleForm.drinkingHistory==='仍在喝'">
               <a-input-number
                 v-model="ruleForm.drinkingNumEachDay"
                 placeholder="请输入数字值"
@@ -313,7 +313,7 @@
           </a-col>
 
           <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-            <el-form-item label="喝酒年数 :" v-if="showDrink">
+            <el-form-item label="喝酒年数 :" v-if="ruleForm.drinkingHistory==='仍在喝'">
               <a-input-number
                 v-model="ruleForm.drinkingYears"
                 placeholder="请输入数字值"
@@ -372,7 +372,7 @@
         <!-- --------------------------------------------------------------------- -->
         <a-row :gutter="10">
           <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-            <el-form-item label="有无精神疾病家族史 :" v-if="ruleForm.isMentalDiseaseFamilyHistory==='有'">
+            <el-form-item label="有无精神疾病家族史 :" >
               <el-select
                 v-model="ruleForm.isMentalDiseaseFamilyHistory"
                 placeholder="请选择"
@@ -393,8 +393,7 @@
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
             <el-form-item
               label="具体精神疾病家族史 :"
-
-              v-if="ruleForm.mentalDiseaseFamilyHistory==='其他精神病史'"
+              v-if="ruleForm.isMentalDiseaseFamilyHistory==='有'"
             >
               <el-select
                 v-model="ruleForm.mentalDiseaseFamilyHistory"
@@ -420,7 +419,7 @@
             <el-form-item
               label="其他精神病史 :"
 
-              v-if="showOtherMentalDisease"
+              v-if="ruleForm.mentalDiseaseFamilyHistory==='其他精神病史'"
             >
               <el-input
                 v-model="ruleForm.otherMentalDiseaseFamilyHistory"
@@ -608,7 +607,7 @@
         if (value == '在职') {
           this.showJob = true
         } else {
-          this.showJob = false
+          this.ruleForm.inServiceJob=""
         }
       },
       diseaseChange (value) {
@@ -616,6 +615,7 @@
           this.showDisease = true
         } else {
           this.showDisease = false
+          this.ruleForm.otherMedicalHistory=""
         }
       },
       smokingChange (value) {
@@ -634,6 +634,9 @@
           this.showDrink = true
         } else {
           this.showDrink = false
+          this.ruleForm.drinkingNumEachDay = ""
+          this.ruleForm.drinkingYears = ""
+
         }
       },
       mentalDiseaseChange (value) {
@@ -642,13 +645,19 @@
         } else {
           this.showMentalDisease = false
           this.showOtherMentalDisease = false
+          this.ruleForm.mentalDiseaseFamilyHistory =""
+          this.ruleForm.otherMentalDiseaseFamilyHistory =""
+
         }
       },
+
+
       otherMentalDiseaseChange (value) {
         if (value == '其他精神病史') {
           this.showOtherMentalDisease = true
         } else {
           this.showOtherMentalDisease = false
+          this.ruleForm.otherMentalDiseaseFamilyHistory = ""
         }
       },
       memoryChange (value) {
@@ -656,6 +665,7 @@
           this.showMemory = true
         } else {
           this.showMemory = false
+          this.ruleForm.memoryLossTime = ""
         }
       },
       cognitiveDrugChange (value) {
@@ -663,6 +673,8 @@
           this.showCognitiveDrug = true
         } else {
           this.showCognitiveDrug = false
+          this.ruleForm.drugsType = ""
+          this.ruleForm.drugsDosage = ""
         }
       },
 
