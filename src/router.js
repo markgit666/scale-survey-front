@@ -99,7 +99,7 @@ children: [
 {
   path: '/home/myReportAnswer/myScaleAnswer/answerJudge', name
 :
-  'answerJudge',component: resolve => require(['./views/AnswerJudge'], resolve)
+  'answerJudge',component: resolve => require(['./views/AnswerJudge1'], resolve)
 }
 ,
 

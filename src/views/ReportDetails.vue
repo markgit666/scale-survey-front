@@ -1,6 +1,6 @@
 <template>
-  <el-container style="height:500px; border: 1px solid #eee">
-    <a-card :style="{height:'500px', width:'250px'}">
+  <el-container style="height:600px; border: 1px solid #eee">
+    <a-card :style="{height:'600px', width:'250px'}">
         <el-aside  width='230px' style="background-color: rgb(238, 241, 246)">
           <el-menu @select="handleSelect">
             <el-menu-item v-for="(item,key) in scaleInfoList" :key="key" :index="item.scaleId">
@@ -11,13 +11,11 @@
                     {{item.scaleName}}
                   </div>
                 </div>
-
-                <!-- <span class="info-content"></span>-->
               </template>
             </el-menu-item>
           </el-menu>
         </el-aside>
-     
+
     </a-card>
 
     <el-scrollbar :style="{width:'100%'}">
@@ -289,7 +287,7 @@ export default {
       debugger;
       let that = this;
       axios
-        .post(this.serverUrl + "/report/detail/info", this.$route.query, {
+        .post(this.serverUrl + "report/detail/info", this.$route.query, {
           headers: {
             Token: localStorage.getItem("Token")
           }

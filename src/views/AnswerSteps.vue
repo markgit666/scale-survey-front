@@ -271,6 +271,7 @@
                 ref="ruleForm"
               >
                 <!-- --------------------------------- ----------------------->
+
                 <a-row :gutter="10">
                   <a-col :xs="18" :sm="18" :md="18" :lg="18" :xl="18">
                     <!-- 身份证号 -->
@@ -608,22 +609,31 @@
                     </el-form-item>
                   </a-col>
                 </a-row>
-              </el-form>
 
-              <!-- --------------------------------------------------------------------- -->
-              <el-form
-                :label-position="labelPosition"
-                :model="ruleForm.patientInfo"
-                :rules="rules"
-                ref="ruleForm"
-                label-width="180px"
-              >
+                <!------------------------------------------------------------------------->
+
                 <a-row :gutter="10">
-                  <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <!-- 是否有打呼噜 -->
+                    <el-form-item label="打呼噜 :">
+                      <el-select
+                        v-model="ruleForm.patientInfo.isSnoring"
+                        placeholder="请选择"
+                        style="width:100%;"
+                        size="medium"
+                      >
+                        <el-option label value></el-option>
+                        <el-option label="有打呼噜" value="有打呼噜"></el-option>
+                        <el-option label="无打呼噜" value="无打呼噜"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </a-col>
+
+                  <a-col :xs="12" :sm="12" :md="12" :lg="24" :xl="12">
                     <!-- 家庭地址 -->
                     <el-form-item label="家庭地址 :" prop="familyAddress">
                       <el-input
-                        :style="{width:'97%'}"
+                        :style="{width:'100%'}"
                         type="text"
                         maxlength="100"
                         show-word-limit
@@ -634,7 +644,16 @@
                     </el-form-item>
                   </a-col>
                 </a-row>
+              </el-form>
 
+              <!------------------------------------------------------------------------->
+              <el-form
+                :label-position="labelPosition"
+                :model="ruleForm.patientInfo"
+                :rules="rules"
+                ref="ruleForm"
+                label-width="180px"
+              >
                 <!-- --------------------------------------------------------------------- -->
                 <a-row :gutter="10">
                   <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
@@ -642,7 +661,7 @@
                       <el-select
                         v-model="ruleForm.patientInfo.isMentalDiseaseFamilyHistory"
                         placeholder="请选择"
-                        :style="{width:'97%'}"
+                        :style="{width:'100%'}"
                         size="medium"
                         @change="mentalDiseaseChange"
                       >
@@ -858,7 +877,7 @@
     data () {
       // 手机号
       var validatePhone = (rule, value, callback) => {
-        if (/^1[34578]{1}\d{9}$/.test(value) == false) {
+        if (/^(((13[0-9]{1})|(14[0-9]{1})|(15[0-9]{1})|(16[0-9]{1})|(17[0-9]{1})|(18[0-9]{1})|(19[0-9]{1}))+\d{8})$/.test(value) == false) {
           callback(new Error('请输入正确的手机号'))
         } else {
           callback()
@@ -888,6 +907,7 @@
             name: '',
             birthday: '',
             gender: '',
+            isSnoring:'',
             familyAddress: '',
             telephoneNumber: '',
             hand: '',

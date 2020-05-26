@@ -216,7 +216,7 @@
         let questionList = []
         questionList = this.scaleAnswerInfo.scaleInfo.questionList
         var totalScore = 0
-       
+
         for (var i = 0; i < questionList.length; i++) {
           if (questionList[i].questionType != "questionType" && questionList[i].questionType != "direction") {
             totalScore = totalScore + questionList[i].answer.score
@@ -237,7 +237,7 @@
         let that = this
         axios
           .post(
-            this.serverUrl + '/paper/scale/detail',
+            this.serverUrl + 'paper/scale/detail',
             this.$route.query,
             {
               headers: {
@@ -283,7 +283,7 @@
           }
         }
         axios.post(
-          this.serverUrl + '/paper/judge/commit',
+          this.serverUrl + 'paper/judge/commit',
           {
             scalePaperId:this.$route.query.scalePaperId,
             checkUser : this.checkUser,

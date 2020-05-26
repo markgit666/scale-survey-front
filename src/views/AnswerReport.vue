@@ -470,6 +470,7 @@
     watch:{
       answer: {
           handler(val, oldVal){
+
             if (val.answerList != null && val.answerList.length > 0){
               debugger
 
@@ -613,7 +614,6 @@
         return totalScore
       },
 
-
       // 使照料者苦恼程度总分
       tortureTotalScore(){
 
@@ -637,7 +637,6 @@
 
     },
     methods: {
-
       // 单选题radio事件绑定
       radioChange(questionId, optionScore){
 
@@ -736,6 +735,7 @@
 
       // 保存量表信息
       saveScaleInfo(stepNum){
+        debugger
         this.answer.patientId = sessionStorage.getItem('patientId')
         this.answer.scaleId = this.scaleIdList[stepNum] //得到scaleId
         let that = this
@@ -759,11 +759,11 @@
 
       // 下一步
       next() {
-debugger
+        debugger
         if (this.active < this.scaleIdList.length) {
           this.saveScaleInfo(this.active)
           this.active++
-          this.answer.totalScore = 0
+          // this.answer.totalScore = 0
           // this.getScaleInfo(this.active)
           this.newActive = this.active
         }

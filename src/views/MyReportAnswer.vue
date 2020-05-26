@@ -199,7 +199,7 @@
         debugger
         axios
           .post(
-            this.serverUrl + '/paper/remove',
+            this.serverUrl + 'paper/remove',
             {
               examinationPaperId: examinationPaperId
             },
