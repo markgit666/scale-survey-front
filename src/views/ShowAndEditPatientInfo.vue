@@ -5,11 +5,17 @@
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="90px" >
 
         <a-row :gutter="10">
-          <a-col :xs="18" :sm="18" :md="18" :lg="18" :xl="18">
+          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
             <!-- 身份证号 -->
-            <div  :style="{marginTop:'15px', float:'left'}">
-              <strong> <label>身份证号：{{ruleForm.idCard}}</label></strong>
-            </div>
+            <el-form-item label="身份证号 :" prop="name" :style="{marginTop:'20px'}">
+              <el-input
+                :disabled="true"
+                v-model="ruleForm.idCard"
+                type="text"
+                size="medium"
+                style="width:100%;"
+              ></el-input>
+            </el-form-item>
           </a-col>
         </a-row>
 
@@ -342,22 +348,29 @@
             </el-form-item>
           </a-col>
         </a-row>
-      </el-form>
 
-      <!-- --------------------------------------------------------------------- -->
-      <el-form
-        :label-position="labelPosition"
-        :model="ruleForm"
-        :rules="rules"
-        ref="ruleForm"
-        label-width="180px"
-      >
         <a-row :gutter="10">
-          <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+            <!-- 是否有打呼噜 -->
+            <el-form-item label="打呼噜 :">
+              <el-select
+                v-model="ruleForm.isSnoring"
+                placeholder="请选择"
+                style="width:100%;"
+                size="medium"
+              >
+                <el-option label value></el-option>
+                <el-option label="有打呼噜" value="有打呼噜"></el-option>
+                <el-option label="无打呼噜" value="无打呼噜"></el-option>
+              </el-select>
+            </el-form-item>
+          </a-col>
+
+          <a-col :xs="12" :sm="12" :md="12" :lg="24" :xl="12">
             <!-- 家庭地址 -->
             <el-form-item label="家庭地址 :" prop="familyAddress">
               <el-input
-                :style="{width:'97%'}"
+                :style="{width:'100%'}"
                 type="text"
                 maxlength="100"
                 show-word-limit
@@ -368,6 +381,18 @@
             </el-form-item>
           </a-col>
         </a-row>
+
+
+      </el-form>
+
+      <!-- --------------------------------------------------------------------- -->
+      <el-form
+        :label-position="labelPosition"
+        :model="ruleForm"
+        :rules="rules"
+        ref="ruleForm"
+        label-width="180px"
+      >
 
         <!-- --------------------------------------------------------------------- -->
         <a-row :gutter="10">
@@ -557,7 +582,9 @@
 
       // 手机号
       var validatePhone = (rule, value, callback) => {
-        if (/^1[34578]{1}\d{9}$/.test(value) == false) {
+        // if (/^1[34578]{1}\d{9}$/.test(value) == false) {
+        // 验证130-139,150-159,160-166,180-189号码段的手机号码
+        if (/^(((13[0-9]{1})|(14[0-9]{1})|(15[0-9]{1})|(16[0-9]{1})|(17[0-9]{1})|(18[0-9]{1})|(19[0-9]{1}))+\d{8})$/.test(value) == false) {
           callback(new Error('请输入正确的手机号'))
         } else {
           callback()
@@ -682,7 +709,7 @@
       fetch () {
         let that = this
         axios
-          .post(this.serverUrl + '/patient/info/get', this.$route.query, {
+          .post(this.serverUrl + 'patient/info/get', this.$route.query, {
             headers: {
               Token: localStorage.getItem('Token')
             }
@@ -715,7 +742,7 @@
         this.$refs[formName].validate(valid => {
           if (valid) {
             this.$http
-              .post(this.serverUrl + '/patient/info/save', this.ruleForm, {
+              .post(this.serverUrl + 'patient/info/save', this.ruleForm, {
                 headers: {
                   Token: localStorage.getItem('Token')
                 }

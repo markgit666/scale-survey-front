@@ -288,7 +288,7 @@ export default {
       let that = this
       axios
         .post(
-          this.serverUrl + '/paper/info/get',
+          this.serverUrl + 'paper/info/get',
 
           this.$route.query,
 

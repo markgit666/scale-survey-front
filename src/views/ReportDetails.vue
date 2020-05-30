@@ -289,7 +289,7 @@ export default {
 
       let that = this;
       axios
-        .post(this.serverUrl + "/report/detail/info", this.$route.query, {
+        .post(this.serverUrl + "report/detail/info", this.$route.query, {
           headers: {
             Token: localStorage.getItem("Token")
           }

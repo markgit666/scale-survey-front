@@ -239,7 +239,7 @@
         let that = this
         axios
           .post(
-            this.serverUrl + '/paper/scale/detail',
+            this.serverUrl + 'paper/scale/detail',
             this.$route.query,
             {
               headers: {
