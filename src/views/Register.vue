@@ -43,7 +43,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="register('ruleForm')" class="login-form-button">注册</el-button>
+         <el-button type="primary" @click="register('ruleForm')" class="login-form-button">注册</el-button>
         </el-form-item>
       </el-form>
 
@@ -259,6 +259,10 @@ Xrej5WAcEy7ThIi17wIDAQAB` // 把之前生成的贴进来，实际开发过程中
 
   .verifyCode-a {
     width: 25%;
+  }
+  .login-form-button{
+
+    align-items: center;
   }
 
 </style>
