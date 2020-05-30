@@ -5,31 +5,7 @@ import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import Login from './views/Login.vue'
-import Register from './views/Register.vue'
-// import Home from './views/Home'
-import AddPatientInfo from './views/AddPatientInfo.vue'
-import CreateScale from './views/CreateScale.vue'
-import MyPatients from './views/MyPatients.vue'
-import MyScale from './views/MyScale.vue'
-import MyReport from './views/MyReport.vue'
-import ReportDetails from './views/ReportDetails.vue'
-import ShowAndEditPatientInfo from './views/ShowAndEditPatientInfo.vue'
-import ShowAndEditScale from './views/ShowAndEditScale.vue'
-import AnswerSteps from './views/AnswerSteps.vue'
-import AnswerReport from './views/AnswerReport.vue'
 import IdCard from './views/IdCard.vue'
-import PreviewScale from './views/PreviewScale.vue'
-import MyReportAnswer from './views/MyReportAnswer.vue'
-import MyScaleAnswer from './views/MyScaleAnswer.vue'
-
-import AnswerSubmitSuccess from './views/AnswerSubmitSuccess.vue'
-import Judge from './views/Judge.vue'
-import AnswerJudge from './views/AnswerJudge1.vue'
-
-import FindPassword from './views/FindPassword.vue'
-import ChangePassword from './views/ChangePassword.vue'
-import NoCreate from './views/NoCreate'
 
 Vue.use(Router)
 Vue.use(Antd)

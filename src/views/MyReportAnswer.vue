@@ -196,7 +196,7 @@
     methods: {
       // 删除报告表
       deleteReportAnswer (examinationPaperId) {
-        debugger
+
         axios
           .post(
             this.serverUrl + '/paper/remove',
@@ -210,7 +210,7 @@
             }
           )
           .then(response => {
-            debugger
+
             if (response.data.retCode === '000000') {
               this.fetch()
               this.$message.success('删除成功！', 2)
@@ -236,13 +236,13 @@
       },
       // 选中的某一行或某些行的信息
       onSelectChange (selectedRowKeys) {
-        debugger
+
         ('selectedRowKeys changed: ', selectedRowKeys)
         this.selectedRowKeys = selectedRowKeys
       },
       // 导出答案
       myReportAnswerExport () {
-        debugger
+
         if (this.selectedRowKeys.length === 0) {
           this.$message.error('请选择需要操作的记录')
         } else {
@@ -286,7 +286,7 @@
       // },
 
       fetch (params = {}) {
-        debugger
+
         let that = this
         this.loading = true
         reqwest({
@@ -299,7 +299,7 @@
           type: 'json',
           contentType: 'application/json'
         }).then(values => {
-          debugger
+
           if ((values.retCode === '000000')) {
             that.total = values.data.totalNum
             that.current = params.pageNo
@@ -336,7 +336,7 @@
 
       // 查看详情
       seeDetails (examinationPaperId) {
-        debugger
+
         for (var i in this.data) {
           if (this.data[i].examinationPaperId === examinationPaperId) {
             sessionStorage.setItem('patientName', this.data[i].patientName)

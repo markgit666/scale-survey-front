@@ -471,14 +471,14 @@
       answer: {
           handler(val, oldVal){
             if (val.answerList != null && val.answerList.length > 0){
-              debugger
+
 
               for (var index in val.answerList) {
                 var patientAnswer = val.answerList[index];
                 var answerQuestion = patientAnswer.question;
                 // 如果是单选题特殊题型
                 if (answerQuestion.questionType === 'radio' && answerQuestion.groupType != null && answerQuestion.groupType != '' && answerQuestion.groupType.charAt(answerQuestion.groupType.length - 1) === '1' && patientAnswer.content === '无') {
-                  console.log("我执行了")
+
                   //将问题列表中的其他相同组题目的可见性设置为0，即不可见
                   for (var j in this.scaleInfo.questionList){
                     var question = this.scaleInfo.questionList[j];
@@ -491,7 +491,7 @@
                 }
 
                 if (answerQuestion.questionType === 'radio' && answerQuestion.groupType != null && answerQuestion.groupType != '' && answerQuestion.groupType.charAt(answerQuestion.groupType.length - 1) === '1' && patientAnswer.content === '有') {
-                  console.log("我执行了")
+
                   //将问题列表中的其他相同组题目的可见性设置为1，即可见
                   for (var index in this.scaleInfo.questionList){
                     var question = this.scaleInfo.questionList[index];
@@ -516,7 +516,7 @@
     computed: {
       // 计算总分，除了“神经精神科量表”
       computedTotalScore () {
-        debugger
+
         if (this.scaleInfo === '' || this.scaleInfo === null  ) {
           return
         }
@@ -582,7 +582,7 @@
 
       // 频率*严重程度
       frequencyAndSeriousTotalScore(){
-        debugger
+
         if (this.scaleInfo === '' || this.scaleInfo === null  ) {
           return
         }
@@ -759,7 +759,7 @@
 
       // 下一步
       next() {
-debugger
+
         if (this.active < this.scaleIdList.length) {
           this.saveScaleInfo(this.active)
           this.active++

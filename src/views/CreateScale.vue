@@ -41,10 +41,6 @@
             <a-icon type="area-chart"/>
             <span>图片题</span>
           </a-menu-item>
-          <a-menu-item key="special">
-            <a-icon type="area-chart"/>
-            <span>特殊题型</span>
-          </a-menu-item>
         </a-menu>
       </a-layout-sider>
 
@@ -696,7 +692,7 @@
 
       // 增加选项（单选，多选）
       addOption(subjectId) {
-        debugger
+
         var items = this.oneScale.questionList[subjectId].items
 
         if (items.length <= 20) {

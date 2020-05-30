@@ -1040,7 +1040,7 @@
 
       //保存个人信息
       saveInfo () {
-       console.log(this.reportId)
+
        var url = '/home/AnswerReport'+'?reportId=' + this.reportId +'&doctorId='+ this.ruleForm.patientInfo.doctorId
         this.formatPatientRelationInfo()
         this.$http
@@ -1048,9 +1048,9 @@
           .then(
 
             function (data) {
-              console.log(this.ruleForm)
+
               if (data.body.retCode === '000000') {
-                console.log(data)
+
                 this.patientId = data.body.data.patientId
                 sessionStorage.setItem('patientId', this.patientId) //存储patientId
                 this.$message.success('保存成功！', 5)

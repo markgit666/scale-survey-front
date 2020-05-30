@@ -619,7 +619,7 @@
         }
       },
       smokingChange (value) {
-        debugger
+
         if (value == '仍在吸') {
           this.showSmoke = true
         } else {
@@ -688,7 +688,7 @@
             }
           })
           .then(response => {
-            debugger
+
             if ((response.data.retCode === '000000')) {
               that.ruleForm = response.data.data
             } else if (response.data.retCode === '100001') {

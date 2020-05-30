@@ -2,22 +2,8 @@
   <div class="box8">
     <a-layout id="components-layout-demo-fixed">
       <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
-        <img src="../../public/homeLogo.png" class="homeLogo" @click="homeLogoClick" />
+        <img src="../../public/homeLogo.png" class="homeLogo"  />
         <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }">
-          <!-- <a-menu-item key="1">
-
-            <router-link to="/Home/CreateScale">
-              <a-icon type="form"/>
-              创建量表
-            </router-link>
-          </a-menu-item>-->
-
-          <!-- <a-menu-item key="2">
-            <router-link to="/Home/AddPatientInfo">
-              <a-icon type="usergroup-add"/>
-              新增被试者
-            </router-link>
-          </a-menu-item>-->
 
           <a-menu-item key="1">
             <router-link to="/Home/MyPatients">
@@ -33,19 +19,6 @@
             </router-link>
           </a-menu-item>
 
-          <!-- <a-sub-menu>
-            <span slot="title" class="submenu-title-wrapper">
-              <a-icon type="user"/>我的
-            </span>
-            <a-menu-item-group>
-              <a-menu-item key="setting:3">
-                <router-link to="/Home/MyPatients">我的被试者</router-link>
-              </a-menu-item>
-              <a-menu-item key="setting:4">
-                <router-link to="/Home/MyScale">我的量表</router-link>
-              </a-menu-item>
-            </a-menu-item-group>
-          </a-sub-menu>-->
 
           <a-menu-item key="3">
             <router-link to="/Home/MyReportAnswer">
@@ -54,7 +27,14 @@
             </router-link>
           </a-menu-item>
 
-          <a-menu-item key="4" :style="{float:'right'}" @click="dialogVisible = true">
+          <a-menu-item key="4" v-if="admin==='ADMIN'">
+            <router-link to="/Home/CreateScale">
+              <i class="el-icon-view"></i>
+              新建量表
+            </router-link>
+          </a-menu-item>
+
+          <a-menu-item key="5" :style="{float:'right'}" @click="dialogVisible = true">
             <a-icon type="user-delete" />安全退出
           </a-menu-item>
         </a-menu>
@@ -95,11 +75,19 @@ import "ant-design-vue/dist/antd.css";
 export default {
   data() {
     return {
+      admin:"",
       dialogVisible: false,
       serverUrl: this.GLOBAL.serverUrl
     };
   },
+
+  mounted () {
+
+    this.admin = localStorage.getItem('identity')
+  },
+
   methods: {
+    // 退出登录
     exit() {
       axios.post(this.serverUrl + "authc/logout").then(
         response => {
@@ -121,13 +109,6 @@ export default {
           done();
         })
         .catch(_ => {});
-    },
-
-    // logo跳转
-    homeLogoClick() {
-      this.$router.push({
-        path: "/Home/noCreate"
-      });
     }
   }
 };

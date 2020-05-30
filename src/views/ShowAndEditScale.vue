@@ -625,9 +625,6 @@
         this.$router.push({ path: '/home/myScale' })
       },
 
-      // test(e){
-      //   console.log(e.toElement.innerText)
-      // },
 
       //  添加题目
       typeChange (e) {

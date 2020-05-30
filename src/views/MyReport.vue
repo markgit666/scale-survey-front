@@ -66,9 +66,9 @@
           method: 'post',
           contentType: 'application/json'
         }).then(res => {
-          debugger
+
           if (res.retCode === '000000') {
-            console.log(res)
+
             that.loading = false
             that.data = res.data
 

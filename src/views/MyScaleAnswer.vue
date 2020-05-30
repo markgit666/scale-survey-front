@@ -204,7 +204,7 @@ export default {
       },
       // 导出答案
       myAnswerExport () {
-        debugger
+
         if (this.selectedRowKeys.length === 0) {
           this.$message.error('请选择需要操作的记录')
         } else {
@@ -248,7 +248,7 @@ export default {
       // },
 
       fetch (params = {}) {
-        debugger
+
         let that = this
         this.loading = true
         reqwest({
@@ -263,7 +263,7 @@ export default {
         }).then(values => {
           // that.examinationPaperId = that.$route.query.examinationPaperId
           if ((values.retCode === '000000')) {
-            debugger
+
             that.total = values.data.totalNum
             that.current = params.pageNo
             that.loading = false
@@ -280,8 +280,8 @@ export default {
                 values.data.list[i].judgeStatus = '未评分'
               }
               // 将秒数变成分钟
-              values.data.list[i].useTime = (values.data.list[i].useTime / 60).toFixed(2) + '分钟';
-              // values.data.list[i].useTime = values.data.list[i].useTime + '分钟'
+              // values.data.list[i].useTime = (values.data.list[i].useTime / 60).toFixed(2) + '分钟';
+              values.data.list[i].useTime = values.data.list[i].useTime + '分钟'
             }
           } else if (values.retCode === '100001') {
             if (localStorage.getItem('Token') === null) {

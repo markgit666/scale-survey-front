@@ -1,6 +1,6 @@
 <template>
-  <el-container style="height:500px; border: 1px solid #eee">
-    <a-card :style="{height:'500px', width:'250px'}">
+  <el-container style="height:1000px; border: 1px solid #eee">
+    <a-card :style="{height:'1000px', width:'250px'}">
         <el-aside  width='230px' style="background-color: rgb(238, 241, 246)">
           <el-menu @select="handleSelect">
             <el-menu-item v-for="(item,key) in scaleInfoList" :key="key" :index="item.scaleId">
@@ -281,12 +281,12 @@ export default {
   },
   methods: {
     handleSelect(key) {
-      debugger;
+
       this.scaleId = key;
     },
     // 查看报告表内容
     fetch() {
-      debugger;
+
       let that = this;
       axios
         .post(this.serverUrl + "/report/detail/info", this.$route.query, {
@@ -296,7 +296,6 @@ export default {
         })
         .then(
           response => {
-            debugger;
             if (response.data.retCode === "000000") {
               that.scaleInfoList = response.data.data.scaleInfoList;
               var firstScaleId = that.scaleInfoList[0].scaleId; //默认页面展示的第一条scaleId
