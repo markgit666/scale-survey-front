@@ -2,11 +2,16 @@
   <div class="box">
     <a-card :hoverable="true" :bordered="false">
       <a-row>
-
         <a-col :span="8">
           <label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp姓名：</label>
-          <el-input type="text" maxlength="10" show-word-limit :style="{width:'60%'}" size="small "
-                    v-model="searchData.name"></el-input>
+          <el-input
+            type="text"
+            maxlength="10"
+            show-word-limit
+            :style="{width:'60%'}"
+            size="small "
+            v-model="searchData.name"
+          ></el-input>
         </a-col>
 
         <a-col :span="8">
@@ -23,38 +28,32 @@
         </a-col>
         <a-col :span="6">
           <label>性别：</label>
-          <el-select
-            v-model="searchData.gender"
-            style="width:70%;"
-            size="small"
-          >
-            <el-option label="" value=""></el-option>
+          <el-select v-model="searchData.gender" style="width:70%;" size="small">
+            <el-option label value></el-option>
             <el-option label="男" value="1"></el-option>
             <el-option label="女" value="2"></el-option>
-
           </el-select>
-
         </a-col>
-      </a-row>
-      &nbsp&nbsp
+      </a-row>&nbsp&nbsp
       <a-row>
         <a-col :span="8">
           <label>联系方式：</label>
-          <el-input type="text" maxlength="11" show-word-limit :style="{width:'60%'}" size="small "
-                    v-model="searchData.telephoneNumber"></el-input>
+          <el-input
+            type="text"
+            maxlength="11"
+            show-word-limit
+            :style="{width:'60%'}"
+            size="small "
+            v-model="searchData.telephoneNumber"
+          ></el-input>
         </a-col>
 
         <a-col :span="7">
           <label>民族：</label>
-          <el-select
-            v-model="searchData.nation"
-            style="width:70%;"
-            size="small"
-          >
-            <el-option label="" value=""></el-option>
+          <el-select v-model="searchData.nation" style="width:70%;" size="small">
+            <el-option label value></el-option>
             <el-option label="汉族" value="汉族"></el-option>
             <el-option label="其他" value="其他"></el-option>
-
           </el-select>
         </a-col>
 
@@ -62,15 +61,19 @@
           <a-button type="primary" icon="search" @click="search()">查找</a-button>
         </a-col>
         <a-col :span="3">
-          <a-button type="primary" @click="exportPatientInfo" icon="arrow-up" :style="{marginLeft:'-10px'}">信息导出
-          </a-button>
+          <a-button
+            type="primary"
+            @click="exportPatientInfo"
+            icon="arrow-up"
+            :style="{marginLeft:'-10px'}"
+          >信息导出</a-button>
         </a-col>
 
         <!--        <a-col :span="3">-->
         <!--          <a-button type="primary" @click="exportPatientInfoTotal" icon="arrow-up">全部导出</a-button>-->
         <!--        </a-col>-->
       </a-row>
-      <br/>
+      <br />
 
       <a-table
         :columns="columns"
@@ -82,12 +85,11 @@
         :rowSelection="rowSelection"
         size="small"
       >
-
         <template slot="operation" slot-scope="text, record">
           <div class="editable-row-operations">
             <span>
               <a @click="() =>editInfo(record.patientId)">查看/编辑</a>
-              <a-divider type="vertical"/>
+              <a-divider type="vertical" />
               <a-popconfirm
                 :style="{color:'red'}"
                 title="确定删除吗"
@@ -119,74 +121,73 @@
           </template>
         </a-pagination>
       </template>
-
     </a-card>
   </div>
 </template>
 <script>
-import axios from 'axios'
-import reqwest from 'reqwest'
-import $ from 'jquery'
-import ACol from 'ant-design-vue/es/grid/Col'
+import axios from "axios";
+import reqwest from "reqwest";
+import $ from "jquery";
+import ACol from "ant-design-vue/es/grid/Col";
 
 const columns = [
   {
-    title: '被试者编号',
-    dataIndex: 'patientId',
+    title: "被试者编号",
+    dataIndex: "patientId",
     // sorter: true,
-    width: '5%',
-    scopedSlots: { customRender: 'patientId' }
+    width: "5%",
+    scopedSlots: { customRender: "patientId" }
   },
   {
-    title: '姓名',
-    dataIndex: 'name',
+    title: "姓名",
+    dataIndex: "name",
     // sorter: true,
-    width: '8%',
-    scopedSlots: { customRender: 'name' }
+    width: "8%",
+    scopedSlots: { customRender: "name" }
   },
   {
-    title: '性别',
-    dataIndex: 'gender',
-    width: '6%'
+    title: "性别",
+    dataIndex: "gender",
+    width: "6%"
   },
   {
-    title: '出生日期',
-    width: '10%',
-    dataIndex: 'birthday'
+    title: "出生日期",
+    width: "10%",
+    dataIndex: "birthday"
   },
   {
-    title: '联系方式',
-    width: '9%',
-    dataIndex: 'telephoneNumber'
+    title: "联系方式",
+    width: "9%",
+    dataIndex: "telephoneNumber"
   },
   {
-    title: '民族',
-    width: '7%',
-    dataIndex: 'nation'
+    title: "民族",
+    width: "7%",
+    dataIndex: "nation"
   },
   {
-    title: '家庭地址',
-    width: '30%',
-    dataIndex: 'familyAddress'
+    title: "家庭地址",
+    width: "30%",
+    dataIndex: "familyAddress"
   },
   {
-    title: '操作',
-    width: '15%',
-    dataIndex: 'operation',
-    scopedSlots: { customRender: 'operation' }
+    title: "操作",
+    width: "15%",
+    dataIndex: "operation",
+    scopedSlots: { customRender: "operation" }
   }
-]
+];
 
 export default {
   components: { ACol },
-  mounted () {
-    this.fetch({pageNo: this.current, pageSize: this.pageSize} )
+  mounted() {
+    this.fetch({ pageNo: this.current, pageSize: this.pageSize });
   },
 
-  data () {
+  data() {
     return {
       // 分页变量
-      pageSizeOptions: ['10', '20', '30', '40', '50'],
+      pageSizeOptions: ["10", "20", "30", "40", "50"],
       current: 1,
       pageSize: 10,
       total: 50,
@@ -202,34 +203,33 @@ export default {
       // 搜索时的数据
       searchData: {
         // 姓名
-        name: '',
+        name: "",
         // 性别
-        gender: '',
+        gender: "",
         // 出生日期
-        birthday: '',
+        birthday: "",
         // 联系方式
-        telephoneNumber: '',
+        telephoneNumber: "",
         // 家庭地址
         // familyAddress: '',
         // 民族
-        nation: ''
-
+        nation: ""
       },
-      doctorId: ''
-    }
+      doctorId: ""
+    };
   },
   computed: {
-    rowSelection () {
-      const { selectedRowKeys } = this
+    rowSelection() {
+      const { selectedRowKeys } = this;
       return {
         selectedRowKeys,
         onChange: this.onSelectChange
-      }
+      };
     }
   },
   // 监控当前页页数变化
   watch: {
-    current (val) {
+    current(val) {
       this.fetch({
         pageNo: val,
         pageSize: this.pageSize,
@@ -240,87 +240,90 @@ export default {
           telephoneNumber: this.searchData.telephoneNumber,
           nation: this.searchData.nation
         }
-      })
+      });
     }
   },
 
   methods: {
     // 选择一页几条数据
-    onShowSizeChange (current, pageSize) {
-      this.pageSize = pageSize
-      this.fetch({ pageNo: current, pageSize: pageSize })
+    onShowSizeChange(current, pageSize) {
+      this.pageSize = pageSize;
+      this.fetch({ pageNo: current, pageSize: pageSize });
     },
 
     // 选中的某一行或某些行的信息,用于导出清单列表
-    onSelectChange (selectedRowKeys) {
-      this.selectedRowKeys = selectedRowKeys
+    onSelectChange(selectedRowKeys) {
+      this.selectedRowKeys = selectedRowKeys;
     },
 
     // 翻页
-    handleTableChange (pagination) {
-      const pager = { ...this.pagination }
+    handleTableChange(pagination) {
+      const pager = { ...this.pagination };
       // pager.current = pagination.current
-      this.pagination = pager
+      this.pagination = pager;
       this.fetch({
         pageNo: pagination.current
-      })
+      });
     },
 
     // 更新
-    fetch (params = {}) {
-      this.loading = true
-      let that = this
+    fetch(params = {}) {
+      this.loading = true;
+      let that = this;
       reqwest({
-        url: this.serverUrl + 'patient/info/getList',
+        url: this.serverUrl + "patient/info/getList",
         headers: {
-          Token: localStorage.getItem('Token')
+          Token: localStorage.getItem("Token")
         },
-        method: 'post',
+        method: "post",
         data: JSON.stringify(params),
-        type: 'json',
-        contentType: 'application/json'
-      }).then(values => {
-        if (values.retCode === '000000') {
-          that.total = values.data.totalNum
-          that.current = params.pageNo
-          this.loading = false
-          this.data = values.data.list
-          this.doctorId = values.data.list[0].doctorId
+        type: "json",
+        contentType: "application/json"
+      }).then(
+        values => {
+          if (values.retCode === "000000") {
+            that.total = values.data.totalNum;
+            that.current = params.pageNo;
+            this.loading = false;
+            this.data = values.data.list;
+            this.doctorId = values.data.list[0].doctorId;
 
-          for (var i = 0; i < values.data.list.length; i++) {
-            if (values.data.list[i].gender === '1') {
-              values.data.list[i].gender = '男'
-            } else {
-              values.data.list[i].gender = '女'
+            for (var i = 0; i < values.data.list.length; i++) {
+              if (values.data.list[i].gender === "1") {
+                values.data.list[i].gender = "男";
+              } else {
+                values.data.list[i].gender = "女";
+              }
             }
-          }
-        } else if (values.retCode === '100001') {
-          if (localStorage.getItem('Token') === null) {
-            this.$message.error('未登录，即将跳转至登录页面', 5)
-            this.$router.push({ path: '/login' })
+          } else if (values.retCode === "100001") {
+            if (localStorage.getItem("Token") === null) {
+              this.$message.error("未登录，即将跳转至登录页面", 5);
+              this.$router.push({ path: "/login" });
+            } else {
+              this.$message.error("登录超时", 5);
+              this.$router.push({ path: "/login" });
+            }
           } else {
-            this.$message.error('登录超时', 5)
-            this.$router.push({ path: '/login' })
+            this.$message.error(values.retMsg, 5);
           }
-        } else {
-          this.$message.error(values.retMsg, 5)
+        },
+        err => {
+          alert("网络异常，请检查是否连接上网络");
         }
-      }, err => {
-        alert('网络异常，请检查是否连接上网络')
-      })
+      );
     },
 
     // 查看，编辑病人信息
-    editInfo (patientId) {
+    editInfo(patientId) {
       this.$router.push({
-        path: '/home/showAndEditPatientInfo',
+        path: "/home/showAndEditPatientInfo",
         // patients:patientId
         query: { patientId: patientId }
-      })
+      });
     },
 
     // 查找---搜索
-    search () {
+    search() {
       this.fetch({
         pageNo: 1,
         pageSize: this.pageSize,
@@ -331,68 +334,70 @@ export default {
           telephoneNumber: this.searchData.telephoneNumber,
           nation: this.searchData.nation
         }
-
-      })
+      });
     },
 
     // 删除某条病人信息
-    delPatientInfo (patientId) {
+    delPatientInfo(patientId) {
       axios
         .post(
-          this.serverUrl + 'patient/info/remove',
+          this.serverUrl + "patient/info/remove",
           {
             patientId: patientId
           },
           {
             headers: {
-              Token: localStorage.getItem('Token')
+              Token: localStorage.getItem("Token")
             }
           }
         )
-        .then(response => {
-          if (response.data.retCode === '000000') {
-            this.fetch()
-            this.$message.success('删除成功！', 5)
-          } else if (response.data.retCode === '100001') {
-            if (localStorage.getItem('Token') === null) {
-              this.$message.error('未登录，即将跳转至登录页面', 5)
-              this.$router.push({ path: '/login' })
+        .then(
+          response => {
+            if (response.data.retCode === "000000") {
+              this.fetch();
+              this.$message.success("删除成功！", 5);
+            } else if (response.data.retCode === "100001") {
+              if (localStorage.getItem("Token") === null) {
+                this.$message.error("未登录，即将跳转至登录页面", 5);
+                this.$router.push({ path: "/login" });
+              } else {
+                this.$message.error("登录超时", 5);
+                this.$router.push({ path: "/login" });
+              }
             } else {
-              this.$message.error('登录超时', 5)
-              this.$router.push({ path: '/login' })
+              this.$message.error(response.data.retMsg, 5);
             }
-          } else {
-            this.$message.error(response.data.retMsg, 5)
+          },
+          err => {
+            alert("网络异常，请检查是否连接上网络");
           }
-        }, err => {
-          alert('网络异常，请检查是否连接上网络')
-        })
+        );
     },
 
     // 选中后导出病人信息
-    exportPatientInfo () {
+    exportPatientInfo() {
       if (this.selectedRowKeys.length === 0) {
-        this.$message.error('请选择需要操作的记录')
+        this.$message.error("请选择需要操作的记录");
       } else {
-        var form = $('<form>')
-        form.attr('style', 'display:none')
-        form.attr('target', '')
-        form.attr('method', 'post')
-        form.attr('action', this.serverUrl + 'excel/export/patient/info')
-        var input1 = $('<input>')
-        input1.attr('type', 'hidden')
-        input1.attr('name', 'patientIdArray')
-        input1.attr('value', this.selectedRowKeys)
+        var form = $("<form>");
+        form.attr("style", "display:none");
+        form.attr("target", "");
+        form.attr("method", "post");
+        form.attr("action", this.serverUrl + "excel/export/patient/info");
+        var input1 = $("<input>");
+        input1.attr("type", "hidden");
+        input1.attr("name", "patientIdArray");
+        input1.attr("value", this.selectedRowKeys);
 
-        var input2 = $('<input>')
-        input2.attr('type', 'hidden')
-        input2.attr('name', 'doctorId')
-        input2.attr('value', this.doctorId)
+        var input2 = $("<input>");
+        input2.attr("type", "hidden");
+        input2.attr("name", "doctorId");
+        input2.attr("value", this.doctorId);
 
-        $('body').append(form)
-        form.append(input1).append(input2)
-        form.submit()
-        form.remove()
+        $("body").append(form);
+        form.append(input1).append(input2);
+        form.submit();
+        form.remove();
       }
     }
 
@@ -413,16 +418,15 @@ export default {
     //   form.remove()
     // }
   }
-}
+};
 </script>
 
 <style scoped>
-  .box {
-    text-align: center;
-  }
+.box {
+  text-align: center;
+}
 
-  #pagination-box {
-    margin-top: 24px;
-  }
-
+#pagination-box {
+  margin-top: 24px;
+}
 </style>

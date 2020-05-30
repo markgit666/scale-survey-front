@@ -12,7 +12,7 @@ Vue.prototype.GLOBAL = global
 // import $ from 'jquery'
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
-axios.defaults.withCredentials =true;
+axios.defaults.withCredentials = true;
 // import { $axios } from './assets/lib/util.js'
 // Vue.prototype.$http = $axios
 // Vue.use($)
