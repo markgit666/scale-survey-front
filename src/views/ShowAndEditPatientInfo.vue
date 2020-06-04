@@ -1,8 +1,8 @@
 <template>
-  <div >
+  <div>
     <a-card title="添加临床基本信息" class="info_box">
 
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="90px" >
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="90px">
 
         <a-row :gutter="10">
           <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
@@ -174,7 +174,7 @@
         <a-row :gutter="10">
           <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
             <!-- 职业 -->
-            <el-form-item label="职业 :" >
+            <el-form-item label="职业 :">
               <el-select
                 v-model="ruleForm.workStatus"
                 placeholder="请选择"
@@ -244,42 +244,42 @@
         </a-row>
 
 
-          <a-row :gutter="15">
+        <a-row :gutter="15">
           <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                    <!-- 吸烟史 -->
-        <el-form-item label=" 吸烟历史 :">
-          <el-select
-            v-model="ruleForm.smokingHistory"
-            placeholder="请选择"
-            style="width:100%;"
-            size="medium"
-            @change="smokingChange"
-          >
-            <el-option label value></el-option>
-            <el-option label="没有吸烟史" value="没有吸烟史"></el-option>
-            <el-option label="已戒" value="已戒"></el-option>
-            <el-option label="仍在吸" value="仍在吸"></el-option>
-          </el-select>
-        </el-form-item>
-        </a-col>
+            <!-- 吸烟史 -->
+            <el-form-item label=" 吸烟历史 :">
+              <el-select
+                v-model="ruleForm.smokingHistory"
+                placeholder="请选择"
+                style="width:100%;"
+                size="medium"
+                @change="smokingChange"
+              >
+                <el-option label value></el-option>
+                <el-option label="没有吸烟史" value="没有吸烟史"></el-option>
+                <el-option label="已戒" value="已戒"></el-option>
+                <el-option label="仍在吸" value="仍在吸"></el-option>
+              </el-select>
+            </el-form-item>
+          </a-col>
 
-        <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-          <!-- 饮酒史 -->
-          <el-form-item label="饮酒历史 :">
-            <el-select
-              v-model="ruleForm.drinkingHistory"
-              placeholder="请选择"
-              style="width:100%;"
-              size="medium"
-              @change="drinkingChange"
-            >
-              <el-option label value></el-option>
-              <el-option label="没有饮酒史" value="没有饮酒史"></el-option>
-              <el-option label="已戒" value="已戒"></el-option>
-              <el-option label="仍在喝" value="仍在喝"></el-option>
-            </el-select>
-          </el-form-item>
-        </a-col>
+          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+            <!-- 饮酒史 -->
+            <el-form-item label="饮酒历史 :">
+              <el-select
+                v-model="ruleForm.drinkingHistory"
+                placeholder="请选择"
+                style="width:100%;"
+                size="medium"
+                @change="drinkingChange"
+              >
+                <el-option label value></el-option>
+                <el-option label="没有饮酒史" value="没有饮酒史"></el-option>
+                <el-option label="已戒" value="已戒"></el-option>
+                <el-option label="仍在喝" value="仍在喝"></el-option>
+              </el-select>
+            </el-form-item>
+          </a-col>
         </a-row>
 
         <a-row :gutter="15">
@@ -397,7 +397,7 @@
         <!-- --------------------------------------------------------------------- -->
         <a-row :gutter="10">
           <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-            <el-form-item label="有无精神疾病家族史 :" >
+            <el-form-item label="有无精神疾病家族史 :">
               <el-select
                 v-model="ruleForm.isMentalDiseaseFamilyHistory"
                 placeholder="请选择"
@@ -462,7 +462,7 @@
         <!------------------------------------------------------------------------->
         <el-row :gutter="10">
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-            <el-form-item label="现病史（有无记忆下降）:" >
+            <el-form-item label="现病史（有无记忆下降）:">
               <el-select
                 v-model="ruleForm.currentMedicalHistoryMemoryLoss"
                 placeholder="请选择"
@@ -482,7 +482,7 @@
         <!-- --------------------------------------------------------------------- -->
         <el-row :gutter="10">
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-            <el-form-item label="记忆力下降多久 :"   v-if="ruleForm.currentMedicalHistoryMemoryLoss==='有记忆力下降'">
+            <el-form-item label="记忆力下降多久 :" v-if="ruleForm.currentMedicalHistoryMemoryLoss==='有记忆力下降'">
               <el-input
                 type="text"
                 :style="{width:'97%'}"
@@ -578,10 +578,11 @@
   import axios from 'axios'
 
   export default {
-    data () {
+    data() {
 
       // 手机号
-      var validatePhone = (rule, value, callback) => {
+      var validatePhone = (rule, value, callback) =>
+      {
         // if (/^1[34578]{1}\d{9}$/.test(value) == false) {
         // 验证130-139,150-159,160-166,180-189号码段的手机号码
         if (/^(((13[0-9]{1})|(14[0-9]{1})|(15[0-9]{1})|(16[0-9]{1})|(17[0-9]{1})|(18[0-9]{1})|(19[0-9]{1}))+\d{8})$/.test(value) == false) {
@@ -595,15 +596,15 @@
         labelPosition: 'left',
         ruleForm: {},
         rules: {
-          name: [{ required: true, message: '不能为空！', trigger: 'blur' }],
-          birthday: [{ required: true, message: '不能为空！', trigger: 'blur' }],
-          gender: [{ required: true, message: '不能为空！', trigger: 'blur' }],
+          name: [{required: true, message: '不能为空！', trigger: 'blur'}],
+          birthday: [{required: true, message: '不能为空！', trigger: 'blur'}],
+          gender: [{required: true, message: '不能为空！', trigger: 'blur'}],
           familyAddress: [
-            { required: true, message: '不能为空！', trigger: 'blur' }
+            {required: true, message: '不能为空！', trigger: 'blur'}
           ],
           telephoneNumber: [
-            { required: true, message: '不能为空！', trigger: 'blur' },
-            { validator: validatePhone, trigger: 'blur' }
+            {required: true, message: '不能为空！', trigger: 'blur'},
+            {validator: validatePhone, trigger: 'blur'}
           ]
 
         },
@@ -616,47 +617,47 @@
         gender: '',
         config: {
           rules: [
-            { type: 'object', required: true, message: 'Please select time!' }
+            {type: 'object', required: true, message: 'Please select time!'}
           ]
         }
       }
     },
 
-    mounted () {
+    mounted() {
       this.fetch()
     },
 
     methods: {
-      handleChange () {
+      handleChange() {
       },
       //   如果是在职，输入职业
-      jobChange (value) {
+      jobChange(value) {
         if (value == '在职') {
           this.showJob = true
         } else {
-          this.ruleForm.inServiceJob=""
+          this.ruleForm.inServiceJob = ""
         }
       },
-      diseaseChange (value) {
+      diseaseChange(value) {
         if (value == '其他疾病') {
           this.showDisease = true
         } else {
           this.showDisease = false
-          this.ruleForm.otherMedicalHistory=""
+          this.ruleForm.otherMedicalHistory = ""
         }
       },
-      smokingChange (value) {
+      smokingChange(value) {
 
         if (value == '仍在吸') {
           this.showSmoke = true
         } else {
           this.showSmoke = false
           this.ruleForm.smokingNumEachDay = ""
-          this.ruleForm.smokingYears=""
+          this.ruleForm.smokingYears = ""
 
         }
       },
-      drinkingChange (value) {
+      drinkingChange(value) {
         if (value == '仍在喝') {
           this.showDrink = true
         } else {
@@ -666,20 +667,20 @@
 
         }
       },
-      mentalDiseaseChange (value) {
+      mentalDiseaseChange(value) {
         if (value == '有') {
           this.showMentalDisease = true
         } else {
           this.showMentalDisease = false
           this.showOtherMentalDisease = false
-          this.ruleForm.mentalDiseaseFamilyHistory =""
-          this.ruleForm.otherMentalDiseaseFamilyHistory =""
+          this.ruleForm.mentalDiseaseFamilyHistory = ""
+          this.ruleForm.otherMentalDiseaseFamilyHistory = ""
 
         }
       },
 
 
-      otherMentalDiseaseChange (value) {
+      otherMentalDiseaseChange(value) {
         if (value == '其他精神病史') {
           this.showOtherMentalDisease = true
         } else {
@@ -687,7 +688,7 @@
           this.ruleForm.otherMentalDiseaseFamilyHistory = ""
         }
       },
-      memoryChange (value) {
+      memoryChange(value) {
         if (value == '有记忆力下降') {
           this.showMemory = true
         } else {
@@ -695,7 +696,7 @@
           this.ruleForm.memoryLossTime = ""
         }
       },
-      cognitiveDrugChange (value) {
+      cognitiveDrugChange(value) {
         if (value == '有合并使用促认知药物') {
           this.showCognitiveDrug = true
         } else {
@@ -706,7 +707,7 @@
       },
 
       // 查看/编辑
-      fetch () {
+      fetch() {
         let that = this
         axios
           .post(this.serverUrl + 'patient/info/get', this.$route.query, {
@@ -716,31 +717,39 @@
           })
           .then(response => {
 
-            if ((response.data.retCode === '000000')) {
-              that.ruleForm = response.data.data
-            } else if (response.data.retCode === '100001') {
-              if (localStorage.getItem('Token') === null) {
-                this.$message.error('未登录，即将跳转至登录页面', 5)
-                this.$router.push({ path: '/login' })
-              } else {
-                this.$message.error('登录超时', 5)
-                this.$router.push({ path: '/login' })
-              }
-            }else {
+          if((response.data.retCode === '000000')
+      )
+        {
+          that.ruleForm = response.data.data
+        }
+      else
+        if (response.data.retCode === '100001') {
+          if (localStorage.getItem('Token') === null) {
+            this.$message.error('未登录，即将跳转至登录页面', 5)
+            this.$router.push({path: '/login'})
+          } else {
+            this.$message.error('登录超时', 5)
+            this.$router.push({path: '/login'})
+          }
+        } else {
           this.$message.error(response.data.retMsg, 3)
         }
-          }, err => {
-            alert('网络异常，请检查是否连接上网络')
-          })
-          .catch(function (error) {
-            // 请求失败处理
-          })
+      },
+        err =>
+        {
+          alert('网络异常，请检查是否连接上网络')
+        }
+      )
+      .
+        catch(function (error) {
+          // 请求失败处理
+        })
       },
 
       // 编辑后的保存功能
-      updateInfo (formName) {
+      updateInfo(formName) {
         this.$refs[formName].validate(valid => {
-          if (valid) {
+          if(valid) {
             this.$http
               .post(this.serverUrl + 'patient/info/save', this.ruleForm, {
                 headers: {
@@ -750,25 +759,26 @@
               .then(function (data) {
                 if (data.data.retCode === '000000') {
                   this.$message.success('更新成功', 5)
-                  this.$router.push({ path: '/Home/MyPatients' })
+                  this.$router.push({path: '/Home/MyPatients'})
                 } else if (data.data.retCode === '100001') {
                   if (localStorage.getItem('Token') === null) {
                     this.$message.error('未登录，即将跳转至登录页面', 5)
-                    this.$router.push({ path: '/login' })
+                    this.$router.push({path: '/login'})
                   } else {
                     this.$message.error('登录超时', 5)
-                    this.$router.push({ path: '/login' })
+                    this.$router.push({path: '/login'})
                   }
                 } else {
                   this.$message.error(data.data.retMsg, 3)
                 }
               }, err => {
-                alert('网络异常，请检查是否连接上网络')
-              })
+              alert('网络异常，请检查是否连接上网络'
+          )
+          })
           } else {
             this.$message.error('格式错误', 5)
-          }
-        })
+        }
+      })
       }
     }
   }

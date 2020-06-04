@@ -317,8 +317,8 @@
   import LabelWrap from 'element-ui/packages/form/src/label-wrap'
 
   export default {
-    components: { LabelWrap },
-    data () {
+    components: {LabelWrap},
+    data() {
       return {
         value: '',
         serverUrl: this.GLOBAL.serverUrl,
@@ -335,13 +335,13 @@
       }
     },
 
-    mounted () {
+    mounted() {
       this.fetch()
     },
     methods: {
 
       // 查看量表------接口
-      fetch () {
+      fetch() {
         let that = this
         axios
           .post(this.serverUrl + 'scale/info/get', this.$route.query, {
@@ -350,29 +350,37 @@
             }
           })
           .then(response => {
-            if (response.data.retCode === '000000') {
-              that.oneScale = response.data.data
-            } else if (response.data.retCode === '100001') {
-              if (localStorage.getItem('Token') === null) {
-                this.$message.error('未登录，即将跳转至登录页面', 5)
-                this.$router.push({ path: '/login' })
-              } else {
-                this.$message.error('登录超时', 5)
-                this.$router.push({ path: '/login' })
-              }
-            } else {
-              this.$message.error(response.data.retMsg, 5)
-            }
-          }, err => {
-            alert('网络异常，请检查是否连接上网络')
-          })
-          .catch(function (error) {
-            // 请求失败处理
-          })
+          if(response.data.retCode === '000000'
+      )
+        {
+          that.oneScale = response.data.data
+        }
+      else
+        if (response.data.retCode === '100001') {
+          if (localStorage.getItem('Token') === null) {
+            this.$message.error('未登录，即将跳转至登录页面', 5)
+            this.$router.push({path: '/login'})
+          } else {
+            this.$message.error('登录超时', 5)
+            this.$router.push({path: '/login'})
+          }
+        } else {
+          this.$message.error(response.data.retMsg, 5)
+        }
+      },
+        err =>
+        {
+          alert('网络异常，请检查是否连接上网络')
+        }
+      )
+      .
+        catch(function (error) {
+          // 请求失败处理
+        })
       },
 
       // 删除选项(单选，多选)
-      delOption (subjectId, optionId) {
+      delOption(subjectId, optionId) {
         var option = this.oneScale.questionList[subjectId].items
         if (this.oneScale.questionList[subjectId].items.length < 3) {
           this.$message.error('选项至少为2个', 3)
@@ -382,7 +390,7 @@
       },
 
       // 增加选项（单选，多选）
-      addOption (subjectId) {
+      addOption(subjectId) {
         var items = this.oneScale.questionList[subjectId].items
         if (items.length <= 20) {
           var newitems = {option: ''}
@@ -393,41 +401,41 @@
       },
 
       // 删除题目
-      del (subjectId) {
+      del(subjectId) {
         this.oneScale.questionList.splice(subjectId, 1)
       },
 
-      delQuestion (index) {
+      delQuestion(index) {
         this.oneScale.questionList.splice(index, 1)
       },
       // 上移题目
-      up (subjectId) {
+      up(subjectId) {
         if (subjectId > 0) {
           this.oneScale.questionList.splice(
             subjectId,
             1,
             ...this.oneScale.questionList.splice(
-              subjectId - 1,
-              1,
-              this.oneScale.questionList[subjectId]
-            )
+            subjectId - 1,
+            1,
+            this.oneScale.questionList[subjectId]
           )
+        )
         } else {
           alert('这是第一题，请勿上移！')
         }
       },
       // 下移题目
-      down (subjectId) {
+      down(subjectId) {
         if (subjectId < this.oneScale.questionList.length - 1) {
           this.oneScale.questionList.splice(
             subjectId,
             1,
             ...this.oneScale.questionList.splice(
-              subjectId + 1,
-              1,
-              this.oneScale.questionList[subjectId]
-            )
+            subjectId + 1,
+            1,
+            this.oneScale.questionList[subjectId]
           )
+        )
         } else {
           alert('这是最后一题，请勿再移动！')
         }
@@ -436,7 +444,7 @@
       // 画图题上传题目---开始
 
       // 绑定在"选择图片"input上的函数
-      drawImageChoose (subjectId) {
+      drawImageChoose(subjectId) {
         // 存放文件名的数组，用于显示
         var fileNameArray = []
         // 获取文件名称
@@ -451,17 +459,17 @@
       },
 
       // 动态绑定Id---画图题---选择文件
-      drawIdFile (subjectId) {
+      drawIdFile(subjectId) {
         return 'file' + subjectId
       },
 
       // 动态绑定Id---画图题---显示文件名
-      drawIdFileName (subjectId) {
+      drawIdFileName(subjectId) {
         return 'fileName' + subjectId
       },
 
       // 画图题---图片上传
-      drawUnload (subjectId) {
+      drawUnload(subjectId) {
         // FormDat对象
         var formobj = new FormData()
         // 获取表单中的数据
@@ -496,7 +504,7 @@
 
       // 图片题上传题目---开始
       // 绑定在"选择图片"input上的函数
-      pictureChoose (subjectId) {
+      pictureChoose(subjectId) {
         // 存放文件名的数组，用于显示
         var fileNameArray = []
         // 获取文件名称
@@ -511,17 +519,17 @@
       },
 
       // 动态绑定Id---图片题---选择文件
-      idFile (subjectId) {
+      idFile(subjectId) {
         return 'file' + subjectId
       },
 
       // 动态绑定Id---图片题---显示文件名
-      idFileName (subjectId) {
+      idFileName(subjectId) {
         return 'fileName' + subjectId
       },
 
       // 图片题---图片上传
-      unload (subjectId) {
+      unload(subjectId) {
         // FormDat对象
         var formobj = new FormData()
         // 获取表单中的数据
@@ -556,7 +564,7 @@
       // 图片题上传题目---结束
 
       // 更新 有问题修改中,20190912已解决
-      updataScale () {
+      updataScale() {
         // 如果量表名称为空，提示
         if (this.oneScale.scaleName === '') {
           this.$message.error('量表名称不能为空', 3)
@@ -603,38 +611,39 @@
           .then(function (data) {
             if ((data.body.retCode === '000000')) {
               this.$message.success('更新成功！', 5)
-              this.$router.push({ path: '/Home/Myscale' })
+              this.$router.push({path: '/Home/Myscale'})
             } else if (data.data.retCode === '100001') {
               if (localStorage.getItem('Token') === null) {
                 this.$message.error('未登录，即将跳转至登录页面', 5)
-                this.$router.push({ path: '/login' })
+                this.$router.push({path: '/login'})
               } else {
                 this.$message.error('登录超时', 5)
-                this.$router.push({ path: '/login' })
+                this.$router.push({path: '/login'})
               }
             } else {
               this.$message.error(data.body.retMsg, 5)
             }
           }, err => {
-            alert('网络异常，请检查是否连接上网络')
-          })
+          alert('网络异常，请检查是否连接上网络'
+      )
+      })
       },
 
       // 返回量表汇总
-      backTotalScale () {
-        this.$router.push({ path: '/home/myScale' })
+      backTotalScale() {
+        this.$router.push({path: '/home/myScale'})
       },
 
 
       //  添加题目
-      typeChange (e) {
+      typeChange(e) {
         //  单选
         if (e.toElement.innerText === '单选题') {
           var chooseQuestionObject = {
             questionType: 'radio',
             show: true,
             title: '',
-            items: [{ option: '' }, { option: '' }, { option: '' }, { option: '' }]
+            items: [{option: ''}, {option: ''}, {option: ''}, {option: ''}]
           }
           this.oneScale.questionList.push(chooseQuestionObject)
         } else if (e.toElement.innerText === '多选题') {
@@ -643,7 +652,7 @@
             questionType: 'checkBox',
             show: true,
             title: '',
-            items: [{ option: '' }, { option: '' }, { option: '' }, { option: '' }]
+            items: [{option: ''}, {option: ''}, {option: ''}, {option: ''}]
           }
           this.oneScale.questionList.push(checkBoxObject)
         } else if (e.toElement.innerText === '指导语') {
@@ -689,7 +698,7 @@
           var questionObject = {
             questionType: 'QandA',
             show: true,
-            title:''
+            title: ''
           }
           this.oneScale.questionList.push(questionObject)
         }

@@ -32,7 +32,7 @@
           <el-select v-model="ruleForm.gender" placeholder="请选择" style="width: 100%;" size="medium">
             <el-option label value></el-option>
             <el-option label="男" value="1"></el-option>
-            <el-option label="女" value="2"></el-option>
+            <el-option label="女" value="0"></el-option>
           </el-select>
         </el-form-item>
         <!-- 家庭地址 -->
