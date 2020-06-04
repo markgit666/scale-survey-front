@@ -10,8 +10,8 @@
                 <h2>基于经颅电刺激的认知障碍疾病综合康复研究</h2>
               </strong>
             </center>
-            <br/>
-            <br/>
+            <br />
+            <br />
             <!-- 步骤条 -->
 
             <el-steps :active="active" finish-status="success">
@@ -275,8 +275,10 @@
                 <a-row :gutter="10">
                   <a-col :xs="18" :sm="18" :md="18" :lg="18" :xl="18">
                     <!-- 身份证号 -->
-                    <div  :style="{marginTop:'15px'}">
-                      <strong> <label>身份证号：{{ruleForm.patientInfo.idCard}}</label></strong>
+                    <div :style="{marginTop:'15px'}">
+                      <strong>
+                        <label>身份证号：{{ruleForm.patientInfo.idCard}}</label>
+                      </strong>
                     </div>
                   </a-col>
                 </a-row>
@@ -871,289 +873,293 @@
 </template>
 
 <script>
-  import axios from 'axios'
+import axios from "axios";
 
-  export default {
-    data () {
-      // 手机号
-      var validatePhone = (rule, value, callback) => {
-        if (/^(((13[0-9]{1})|(14[0-9]{1})|(15[0-9]{1})|(16[0-9]{1})|(17[0-9]{1})|(18[0-9]{1})|(19[0-9]{1}))+\d{8})$/.test(value) == false) {
-          callback(new Error('请输入正确的手机号'))
-        } else {
-          callback()
-        }
+export default {
+  data() {
+    // 手机号
+    var validatePhone = (rule, value, callback) => {
+      if (
+        /^(((13[0-9]{1})|(14[0-9]{1})|(15[0-9]{1})|(16[0-9]{1})|(17[0-9]{1})|(18[0-9]{1})|(19[0-9]{1}))+\d{8})$/.test(
+          value
+        ) == false
+      ) {
+        callback(new Error("请输入正确的手机号"));
+      } else {
+        callback();
       }
-      return {
-        serverUrl: this.GLOBAL.serverUrl,
-        labelPosition: 'left',
-        testChecked: '',
-        rightChecked: '',
-        mainChecked: '',
-        agreeBook: {
-          someoneTest: '1', //受试者
-          rightMember: '1', // 法定代表
-          mainTest: '1' // 主试者
-        },
-        reportId:'',
-        patientId: '',
-        patientIdShow: true,
+    };
+    return {
+      serverUrl: this.GLOBAL.serverUrl,
+      labelPosition: "left",
+      testChecked: "",
+      rightChecked: "",
+      mainChecked: "",
+      agreeBook: {
+        someoneTest: "1", //受试者
+        rightMember: "1", // 法定代表
+        mainTest: "1" // 主试者
+      },
+      reportId: "",
+      patientId: "",
+      patientIdShow: true,
 
-        // 被试基本资料
-        ruleForm: {
-          // 被试者基本资料
-          patientInfo: {
-            idCard: '',
-            doctorId: '',
-            name: '',
-            birthday: '',
-            gender: '',
-            isSnoring:'',
-            familyAddress: '',
-            telephoneNumber: '',
-            hand: '',
-            nation: '',
-            marriageStatus: '',
-            workStatus: '', // 职业
-            inServiceJob: '', // 在职职业
-            educationLevel: '',
-            educationYears: '',
-            isSnoring: '',
-            livingWay: '',
-            medicalHistory: '', // 既往病史
-            otherMedicalHistory: '', // 其他既往病史
-            smokingHistory: '',
-            smokingNumEachDay: '',
-            smokingYears: '',
-            drinkingHistory: '',
-            drinkingType: '',
-            drinkingNumEachDay: '',
-            drinkingYears: '',
-            isMentalDiseaseFamilyHistory: '', // 有无精神疾病家族史
-            mentalDiseaseFamilyHistory: '', // 精神疾病家族史
-            otherMentalDiseaseFamilyHistory: '', // 其他精神病史
-            currentMedicalHistoryMemoryLoss: '', // 现病史（有无记忆下降）
-            memoryLossTime: '', // 记忆力下降多久
-            physicalExamination: '', // 体格检查情况
-            isUseCognitiveDrugs: '', // 是否合并使用促认知药物
-            drugsType: '', // 具体促认知药物
-            drugsDosage: '' // 具体药物的剂量
+      // 被试基本资料
+      ruleForm: {
+        // 被试者基本资料
+        patientInfo: {
+          idCard: "",
+          doctorId: "",
+          name: "",
+          birthday: "",
+          gender: "",
+          isSnoring: "",
+          familyAddress: "",
+          telephoneNumber: "",
+          hand: "",
+          nation: "",
+          marriageStatus: "",
+          workStatus: "", // 职业
+          inServiceJob: "", // 在职职业
+          educationLevel: "",
+          educationYears: "",
+          isSnoring: "",
+          livingWay: "",
+          medicalHistory: "", // 既往病史
+          otherMedicalHistory: "", // 其他既往病史
+          smokingHistory: "",
+          smokingNumEachDay: "",
+          smokingYears: "",
+          drinkingHistory: "",
+          drinkingType: "",
+          drinkingNumEachDay: "",
+          drinkingYears: "",
+          isMentalDiseaseFamilyHistory: "", // 有无精神疾病家族史
+          mentalDiseaseFamilyHistory: "", // 精神疾病家族史
+          otherMentalDiseaseFamilyHistory: "", // 其他精神病史
+          currentMedicalHistoryMemoryLoss: "", // 现病史（有无记忆下降）
+          memoryLossTime: "", // 记忆力下降多久
+          physicalExamination: "", // 体格检查情况
+          isUseCognitiveDrugs: "", // 是否合并使用促认知药物
+          drugsType: "", // 具体促认知药物
+          drugsDosage: "" // 具体药物的剂量
+        },
+        //被试者实验条件
+        patientEligibleList: []
+      },
+      //实验条件题目
+      eligibleInfoList: [],
+      // 表单规则校验
+      rules: {
+        name: [{ required: true, message: "不能为空！", trigger: "blur" }],
+        birthday: [{ required: true, message: "不能为空！", trigger: "blur" }],
+        gender: [{ required: true, message: "不能为空！", trigger: "blur" }],
+        familyAddress: [
+          { required: true, message: "不能为空！", trigger: "blur" }
+        ],
+        telephoneNumber: [
+          { required: true, message: "不能为空！", trigger: "blur" },
+          { validator: validatePhone, trigger: "blur" }
+        ]
+      },
+      // 如果是在职职业，则填在职职业
+      showJob: false,
+      showDisease: false,
+      showSmoke: false,
+      active: 0,
+      showDrink: false,
+      showMentalDisease: false,
+      showOtherMentalDisease: false,
+      showMemory: false,
+      showCognitiveDrug: false
+    };
+  },
+
+  mounted() {
+    // 获取IdCard.vue文件传过来的IdCard值
+    this.ruleForm.patientInfo.idCard = sessionStorage.getItem("idCard");
+    this.ruleForm.patientInfo.doctorId = this.$route.query.doctorId;
+    this.reportId = this.$route.query.reportId;
+
+    let that = this;
+
+    axios.post(this.serverUrl + "eligible/list").then(response => {
+      if (response.data.retCode === "000000") {
+        that.eligibleInfoList = response.data.data;
+      }
+    });
+  },
+
+  methods: {
+    //受试者打钩
+    testChange() {
+      this.checked === "true";
+    },
+    rightChange() {
+      this.rightChecked === "true";
+    },
+    mainChange() {
+      this.mainChecked === "true";
+    },
+
+    //   如果是在职，输入职业
+    jobChange(value) {
+      if (value == "在职") {
+        this.showJob = true;
+      } else {
+        this.showJob = false;
+      }
+    },
+    // 如果是其他疾病
+    diseaseChange(value) {
+      if (value == "其他疾病") {
+        this.showDisease = true;
+      } else {
+        this.showDisease = false;
+      }
+    },
+    smokingChange(value) {
+      if (value == "仍在吸") {
+        this.showSmoke = true;
+      } else {
+        this.showSmoke = false;
+      }
+    },
+    drinkingChange(value) {
+      if (value == "仍在喝") {
+        this.showDrink = true;
+      } else {
+        this.showDrink = false;
+      }
+    },
+    mentalDiseaseChange(value) {
+      if (value == "有") {
+        this.showMentalDisease = true;
+      } else {
+        this.showMentalDisease = false;
+        this.showOtherMentalDisease = false;
+      }
+    },
+    otherMentalDiseaseChange(value) {
+      if (value == "其他精神病史") {
+        this.showOtherMentalDisease = true;
+      } else {
+        this.showOtherMentalDisease = false;
+      }
+    },
+    memoryChange(value) {
+      if (value == "有记忆力下降") {
+        this.showMemory = true;
+      } else {
+        this.showMemory = false;
+      }
+    },
+    cognitiveDrugChange(value) {
+      if (value == "有合并使用促认知药物") {
+        this.showCognitiveDrug = true;
+      } else {
+        this.showCognitiveDrug = false;
+      }
+    },
+
+    //保存个人信息
+    saveInfo() {
+      var url =
+        "/home/AnswerReport" +
+        "?reportId=" +
+        this.reportId +
+        "&doctorId=" +
+        this.ruleForm.patientInfo.doctorId;
+      this.formatPatientRelationInfo();
+      this.$http
+        .post(this.serverUrl + "patient/relation/info/save", this.ruleForm)
+        .then(
+          function(data) {
+            if (data.body.retCode === "000000") {
+              this.patientId = data.body.data.patientId;
+              sessionStorage.setItem("patientId", this.patientId); //存储patientId
+              this.$message.success("保存成功！", 5);
+              this.$router.push({
+                path: url,
+                query: {
+                  reportId: this.$route.query.reportId
+                }
+              }); //保存成功跳转至答题页面，并且得到IdCard.vue页面传过来的reportId，再传到答题界面
+            } else {
+              this.$message.error("保存失败", 5);
+              this.ruleForm.patientEligibleList.splice(
+                0,
+                this.ruleForm.patientEligibleList.length
+              );
+            }
           },
-          //被试者实验条件
-          patientEligibleList: []
-        },
-        //实验条件题目
-        eligibleInfoList: [],
-        // 表单规则校验
-        rules: {
-          name: [{ required: true, message: '不能为空！', trigger: 'blur' }],
-          birthday: [{ required: true, message: '不能为空！', trigger: 'blur' }],
-          gender: [{ required: true, message: '不能为空！', trigger: 'blur' }],
-          familyAddress: [
-            { required: true, message: '不能为空！', trigger: 'blur' }
-          ],
-          telephoneNumber: [
-            { required: true, message: '不能为空！', trigger: 'blur' },
-            { validator: validatePhone, trigger: 'blur' }
-          ]
-        },
-        // 如果是在职职业，则填在职职业
-        showJob: false,
-        showDisease: false,
-        showSmoke: false,
-        active: 0,
-        showDrink: false,
-        showMentalDisease: false,
-        showOtherMentalDisease: false,
-        showMemory: false,
-        showCognitiveDrug: false
+          err => {
+            alert("网络异常，请检查是否连接上网络");
+          }
+        );
+    },
+
+    formatPatientRelationInfo() {
+      var eligibleList = this.eligibleInfoList;
+      for (var i = 0; i < eligibleList.length; i++) {
+        var eligible = {
+          eligibleId: "",
+          answer: "",
+          remarks: ""
+        };
+        eligible.eligibleId = eligibleList[i].eligibleId;
+        eligible.answer = eligibleList[i].answer;
+        eligible.remarks = eligibleList[i].remarks;
+        this.ruleForm.patientEligibleList.push(eligible);
       }
     },
 
-    mounted () {
-      // 获取IdCard.vue文件传过来的IdCard值
-      this.ruleForm.patientInfo.idCard = sessionStorage.getItem('idCard')
-      this.ruleForm.patientInfo.doctorId = this.$route.query.doctorId
-      this.reportId = this.$route.query.reportId
-
-      let that = this
-
-      axios
-        .post(this.serverUrl + 'eligible/list')
-        .then(response => {
-          if (response.data.retCode === '000000') {
-            that.eligibleInfoList = response.data.data
+    // 下一步
+    next() {
+      if (
+        this.testChecked === true &&
+        this.rightChecked === true &&
+        this.mainChecked === true
+      ) {
+        if (this.active < 3) {
+          this.active++;
+        } else if (this.active === 3) {
+          if (this.ruleForm.patientInfo.name === "") {
+            this.$message.warning("姓名不能为空，请检查！");
+            return;
           }
-        })
+          if (this.ruleForm.patientInfo.birthday === "") {
+            this.$message.warning("出生年月不能为空，请检查！");
+            return;
+          }
+          if (this.ruleForm.patientInfo.gender === "") {
+            this.$message.warning("性别不能为空，请检查！");
+            return;
+          }
+          if (this.ruleForm.patientInfo.telephoneNumber === "") {
+            this.$message.warning("电话号码不能为空，请检查！");
+            return;
+          }
+          if (this.ruleForm.patientInfo.familyAddress === "") {
+            this.$message.warning("家庭地址不能为空，请检查！");
+            return;
+          }
+          this.active++; // 必填的都填了，就进入下一步
+        } else {
+          //第五步，保存信息，跳转到答题页面
+          this.saveInfo(); //保存成功并跳到答题界面
+        }
+      } else {
+        this.$message.warning("未确认知情同意书！");
+      }
     },
-
-    methods: {
-      //受试者打钩
-      testChange () {
-        this.checked === 'true'
-      },
-      rightChange () {
-        this.rightChecked === 'true'
-      },
-      mainChange () {
-        this.mainChecked === 'true'
-      },
-
-      //   如果是在职，输入职业
-      jobChange (value) {
-        if (value == '在职') {
-          this.showJob = true
-        } else {
-          this.showJob = false
-        }
-      },
-      // 如果是其他疾病
-      diseaseChange (value) {
-        if (value == '其他疾病') {
-          this.showDisease = true
-        } else {
-          this.showDisease = false
-        }
-      },
-      smokingChange (value) {
-        if (value == '仍在吸') {
-          this.showSmoke = true
-        } else {
-          this.showSmoke = false
-        }
-      },
-      drinkingChange (value) {
-        if (value == '仍在喝') {
-          this.showDrink = true
-        } else {
-          this.showDrink = false
-        }
-      },
-      mentalDiseaseChange (value) {
-        if (value == '有') {
-          this.showMentalDisease = true
-        } else {
-          this.showMentalDisease = false
-          this.showOtherMentalDisease = false
-        }
-      },
-      otherMentalDiseaseChange (value) {
-        if (value == '其他精神病史') {
-          this.showOtherMentalDisease = true
-        } else {
-          this.showOtherMentalDisease = false
-        }
-      },
-      memoryChange (value) {
-        if (value == '有记忆力下降') {
-          this.showMemory = true
-        } else {
-          this.showMemory = false
-        }
-      },
-      cognitiveDrugChange (value) {
-        if (value == '有合并使用促认知药物') {
-          this.showCognitiveDrug = true
-        } else {
-          this.showCognitiveDrug = false
-        }
-      },
-
-      //保存个人信息
-      saveInfo () {
-
-       var url = '/home/AnswerReport'+'?reportId=' + this.reportId +'&doctorId='+ this.ruleForm.patientInfo.doctorId
-        this.formatPatientRelationInfo()
-        this.$http
-          .post(this.serverUrl + 'patient/relation/info/save', this.ruleForm)
-          .then(
-
-            function (data) {
-
-              if (data.body.retCode === '000000') {
-
-                this.patientId = data.body.data.patientId
-                sessionStorage.setItem('patientId', this.patientId) //存储patientId
-                this.$message.success('保存成功！', 5)
-                this.$router.push({
-                  path: url,
-                  query: {
-                    reportId: this.$route.query.reportId
-                  }
-                }) //保存成功跳转至答题页面，并且得到IdCard.vue页面传过来的reportId，再传到答题界面
-              } else {
-                this.$message.error('保存失败', 5)
-                this.ruleForm.patientEligibleList.splice(0, this.ruleForm.patientEligibleList.length)
-              }
-            },
-            err => {
-              alert('网络异常，请检查是否连接上网络')
-            }
-          )
-      },
-
-      formatPatientRelationInfo () {
-        var eligibleList = this.eligibleInfoList
-        for (var i = 0; i < eligibleList.length; i++) {
-          var eligible = {
-            eligibleId: '',
-            answer: '',
-            remarks: ''
-          }
-          eligible.eligibleId = eligibleList[i].eligibleId
-          eligible.answer = eligibleList[i].answer
-          eligible.remarks = eligibleList[i].remarks
-          this.ruleForm.patientEligibleList.push(eligible)
-        }
-      },
-
-      // 下一步
-      next () {
-        if (
-          this.testChecked === true &&
-          this.rightChecked === true &&
-          this.mainChecked === true
-        ) {
-          if (this.active < 3) {
-            this.active++
-          } else if (this.active === 3) {
-            if (this.ruleForm.patientInfo.name === '') {
-              this.$message.warning('姓名不能为空，请检查！')
-              return
-            }
-            if (this.ruleForm.patientInfo.birthday === '') {
-              this.$message.warning('出生年月不能为空，请检查！')
-              return
-            }
-            if (this.ruleForm.patientInfo.gender === '') {
-              this.$message.warning('性别不能为空，请检查！')
-              return
-            }
-            if (this.ruleForm.patientInfo.telephoneNumber === '') {
-              this.$message.warning('电话号码不能为空，请检查！')
-              return
-            }
-            if (this.ruleForm.patientInfo.familyAddress === '') {
-              this.$message.warning('家庭地址不能为空，请检查！')
-              return
-            }
-            this.active++ // 必填的都填了，就进入下一步
-          } else {
-            //第五步，保存信息，跳转到答题页面
-            this.saveInfo() //保存成功并跳到答题界面
-
-          }
-        } else {
-          this.$message.warning('未确认知情同意书！')
-        }
-      },
-      // 上一步
-      previous () {
-        --this.active
-        if (this.active < 0) this.active = 0
-      },
-
+    // 上一步
+    previous() {
+      --this.active;
+      if (this.active < 0) this.active = 0;
     }
   }
+};
 </script>
 
 

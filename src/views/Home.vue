@@ -2,9 +2,8 @@
   <div class="box8">
     <a-layout id="components-layout-demo-fixed">
       <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
-        <img src="../../public/homeLogo.png" class="homeLogo"  />
+        <img src="../../public/homeLogo.png" class="homeLogo" />
         <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }">
-
           <a-menu-item key="1">
             <router-link to="/Home/MyPatients">
               <i class="el-icon-user"></i>
@@ -18,7 +17,6 @@
               我的报告表
             </router-link>
           </a-menu-item>
-
 
           <a-menu-item key="3">
             <router-link to="/Home/MyReportAnswer">
@@ -75,15 +73,14 @@ import "ant-design-vue/dist/antd.css";
 export default {
   data() {
     return {
-      admin:"",
+      admin: "",
       dialogVisible: false,
       serverUrl: this.GLOBAL.serverUrl
     };
   },
 
-  mounted () {
-
-    this.admin = localStorage.getItem('identity')
+  mounted() {
+    this.admin = localStorage.getItem("identity");
   },
 
   methods: {

@@ -202,7 +202,7 @@
         </el-form-item>
 
         <!-- 如果是其他病史，输入其他病史  -->
-        <el-form-item label="其他病史 :"  v-if="showDisease">
+        <el-form-item label="其他病史 :" v-if="showDisease">
           <el-input
             type="text"
             maxlength="40"

@@ -41,102 +41,108 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import $ from 'jquery'
+import axios from "axios";
+import $ from "jquery";
 
-  export default {
-    data () {
-      //验证身份证号格式
-      var validateId = (rule, value, callback) => {
-        const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
-        if (value == '' || value == undefined || value == null) {
-          callback()
+export default {
+  data() {
+    //验证身份证号格式
+    var validateId = (rule, value, callback) => {
+      const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+      if (value == "" || value == undefined || value == null) {
+        callback();
+      } else {
+        if (!reg.test(value) && value != "") {
+          callback(new Error("请输入正确的身份证号码"));
         } else {
-          if (!reg.test(value) && value != '') {
-            callback(new Error('请输入正确的身份证号码'))
-          } else {
-            callback()
-          }
+          callback();
         }
       }
-      return {
-        serverUrl: this.GLOBAL.serverUrl,
-        ruleForm: {
-          idCard: ''
-        },
+    };
+    return {
+      serverUrl: this.GLOBAL.serverUrl,
+      ruleForm: {
+        idCard: ""
+      },
 
-        rules: {
-          idCard: [
-            { required: true, message: '不能为空！', trigger: 'blur' },
-            { validator: validateId, trigger: 'blur' }
-          ]
-        }
+      rules: {
+        idCard: [
+          { required: true, message: "不能为空！", trigger: "blur" },
+          { validator: validateId, trigger: "blur" }
+        ]
       }
-    },
+    };
+  },
 
-    methods: {
-      conform (formName) {
-        // 页面之间传值，传身份证号码
-        // const idCardData = { idCard: this.ruleForm.idCard };
-        sessionStorage.setItem('idCard', this.ruleForm.idCard)
-        let that = this
-        this.$refs[formName].validate(valid => {
-
-          if (valid) {
-            axios
-              .post(
-                this.serverUrl + 'paper/patient/report/status/check',
-                {
-                  reportId: this.$route.query.reportId,
-                  idCard: this.ruleForm.idCard
-                },
-                {
-                  headers: {
-                    Token: localStorage.getItem('Token')
-                  }
+  methods: {
+    conform(formName) {
+      // 页面之间传值，传身份证号码
+      // const idCardData = { idCard: this.ruleForm.idCard };
+      sessionStorage.setItem("idCard", this.ruleForm.idCard);
+      let that = this;
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          axios
+            .post(
+              this.serverUrl + "paper/patient/report/status/check",
+              {
+                reportId: this.$route.query.reportId,
+                idCard: this.ruleForm.idCard
+              },
+              {
+                headers: {
+                  Token: localStorage.getItem("Token")
                 }
-              )
-              .then(response => {
+              }
+            )
+            .then(response => {
+              if (response.data.retCode === "000000") {
+                var urlFirst =
+                  "/home/AnswerSteps" +
+                  "?reportId=" +
+                  this.$route.query.reportId +
+                  "&doctorId=" +
+                  "that.$route.query.doctorId";
+                var urlNotFirst =
+                  "/home/AnswerReport" +
+                  "?reportId=" +
+                  this.$route.query.reportId +
+                  "&doctorId=" +
+                  "that.$route.query.doctorId";
 
-                if (response.data.retCode === '000000') {
-                  var urlFirst = '/home/AnswerSteps' + '?reportId=' +this.$route.query.reportId + '&doctorId='+'that.$route.query.doctorId'
-                  var urlNotFirst = '/home/AnswerReport' + '?reportId=' +this.$route.query.reportId + '&doctorId='+'that.$route.query.doctorId'
-
-                  // 如果第一次答题
-                  if (response.data.data === null) {
-
-                    // var dortorIdParam = that.$route.query.doctorId
-                    this.$router.push({
-                      path: urlFirst,
-                      query: {
-                        reportId: that.$route.query.reportId,//获取当前URL的参数reportId，传到下一个页面
-                        doctorId: that.$route.query.doctorId  //获取当前URL的参数doctorId，传到下一个页面
-                      }
-                    })
-
-                  } else { //如果不是第一次答题
-
-                    this.patientId = response.data.data.patientId //得到返回的patientId
-                    sessionStorage.setItem('patientId', this.patientId) //存储patientId
-                    this.$router.push({
-                      path: urlNotFirst,
-                      query: {
-                        reportId: that.$route.query.reportId,//获取当前URL的参数reportId，传到下一个页面
-                        doctorId: that.$route.query.doctorId,
-
-                      }
-                    })
-                  }
+                // 如果第一次答题
+                if (response.data.data === null) {
+                  // var dortorIdParam = that.$route.query.doctorId
+                  this.$router.push({
+                    path: urlFirst,
+                    query: {
+                      reportId: that.$route.query.reportId, //获取当前URL的参数reportId，传到下一个页面
+                      doctorId: that.$route.query.doctorId //获取当前URL的参数doctorId，传到下一个页面
+                    }
+                  });
                 } else {
-                  this.$message.warning(response.data.retMsg, 2)
+                  //如果不是第一次答题
+
+                  this.patientId = response.data.data.patientId; //得到返回的patientId
+                  sessionStorage.setItem("patientId", this.patientId); //存储patientId
+                  this.$router.push({
+                    path: urlNotFirst,
+                    query: {
+                      reportId: that.$route.query.reportId, //获取当前URL的参数reportId，传到下一个页面
+                      doctorId: that.$route.query.doctorId
+                    }
+                  });
                 }
-              })
-          } else {
-            this.$message.error('格式错误，请检查！')
-            return false
-          }
-        })
-      }
+              } else {
+                this.$message.warning(response.data.retMsg, 2);
+              }
+            });
+        } else {
+          this.$message.error("格式错误，请检查！");
+          return false;
+        }
+      });
     }
   }
+};
 </script>

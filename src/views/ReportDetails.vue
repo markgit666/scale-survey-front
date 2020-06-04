@@ -1,23 +1,22 @@
 <template>
   <el-container style="height:1000px; border: 1px solid #eee">
     <a-card :style="{height:'1000px', width:'250px'}">
-        <el-aside  width='230px' style="background-color: rgb(238, 241, 246)">
-          <el-menu @select="handleSelect">
-            <el-menu-item v-for="(item,key) in scaleInfoList" :key="key" :index="item.scaleId">
-              <template slot="title">
-                <div class="grid-content">
-                  <div class="info-content">
-                    <i class="el-icon-notebook-1"></i>
-                    {{item.scaleName}}
-                  </div>
+      <el-aside width="230px" style="background-color: rgb(238, 241, 246)">
+        <el-menu @select="handleSelect">
+          <el-menu-item v-for="(item,key) in scaleInfoList" :key="key" :index="item.scaleId">
+            <template slot="title">
+              <div class="grid-content">
+                <div class="info-content">
+                  <i class="el-icon-notebook-1"></i>
+                  {{item.scaleName}}
                 </div>
+              </div>
 
-                <!-- <span class="info-content"></span>-->
-              </template>
-            </el-menu-item>
-          </el-menu>
-        </el-aside>
-     
+              <!-- <span class="info-content"></span>-->
+            </template>
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
     </a-card>
 
     <el-scrollbar :style="{width:'100%'}">
@@ -281,12 +280,10 @@ export default {
   },
   methods: {
     handleSelect(key) {
-
       this.scaleId = key;
     },
     // 查看报告表内容
     fetch() {
-
       let that = this;
       axios
         .post(this.serverUrl + "report/detail/info", this.$route.query, {
