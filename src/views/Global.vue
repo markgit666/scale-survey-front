@@ -1,5 +1,6 @@
 <script>
-  const serverUrl = "http://121.199.56.115:80/survey/";
+  const serverUrl = "http://www.yzcan.com/survey/";
+  // const serverUrl = "http://localhost:8082/survey/";
 
   export default {
     serverUrl // 服务器地址
