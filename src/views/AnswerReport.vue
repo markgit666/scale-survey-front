@@ -29,7 +29,7 @@
             <el-col :xs="18" :sm="18" :md="18" :lg="18" :xl="18">
               <el-form :style="{marginTop:'20px'}">
                 <el-form-item label="评定人:">
-                  <el-input v-model="answer.checkUser" style="width: 80%;"></el-input>
+                  <el-input v-model="answer.checkUser" style="width: 80%;" placeholder="评定人必填！"></el-input>
                 </el-form-item>
               </el-form>
             </el-col>
@@ -66,11 +66,12 @@
                 <div v-for="(value,index) in answer.answerList" :key="index">
                   <div v-if="item.questionId === value.questionId ">
                     <el-row :gutter="10">
-                      <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="10">{{item.title}}</el-col>
-                      <el-col :xs="9" :sm="9" :md="9" :lg="9" :xl="9">
+                      <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">{{item.title}}</el-col>
+                      <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                         <el-input v-model="value.content" placeholder="请输入答案"></el-input>
                       </el-col>
-                      <el-col :xs="5" :sm="5" :md="5" :lg="8" :xl="5">
+
+                      <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                         <el-select v-model="value.score" clearable placeholder="请评分">
                           <el-option
                             v-for="item in scoreOptions"
@@ -240,61 +241,41 @@
               <div v-if="item.questionType ==='draw'" :style="{marginTop:'20px'}">
                 <div v-for="(value,index) in answer.answerList" :key="index">
                   <div v-if="item.questionId === value.questionId ">
+
+                    <el-row>
+                    <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+
                     <!--图片-->
-                    <div v-for="(oneImg,imgId) in item.attachmentList" :key="imgId" class="imgBox">
+                    <div v-for="(oneImg,imgId) in item.attachmentList" :key="imgId">
                       <el-image
                         style="width: 250px; height: 250px"
+                        class="imgBox"
                         :src="imgUrl + oneImg"
                         :fit="'contain'"
                       ></el-image>
+
                     </div>
-                    <!--canvas-->
-                    <div class="canvasDiv">
-                      <canvas
-                        class="canvasBox"
-                        :id="mycanvas(subjectId)"
-                        @touchstart="touchstart"
-                        @touchmove="touchmove"
-                        @mousedown="mousedown"
-                        @mousemove="mousemove"
-                        @mouseup="mouseup"
-                        width="500px"
-                        height="400px"
-                      >您的浏览器不支持canvas，请更换浏览器！</canvas>
+                    </el-col>
+
+                    <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+
+                    <!--画图--图片上传--开始-->
+                    <div class="choose-upload">
+                      <div id="choosePictureBox">
+                        选择图片
+                        <input class="file" type="file" :id="drawIdFile(subjectId)" name="file" multiple="multiple"
+                               accept="image/gif, image/jpeg, image/png, image/jpg"
+                               @change="chooseAnswerPicture(subjectId)"
+                        >
+                      </div>
+                      <a-button type="primary" @click="uploadAnswer(subjectId,item.questionId)" :style="{marginLeft:'15px'}">保存答案</a-button>
                     </div>
 
-                    <!--画笔工具-->
-                    <el-row :gutter="10">
-                      <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
-                        <center>
-                          <el-button type="primary" plain @click="pen">画笔</el-button>
-                        </center>
-                      </el-col>
-                      <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
-                        <center>
-                          <el-button type="primary" plain @click="eraser">橡皮擦</el-button>
-                        </center>
-                      </el-col>
-                      <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
-                        <center>
-                          <el-button type="primary" plain @click="clearAll(subjectId)">清除所有</el-button>
-                        </center>
-                      </el-col>
-
-                      <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
-                        <center>
-                          <el-button
-                            type="primary"
-                            plain
-                            @click="handleChangeImage(subjectId,item.questionId)"
-                          >保存图片</el-button>
-                        </center>
-                      </el-col>
-                    </el-row>
+                    <!-- 文件名显示区域 -->
+                    <div :id="drawIdFileName(subjectId)" :style="{marginTop:'10px'}"></div>
 
                     <!--评分-->
-                    <el-row>
-                      <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+
                         <el-form :style="{marginTop:'15px'}">
                           <el-form-item label="评分:">
                             <el-select v-model="value.score" clearable placeholder="请评分">
@@ -307,7 +288,8 @@
                             </el-select>
                           </el-form-item>
                         </el-form>
-                      </el-col>
+
+                    </el-col>
                     </el-row>
                   </div>
                 </div>
@@ -318,7 +300,7 @@
             <div v-if="scaleInfo.scaleName!='神经精神科量表（NPI）' ">
               <h3>
                 <strong :style="{color:'red'}">
-                  <label>总得分：{{computedTotalScore}}</label>
+                  <label>总得分：{{computedTotalScore()}}</label>
                 </strong>
               </h3>
             </div>
@@ -397,7 +379,7 @@
 
 <script>
 import axios from "axios";
-
+import $ from "jquery";
 export default {
   data() {
     return {
@@ -422,6 +404,10 @@ export default {
         useTime: "",
         checkUser: "", //评定人
         totalScore: "", //总得分
+        frequencyTotalScore:"",  //频率总分
+        frequencySeriousTotalScore:"",  //严重程度总分
+        distressTotalScore:"",  //频率*严重程度总分
+        seriousTotalScore:"", //使照料者苦恼程度
         answerList: []
       },
       //下拉框：分数数据
@@ -569,7 +555,7 @@ export default {
             }
           }
         }
-        computedTotalScore();
+        this.computedTotalScore();
       },
       deep: true
     }
@@ -580,26 +566,6 @@ export default {
   },
 
   computed: {
-    // 计算总分，除了“神经精神科量表”
-    computedTotalScore() {
-      if (this.scaleInfo === "" || this.scaleInfo === null) {
-        return;
-      }
-      let answerList = [];
-      answerList = this.answer.answerList;
-      var totalScore = 0;
-      for (var i = 0; i < answerList.length; i++) {
-        if (answerList[i].question.recordScore === true) {
-          totalScore = Number(totalScore) + Number(answerList[i].score);
-        }
-      }
-
-      if (isNaN(totalScore)) {
-        totalScore = 0;
-      }
-      this.answer.totalScore = totalScore;
-      return totalScore;
-    },
 
     // 频率总分
     frequencyTotalScore() {
@@ -618,7 +584,7 @@ export default {
           totalScore = Number(totalScore) + Number(answerList[i].score);
         }
       }
-      this.answer.totalScore = totalScore;
+      this.answer.frequencyTotalScore = totalScore;
       return totalScore;
     },
 
@@ -640,7 +606,7 @@ export default {
           totalScore = Number(totalScore) + Number(answerList[i].score);
         }
       }
-      this.answer.totalScore = totalScore;
+      this.answer.seriousTotalScore = totalScore;
       return totalScore;
     },
 
@@ -686,7 +652,7 @@ export default {
         }
         totalScore = totalScore + totalScore1 * totalScore2;
       }
-      this.answer.totalScore = totalScore;
+      this.answer.frequencySeriousTotalScore = totalScore;
       return totalScore;
     },
 
@@ -707,11 +673,116 @@ export default {
           totalScore = Number(totalScore) + Number(answerList[i].score);
         }
       }
-      this.answer.totalScore = totalScore;
+      this.answer.distressTotalScore = totalScore;
       return totalScore;
     }
   },
   methods: {
+
+    // 计算总分，除了“神经精神科量表”
+    computedTotalScore() {
+      if (this.scaleInfo === "" || this.scaleInfo === null) {
+        return;
+      }
+      let answerList = [];
+      answerList = this.answer.answerList;
+      var totalScore = 0;
+      if (this.scaleInfo.scaleName !== "神经精神科量表（NPI）") {
+        for (var i = 0; i < answerList.length; i++) {
+          if (answerList[i].question.recordScore === true) {
+            totalScore = Number(totalScore) + Number(answerList[i].score);
+          }
+        }
+      }else {
+        totalScore = Number(this.answer.frequencyTotalScore)+Number(this.answer.seriousTotalScore)+ Number(this.answer.frequencySeriousTotalScore) + Number(this.answer.distressTotalScore)
+      }
+
+      if (isNaN(totalScore)) {
+        totalScore = 0;
+      }
+      this.answer.totalScore = totalScore;
+      return totalScore;
+    },
+
+    // 动态绑定Id---画图题---选择文件
+    drawIdFile(subjectId) {
+      return "file" + subjectId;
+    },
+
+    // 动态绑定Id---画图题---显示文件名
+    drawIdFileName(subjectId) {
+      return "fileName" + subjectId;
+    },
+
+    // 画图题-选择图片（画图题的答案）
+    chooseAnswerPicture(subjectId){
+      // 存放文件名的数组，用于显示
+      var fileNameArray = [];
+      // 获取文件名称
+      var filename = document.getElementById("file" + subjectId);
+
+      if (filename.files.length > 20) {
+        // 限制图片个数
+        alert("图片上传的数量不能超过20张！");
+      } else {
+        for (var i = 0; i < filename.files.length; i++) {
+          // 限制图片大小
+          var pictureSize = 1024 * 1024 * 3;
+          if (filename.files[i].size < pictureSize) {
+            var temp = filename.files[i].name;
+            fileNameArray.push(temp);
+          } else {
+            alert("您上传的图片中含有超过5M的图片,请重新选择");
+            return false;
+          }
+        }
+      }
+      // 拼接
+      var idTemp = "#" + "fileName" + subjectId;
+      $(idTemp).text(fileNameArray);
+    },
+
+    //画图题-保存答案图片
+    uploadAnswer(subjectId,questionId){
+      // FormDat对象
+      var formobj = new FormData()
+      // 获取表单中的数据
+      var myfile = document.getElementById('file' + subjectId).files
+      for (var i = 0; i < myfile.length; i++) {
+        // 向对象中添加要发送的数据
+        formobj.append('file', myfile[i])
+      }
+
+      // XMLHttpRequest对象
+      var xmlobj = new XMLHttpRequest()
+
+      // 指定提交类型（post）和选择要发送的地址
+      var serverUrlTemp = this.serverUrl
+      var pictureServerUrl = serverUrlTemp + 'file/upload'
+      xmlobj.open('post', pictureServerUrl)
+
+      // 发送数据
+      xmlobj.send(formobj)
+      let that = this
+      xmlobj.onload = function () {
+        if (xmlobj.readyState == 4 && xmlobj.status == 200) {
+          // alert(xmlobj.responseText)
+          that.$message.success('上传成功', 5)
+          // 将json对象转化成字符串
+          var responseText = JSON.parse(xmlobj.responseText)
+          // 将response返回的图片二进制数据放入自己构造的list中
+          // that.oneScale.questionList[subjectId].attachmentList = responseText.data
+
+          for (var i = 0; i < that.answer.answerList.length; i++) {
+            if (questionId === that.answer.answerList[i].questionId) {
+              that.answer.answerList[i].content = responseText.data[0]
+            }
+          }
+
+        }
+      }
+    },
+
     // 单选题radio事件绑定
     radioChange(questionId, optionScore) {
       let list = [];
@@ -806,6 +877,9 @@ export default {
 
     // 保存量表信息
     saveScaleInfo(stepNum) {
+      if (this.answer.checkUser ===""){
+        this.$message.warning("评定人不能为空，请填写评定人")
+      }
       this.answer.patientId = sessionStorage.getItem("patientId");
       this.answer.scaleId = this.scaleIdList[stepNum]; //得到scaleId
       let that = this;
@@ -830,6 +904,7 @@ export default {
 
     // 下一步
     next() {
+
       if (this.active < this.scaleIdList.length) {
         this.saveScaleInfo(this.active);
         this.active++;
@@ -1025,9 +1100,43 @@ export default {
 </script>
 
 <style scoped>
+  .choose-upload {
+    display: flex;
+    flex-direction: row;
+  }
+  #choosePictureBox {
+    position: relative;
+    display: inline-block;
+    background: #2d8cf0;
+    /*border: 1px solid #99D3F5;*/
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: white;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+  }
+
+  #choosePictureBox input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+  }
+
+  #choosePictureBox:hover {
+    background: #5cadff;
+    /*border-color: white;*/
+    color: white;
+    text-decoration: none;
+  }
 .imgBox {
-  text-align: center;
+
   border: 1px solid #dddee1;
+  height:300px;
+  width: 300px;
 }
 
 .canvasBox {

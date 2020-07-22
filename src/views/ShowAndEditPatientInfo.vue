@@ -581,6 +581,7 @@ export default {
     };
 
     return {
+      showDrink:false,
       labelPosition: "left",
       ruleForm: {},
       rules: {

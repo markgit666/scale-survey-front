@@ -155,47 +155,50 @@
                       </div>
                     </el-col>
                   </el-row>
+                  <el-button type="primary" >选择图片</el-button>
+                  <el-button type="primary" >保存答案</el-button>
+
                   <!-- canvas -->
-                  <el-row>
-                    <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></el-col>
-                    <el-col :xs="22" :sm="22" :md="22" :lg="22" :xl="22">
-                      <center>
-                        <div class="canvasBox"></div>
-                      </center>
-                    </el-col>
-                  </el-row>
+                  <!--<el-row>-->
+                    <!--<el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"></el-col>-->
+                    <!--<el-col :xs="22" :sm="22" :md="22" :lg="22" :xl="22">-->
+                      <!--<center>-->
+                        <!--<div class="canvasBox"></div>-->
+                      <!--</center>-->
+                    <!--</el-col>-->
+                  <!--</el-row>-->
 
                   <!-- 工具 -->
-                  <el-row type="flex" :style="{marginTop:'10px'}">
-                    <el-col :span="6">
-                      <div>
-                        <center>
-                          <a-button type="primary" :style="{width:'100px'}">画笔</a-button>
-                        </center>
-                      </div>
-                    </el-col>
-                    <el-col :span="6">
-                      <div>
-                        <center>
-                          <a-button :style="{width:'100px'}" type="primary">橡皮擦</a-button>
-                        </center>
-                      </div>
-                    </el-col>
-                    <el-col :span="6">
-                      <div>
-                        <center>
-                          <a-button :style="{width:'100px'}" type="primary">清除</a-button>
-                        </center>
-                      </div>
-                    </el-col>
-                    <el-col :span="6">
-                      <center>
-                        <div>
-                          <a-button :style="{width:'100px'}" type="primary">保存图片</a-button>
-                        </div>
-                      </center>
-                    </el-col>
-                  </el-row>
+                  <!--<el-row type="flex" :style="{marginTop:'10px'}">-->
+                    <!--<el-col :span="6">-->
+                      <!--<div>-->
+                        <!--<center>-->
+                          <!--<a-button type="primary" :style="{width:'100px'}">画笔</a-button>-->
+                        <!--</center>-->
+                      <!--</div>-->
+                    <!--</el-col>-->
+                    <!--<el-col :span="6">-->
+                      <!--<div>-->
+                        <!--<center>-->
+                          <!--<a-button :style="{width:'100px'}" type="primary">橡皮擦</a-button>-->
+                        <!--</center>-->
+                      <!--</div>-->
+                    <!--</el-col>-->
+                    <!--<el-col :span="6">-->
+                      <!--<div>-->
+                        <!--<center>-->
+                          <!--<a-button :style="{width:'100px'}" type="primary">清除</a-button>-->
+                        <!--</center>-->
+                      <!--</div>-->
+                    <!--</el-col>-->
+                    <!--<el-col :span="6">-->
+                      <!--<center>-->
+                        <!--<div>-->
+                          <!--<a-button :style="{width:'100px'}" type="primary">保存图片</a-button>-->
+                        <!--</div>-->
+                      <!--</center>-->
+                    <!--</el-col>-->
+                  <!--</el-row>-->
                 </div>
                 <!-- 画图结束 -->
 

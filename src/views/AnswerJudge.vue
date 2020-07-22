@@ -191,12 +191,53 @@
           </div>
           <!--所有题目结束-->
           <a-divider></a-divider>
-          <h2>
-            <p :style="{fontFamily:'SimHei', fontWeight:'bold'}">
-              总分：{{computedTotalScore}}
-              <el-button type="primary" :style="{marginLeft:'20px'}" @click="saveScore">{{btnText}}</el-button>
-            </p>
-          </h2>
+          <!--如果不是神经精神科量表（NPI）-->
+          <div v-if="scaleAnswerInfo.scaleInfo.scaleName!=='神经精神科量表（NPI）' ">
+          <h3>
+            <strong :style="{color:'red'}">
+              <label>总得分：{{computedTotalScore}}</label>
+            </strong>
+          </h3>
+          </div>
+
+          <div v-if="scaleAnswerInfo.scaleInfo.scaleName==='神经精神科量表（NPI）' " v-show="false">
+          <h3>
+            <strong :style="{color:'red'}">
+              <label>总得分：{{computedTotalScore}}</label>
+            </strong>
+          </h3>
+          </div>
+
+          <!--如果是神经精神科量表（NPI）-->
+          <div v-if="scaleAnswerInfo.scaleInfo.scaleName ==='神经精神科量表（NPI）' ">
+            <h3>
+              <strong :style="{color:'red'}">
+                <label>"频率"总分：{{frequencyTotalScore}}</label>
+              </strong>
+            </h3>
+            <h3>
+              <strong :style="{color:'red'}">
+                <label>"严重程度"总分：{{seriousTotalScore}}</label>
+              </strong>
+            </h3>
+            <h3>
+              <strong :style="{color:'red'}">
+                <label>"频率*严重程度"总分：{{frequencyAndSeriousTotalScore}}</label>
+              </strong>
+            </h3>
+            <h3>
+              <strong :style="{color:'red'}">
+                <label>"使照料者苦恼程度"总分：{{tortureTotalScore}}</label>
+              </strong>
+            </h3>
+          </div>
+          <el-button type="primary" :style="{marginLeft:'20px'}" @click="saveScore">{{btnText}}</el-button>
+          <!--<h2>-->
+            <!--<p :style="{fontFamily:'SimHei', fontWeight:'bold'}">-->
+              <!--总分：{{computedTotalScore}}-->
+              <!--<el-button type="primary" :style="{marginLeft:'20px'}" @click="saveScore">{{btnText}}</el-button>-->
+            <!--</p>-->
+          <!--</h2>-->
         </a-card>
       </a-col>
       <a-col :lg="1" :md="1" :sm="1" :xl="1" :xs="1"></a-col>
@@ -229,11 +270,20 @@ export default {
       //   scaleInfo: { scaleName: '初始化', questionList: [] },
       //   patientInfo: { name: '' }
       // },
-      scaleAnswerInfo: "",
+      scaleAnswerInfo: {
+        scaleInfo:{
+          scaleName:"",
+          questionList:[]
+        }
+      },
       JudgeInfo: {
         examinationPaperId: "",
         checkUser: "",
         totalScore: 0,
+        frequencyTotalScore:null,  //频率总分
+        seriousTotalScore:null,//严重程度总分
+        frequencySeriousTotalScore:null,  //频率*严重程度总分
+        distressTotalScore:null,  //使照料者苦恼程度
         answerJudgeList: []
       }
     };
@@ -243,28 +293,150 @@ export default {
     this.fetch();
   },
   computed: {
+
+    // 计算总分
     computedTotalScore() {
       let questionList = [];
       questionList = this.scaleAnswerInfo.scaleInfo.questionList;
       var totalScore = 0;
-
-      for (var i = 0; i < questionList.length; i++) {
-        if (
-          questionList[i].questionType != "questionType" &&
-          questionList[i].questionType != "direction"
-        ) {
-          totalScore = totalScore + questionList[i].answer.score;
+      if (this.scaleAnswerInfo.scaleInfo.scaleName !== '神经精神科量表（NPI）'){
+        for (var i = 0; i < questionList.length; i++) {
+          if (
+            questionList[i].questionType != "questionType" &&
+            questionList[i].questionType != "direction"
+          ) {
+            totalScore = totalScore + questionList[i].answer.score;
+          }
         }
+      }else {
+        totalScore = Number(this.JudgeInfo.frequencyTotalScore)+Number(this.JudgeInfo.seriousTotalScore)+ Number(this.JudgeInfo.frequencySeriousTotalScore) + Number(this.JudgeInfo.distressTotalScore)
       }
+
+
       if (isNaN(totalScore)) {
         totalScore = 0;
       }
       this.JudgeInfo.totalScore = totalScore;
       return totalScore;
+    },
+
+    // 频率总分
+    frequencyTotalScore() {
+      let questionList = [];
+      questionList = this.scaleAnswerInfo.scaleInfo.questionList;
+      var totalScore = 0;
+      for (var i = 0; i < questionList.length; i++) {
+        if (questionList[i].groupType !==null) {
+          var length = questionList[i].groupType.length;
+          if (
+            questionList[i].recordScore === true &&
+            questionList[i].groupType.charAt(length - 1) === "2"
+          ) {
+            totalScore = Number(totalScore) + Number(questionList[i].answer.score);
+          }
+        }
+      }
+      this.JudgeInfo.frequencyTotalScore = totalScore;
+      return totalScore;
+    },
+    // 严重程度
+    seriousTotalScore() {
+      if (this.JudgeInfo === "" || this.JudgeInfo === null) {
+        return;
+      }
+      let questionList = [];
+      questionList = this.scaleAnswerInfo.scaleInfo.questionList;
+      var totalScore = 0;
+
+      for (var i = 0; i < questionList.length; i++) {
+        if (questionList[i].groupType !== null) {
+          var length = questionList[i].groupType.length;
+          if (
+            questionList[i].recordScore === true &&
+            questionList[i].groupType.charAt(length - 1) === "3"
+          ) {
+            totalScore = Number(totalScore) + Number(questionList[i].answer.score);
+          }
+        }
+      }
+      this.JudgeInfo.seriousTotalScore = totalScore;
+      return totalScore;
+
+    },
+
+    // 频率*严重程度
+    frequencyAndSeriousTotalScore() {
+      if (this.JudgeInfo === "" || this.JudgeInfo === null) {
+        return;
+      }
+      let questionList = [];
+      questionList = this.scaleAnswerInfo.scaleInfo.questionList;
+      var totalScore = 0;
+
+      var groupTypeArray = [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i",
+        "j",
+        "k",
+        "l"
+      ];
+      for (var j = 0; j < groupTypeArray.length; j++) {
+        var totalScore1 = 0;
+        var totalScore2 = 0;
+        for (var i = 0; i < questionList.length; i++) {
+          if (questionList[i].groupType !== null) {
+            var length = questionList[i].groupType.length;
+            if (
+              questionList[i].recordScore === true &&
+              questionList[i].groupType.charAt(0) === groupTypeArray[j]
+            ) {
+              if (questionList[i].groupType.charAt(length - 1) === "2") {
+                totalScore1 = Number(questionList[i].answer.score);
+              }
+              if (questionList[i].groupType.charAt(length - 1) === "3") {
+                totalScore2 = Number(questionList[i].answer.score);
+              }
+            }
+          }
+        }
+        totalScore = totalScore + totalScore1 * totalScore2;
+      }
+      this.JudgeInfo.frequencySeriousTotalScore = totalScore;
+      return totalScore;
+
+    },
+    tortureTotalScore() {
+      if (this.JudgeInfo === "" || this.JudgeInfo === null) {
+        return;
+      }
+      let questionList = [];
+      questionList = this.scaleAnswerInfo.scaleInfo.questionList;
+      var totalScore = 0;
+      for (var i = 0; i < questionList.length; i++) {
+        if (questionList[i].groupType !==null) {
+          var length = questionList[i].groupType.length;
+          if (
+            questionList[i].recordScore === true &&
+            questionList[i].groupType.charAt(length - 1) === "4"
+          ) {
+            totalScore = Number(totalScore) + Number(questionList[i].answer.score);
+          }
+        }
+      }
+      this.JudgeInfo.distressTotalScore = totalScore;
+      return totalScore;
     }
   },
 
   methods: {
+
     // 评分-----拿到数据
     fetch() {
       let that = this;
@@ -327,6 +499,10 @@ export default {
             scalePaperId: this.$route.query.scalePaperId,
             checkUser: this.checkUser,
             totalScore: this.JudgeInfo.totalScore,
+            frequencyTotalScore:this.JudgeInfo.frequencyTotalScore,
+            seriousTotalScore:this.JudgeInfo.seriousTotalScore,
+            frequencySeriousTotalScore:this.JudgeInfo.frequencySeriousTotalScore,
+            distressTotalScore:this.JudgeInfo.distressTotalScore,
             answerJudgeList: answerJudgeList
           },
           {
