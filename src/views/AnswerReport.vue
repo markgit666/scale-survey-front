@@ -389,7 +389,10 @@ export default {
       doctorId: "",
       serverUrl: this.GLOBAL.serverUrl,
       scaleIdList: [], //量表id集合
-      scaleInfo: "", //一个量表的信息
+      scaleInfo:{  //一个量表的信息
+        scaleName:"",
+        questionList:[]
+      },
       oneImg: [],
       imgUrl: this.GLOBAL.serverUrl + "file/download?fileNo=", //存放图片的地址
       canvasImgUrls: [],
