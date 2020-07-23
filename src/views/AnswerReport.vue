@@ -297,7 +297,7 @@
             </div>
             <!--所有题目结束-->
 
-            <div v-if="scaleInfo.scaleName!='神经精神科量表（NPI）' || scaleInfo.scaleName!='PVLT费城词语学习训练'  ">
+            <div v-if="scaleInfo.scaleName!='神经精神科量表（NPI）' && scaleInfo.scaleName!='PVLT费城词语学习训练'  ">
               <h3>
                 <strong :style="{color:'red'}">
                   <label>总得分：{{computedTotalScore()}}</label>
@@ -913,7 +913,8 @@ export default {
         this.active++;
         this.answer.totalScore = 0;
         this.newActive = this.active;
-      } else {
+      }
+      if(this.active === this.scaleIdList.length) {
         var url =
           "./IdCard?reportId=" + this.reportId + "&doctorId=" + this.doctorId;
         //调用elementUI的加载层
