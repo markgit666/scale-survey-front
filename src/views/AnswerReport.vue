@@ -297,7 +297,7 @@
             </div>
             <!--所有题目结束-->
 
-            <div v-if="scaleInfo.scaleName!='神经精神科量表（NPI）' ">
+            <div v-if="scaleInfo.scaleName!='神经精神科量表（NPI）' || scaleInfo.scaleName!='PVLT费城词语学习训练'  ">
               <h3>
                 <strong :style="{color:'red'}">
                   <label>总得分：{{computedTotalScore()}}</label>
@@ -900,7 +900,7 @@ export default {
             this.answer.answerList.splice(0, this.answer.answerList.length);
             this.getScaleInfo(this.active);
           } else {
-            // this.$message.warn(res.data.retMsg)
+            this.$message.warn(res.data.retMsg)
           }
         });
     },
@@ -912,10 +912,8 @@ export default {
         this.saveScaleInfo(this.active);
         this.active++;
         this.answer.totalScore = 0;
-        // this.getScaleInfo(this.active)
         this.newActive = this.active;
-      }
-      if (this.active === this.scaleIdList.length) {
+      } else {
         var url =
           "./IdCard?reportId=" + this.reportId + "&doctorId=" + this.doctorId;
         //调用elementUI的加载层
@@ -927,8 +925,8 @@ export default {
         });
         setTimeout(() => {
           this.$router.push({ path: url }); // 强制切换当前路由 path
-          loading.close();
-        }, 3000);
+        loading.close();
+      }, 3000);
       }
     },
 
