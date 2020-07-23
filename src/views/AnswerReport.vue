@@ -339,7 +339,7 @@
           <div v-if="scaleInfo.scaleName==='PVLT费城词语学习训练'">
             <h3>
               <strong :style="{color:'red'}">
-                <label>正确个数：{{PVLTTotalScore}}</label>
+                <label>正确个数：{{computedTotalScore()}}</label>
               </strong>
             </h3>
           </div>
