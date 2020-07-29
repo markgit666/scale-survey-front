@@ -4,17 +4,19 @@
       <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
         <img src="../../public/homeLogo.png" class="homeLogo" />
         <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }">
+
+
           <a-menu-item key="1">
-            <router-link to="/Home/MyPatients">
-              <i class="el-icon-user"></i>
-              我的被试者
+            <router-link to="/Home/MyReport">
+              <i class="el-icon-notebook-2"></i>
+              我的报告表
             </router-link>
           </a-menu-item>
 
           <a-menu-item key="2">
-            <router-link to="/Home/MyReport">
-              <i class="el-icon-notebook-2"></i>
-              我的报告表
+            <router-link to="/Home/MyPatients">
+              <i class="el-icon-user"></i>
+              被试者基本资料
             </router-link>
           </a-menu-item>
 
@@ -32,8 +34,13 @@
             </router-link>
           </a-menu-item>
 
+
           <a-menu-item key="5" :style="{float:'right'}" @click="dialogVisible = true">
             <a-icon type="user-delete" />安全退出
+          </a-menu-item>
+
+          <a-menu-item key="6"  :style="{float:'right'}" @click="dialogVisible = true">
+            <span>{{userName}}</span>
           </a-menu-item>
         </a-menu>
       </a-layout-header>
@@ -75,11 +82,13 @@ export default {
     return {
       admin: "",
       dialogVisible: false,
-      serverUrl: this.GLOBAL.serverUrl
+      serverUrl: this.GLOBAL.serverUrl,
+      userName:""
     };
   },
 
   mounted() {
+    this.userName = localStorage.getItem("userName");
     this.admin = localStorage.getItem("identity");
   },
 

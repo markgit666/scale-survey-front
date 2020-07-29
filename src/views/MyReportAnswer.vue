@@ -2,19 +2,9 @@
   <div class="box">
     <a-card :bordered="false" :hoverable="true">
       <a-row>
-        <a-col :span="9">
-          <label>报告表答卷名称：</label>
-          <el-input
-            type="text"
-            maxlength="256"
-            show-word-limit
-            :style="{width:'70%'}"
-            size="small"
-            v-model="answerResearchData.reportName"
-          ></el-input>
-        </a-col>
+
         <a-col :span="8">
-          <label>答题者：</label>
+          <label>被试者姓名：</label>
           <el-input
             type="text"
             maxlength="10"
@@ -23,6 +13,19 @@
             size="small"
             v-model="answerResearchData.patientName"
           ></el-input>
+        </a-col>
+
+        <a-col :span="9">
+          <label>第N次测试：</label>
+          <a-input-number
+            type="text"
+            maxlength="256"
+            show-word-limit
+            :style="{width:'70%'}"
+
+            v-model="answerResearchData.answerSequence"
+            placeholder="请输入数字值"
+          ></a-input-number>
         </a-col>
 
         <!--<a-col :span="6">-->
@@ -73,7 +76,10 @@
       >
         <template slot="operation" slot-scope="text, record, index">
           <div class="editable-row-operations">
+            <span v-if="data[index].isNeedContinueAnswer ==='1'"><a @click="() =>contine(record.examinationPaperId)">继续答题</a></span>
             <span>
+
+               <el-divider direction="vertical"></el-divider>
               <a @click="() =>seeDetails(record.examinationPaperId)">查看详情</a>
               <el-divider direction="vertical"></el-divider>
               <a-popconfirm
@@ -84,6 +90,7 @@
                 cancelText="否"
               >
                 <a href="#">删除</a>
+
               </a-popconfirm>
             </span>
           </div>
@@ -127,19 +134,33 @@ const columns = [
     title: "报告表名称",
     dataIndex: "reportName",
     // sorter: true,
-    width: "39%"
+    width: "20%"
   },
+
   {
-    title: "量表张数",
+    title: "被试者姓名",
+    dataIndex: "patientName",
+    // sorter: true,
+    width: "8%"
+  },
+
+
+  {
+    title: "量表总数",
     dataIndex: "scaleNum",
     // sorter: true,
     width: "8%"
   },
 
   {
-    title: "答题者",
-    dataIndex: "patientName",
-    // sorter: true,
+    title: "已答张数",
+    dataIndex: "answerNum",
+    width: "8%"
+  },
+
+  {
+    title: "第N次测试",
+    dataIndex: "answerSequence",
     width: "8%"
   },
   {
@@ -190,9 +211,8 @@ export default {
       id: 0,
       qrCodeShowSwitch: "",
       answerResearchData: {
-        reportName: "",
-        patientName: ""
-        // judgeStatus: ''
+        patientName: "",
+        answerSequence:""
       },
       doctorId: ""
     };
@@ -204,7 +224,7 @@ export default {
         pageNo: val,
         pageSize: this.pageSize,
         data: {
-          scaleName: this.answerResearchData.reportName,
+          answerSequence: this.answerResearchData.answerSequence,
           patientName: this.answerResearchData.patientName
           // judgeStatus: this.answerResearchData.judgeStatus
         }
@@ -212,6 +232,11 @@ export default {
     }
   },
   methods: {
+    //继续答题
+    contine(examinationPaperId){
+      this.$router.push({path:"/home/ScaleListNoFirst",query:{examinationPaperId:examinationPaperId}})
+
+    },
     // 删除报告表
     deleteReportAnswer(examinationPaperId) {
       axios
@@ -288,23 +313,6 @@ export default {
       }
     },
 
-    // //全部导出
-    // myAnswerExportTotal(){
-    //   var form = $('<form>')
-    //   form.attr('style', 'display:none')
-    //   form.attr('target', '')
-    //   form.attr('method', 'post')
-    //   form.attr('action', this.serverUrl + 'excel/export/all/examinationPaper/info')
-    //   var input1 = $('<input>')
-    //   input1.attr('type', 'hidden')
-    //   input1.attr('name', 'doctorId')
-    //   input1.attr('value', this.doctorId)
-    //   $('body').append(form)
-    //   form.append(input1)
-    //   form.submit()
-    //   form.remove()
-    // },
-
     fetch(params = {}) {
       let that = this;
       this.loading = true;
@@ -375,7 +383,7 @@ export default {
         pageNo: 1,
         pageSize: this.pageSize,
         data: {
-          reportName: this.answerResearchData.reportName,
+          answerSequence: this.answerResearchData.answerSequence,
           patientName: this.answerResearchData.patientName
           // judgeStatus: this.answerResearchData.judgeStatus
         }

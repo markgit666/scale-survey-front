@@ -15,16 +15,15 @@
         </a-col>
 
         <a-col :span="8">
-          <label>出生日期：</label>
-          <el-date-picker
-            size="small"
-            type="date"
-            placeholder="选择日期"
-            v-model="searchData.birthday"
-            style="width: 70%;"
-            format="yyyy 年 MM 月 dd 日"
-            value-format="yyyy-MM-dd"
-          ></el-date-picker>
+          <label>病历号：</label>
+          <el-input
+            type="text"
+            maxlength="18"
+            show-word-limit
+            :style="{width:'60%'}"
+            size="small "
+            v-model="searchData.medicalRecordNum"
+          ></el-input>
         </a-col>
         <a-col :span="6">
           <label>性别：</label>
@@ -50,11 +49,11 @@
         </a-col>
 
         <a-col :span="7">
-          <label>民族：</label>
-          <el-select v-model="searchData.nation" style="width:70%;" size="small">
+          <label>组别：</label>
+          <el-select v-model="searchData.patientGroup" style="width:70%;" size="small">
             <el-option label value></el-option>
-            <el-option label="汉族" value="汉族"></el-option>
-            <el-option label="其他" value="其他"></el-option>
+            <el-option label="AD组" value="AD"></el-option>
+            <el-option label="MCI组" value="MCI"></el-option>
           </el-select>
         </a-col>
 
@@ -70,9 +69,6 @@
           >信息导出</a-button>
         </a-col>
 
-        <!--        <a-col :span="3">-->
-        <!--          <a-button type="primary" @click="exportPatientInfoTotal" icon="arrow-up">全部导出</a-button>-->
-        <!--        </a-col>-->
       </a-row>
       <br />
 
@@ -133,8 +129,8 @@ import ACol from "ant-design-vue/es/grid/Col";
 
 const columns = [
   {
-    title: "被试者编号",
-    dataIndex: "patientId",
+    title: "病历号",
+    dataIndex: "medicalRecordNum",
     // sorter: true,
     width: "5%",
     scopedSlots: { customRender: "patientId" }
@@ -145,6 +141,11 @@ const columns = [
     // sorter: true,
     width: "8%",
     scopedSlots: { customRender: "name" }
+  },
+  {
+    title: "组别",
+    dataIndex: "patientGroup",
+    width: "6%"
   },
   {
     title: "性别",
@@ -168,8 +169,13 @@ const columns = [
   },
   {
     title: "家庭地址",
-    width: "30%",
+    width: "15%",
     dataIndex: "familyAddress"
+  },
+  {
+    title: "入录时间",
+    width: "15%",
+    dataIndex: "createTime"
   },
   {
     title: "操作",
@@ -298,7 +304,7 @@ export default {
             }
           } else if (values.retCode === "100001") {
             if (localStorage.getItem("Token") === null) {
-              this.$message.error("未登录，即将跳转至登录页面", 5);
+              this.$message.error("未登录，即将跳转至登录页面", 3);
               this.$router.push({ path: "/login" });
             } else {
               this.$message.error("登录超时", 5);
@@ -330,10 +336,10 @@ export default {
         pageSize: this.pageSize,
         data: {
           name: this.searchData.name,
-          birthday: this.searchData.birthday,
+          medicalRecordNum: this.searchData.medicalRecordNum,
           gender: this.searchData.gender,
           telephoneNumber: this.searchData.telephoneNumber,
-          nation: this.searchData.nation
+          patientGroup: this.searchData.patientGroup
         }
       });
     },

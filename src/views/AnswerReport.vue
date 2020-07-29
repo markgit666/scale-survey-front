@@ -569,7 +569,6 @@ export default {
   },
 
   computed: {
-
     // 频率总分
     frequencyTotalScore() {
       if (this.scaleInfo === "" || this.scaleInfo === null) {

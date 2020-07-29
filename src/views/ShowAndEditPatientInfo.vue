@@ -3,7 +3,7 @@
     <a-card title="添加临床基本信息" class="info_box">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="90px">
         <a-row :gutter="10">
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <a-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
             <!-- 身份证号 -->
             <el-form-item label="身份证号 :" prop="name" :style="{marginTop:'20px'}">
               <el-input
@@ -15,6 +15,29 @@
               ></el-input>
             </el-form-item>
           </a-col>
+
+          <a-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+            <!-- 病历号 -->
+            <el-form-item label="病历号 :" prop="medicalRecordNum" :style="{marginTop:'20px'}">
+              <el-input
+                v-model="ruleForm.medicalRecordNum"
+                type="text"
+                size="medium"
+                maxlength="18"
+                show-word-limit
+                style="width:100%;"
+              ></el-input>
+            </el-form-item>
+          </a-col>
+
+          <a-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+            <!-- 组别 -->
+            <el-form-item label="组别 :" prop="patientGroup" :style="{marginTop:'20px'}">
+                <el-radio label="AD" v-model="ruleForm.patientGroup">AD组</el-radio>
+                <el-radio label="MCI" v-model="ruleForm.patientGroup">MCI组</el-radio>
+              </el-form-item>
+          </a-col>
+
         </a-row>
 
         <!-- --------------------------------- ----------------------->
@@ -521,22 +544,7 @@
         <!-- --------------------------------------------------------------------- -->
         <el-row :gutter="10">
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-            <el-form-item label="具体促认知药物 :" v-if="ruleForm.isUseCognitiveDrugs==='有合并使用促认知药物'">
-              <el-input
-                type="text"
-                maxlength="40"
-                :style="{width:'97%'}"
-                show-word-limit
-                v-model="ruleForm.drugsType "
-                size="medium"
-                placeholder="请输入"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-            <el-form-item label="具体促认知药物剂量 :" v-if="ruleForm.isUseCognitiveDrugs==='有合并使用促认知药物'">
+            <el-form-item label="具体促认知药物、剂量、起始时间 :" v-if="ruleForm.isUseCognitiveDrugs==='有合并使用促认知药物'">
               <el-input
                 type="text"
                 maxlength="40"
@@ -549,6 +557,21 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <!--<el-row :gutter="10">-->
+          <!--<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">-->
+            <!--<el-form-item label="具体促认知药物剂量 :" v-if="ruleForm.isUseCognitiveDrugs==='有合并使用促认知药物'">-->
+              <!--<el-input-->
+                <!--type="text"-->
+                <!--maxlength="40"-->
+                <!--:style="{width:'97%'}"-->
+                <!--show-word-limit-->
+                <!--v-model="ruleForm.drugsDosage "-->
+                <!--size="medium"-->
+                <!--placeholder="请输入"-->
+              <!--&gt;</el-input>-->
+            <!--</el-form-item>-->
+          <!--</el-col>-->
+        <!--</el-row>-->
 
         <!-- 保存按钮 -->
         <el-form-item>
@@ -585,7 +608,9 @@ export default {
       labelPosition: "left",
       ruleForm: {},
       rules: {
+        medicalRecordNum: [{ required: true, message: "不能为空！", trigger: "blur" }],
         name: [{ required: true, message: "不能为空！", trigger: "blur" }],
+        patientGroup: [{ required: true, message: "不能为空！", trigger: "blur" }],
         birthday: [{ required: true, message: "不能为空！", trigger: "blur" }],
         gender: [{ required: true, message: "不能为空！", trigger: "blur" }],
         familyAddress: [
@@ -684,7 +709,7 @@ export default {
       } else {
         this.showCognitiveDrug = false;
         this.ruleForm.drugsType = "";
-        this.ruleForm.drugsDosage = "";
+        // this.ruleForm.drugsDosage = "";
       }
     },
 

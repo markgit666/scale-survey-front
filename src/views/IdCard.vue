@@ -103,14 +103,21 @@ export default {
                   this.$route.query.reportId +
                   "&doctorId=" +
                   "that.$route.query.doctorId";
-                var urlNotFirst =
-                  "/home/AnswerReport" +
-                  "?reportId=" +
-                  this.$route.query.reportId +
-                  "&doctorId=" +
-                  "that.$route.query.doctorId";
+                // var urlNotFirst =
+                //   "/home/AnswerReport" +
+                //   "?reportId=" +
+                //   this.$route.query.reportId +
+                //   "&doctorId=" +
+                //   "that.$route.query.doctorId";
 
-                // 如果第一次答题
+            var urlNotFirst =
+              "/home/followUpInfo" +
+              "?reportId=" +
+              this.$route.query.reportId +
+              "&doctorId=" +
+              "that.$route.query.doctorId";
+
+                // 如果第一次答题：病人信息
                 if (response.data.data === null) {
                   // var dortorIdParam = that.$route.query.doctorId
                   this.$router.push({

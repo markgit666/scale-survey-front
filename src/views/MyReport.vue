@@ -10,7 +10,8 @@
     >
       <a-list-item slot="renderItem" slot-scope="item, index">
         <a slot="actions" @click="CheckReport(item,index)">查看</a>
-        <a slot="actions" @click="qrCode(item)">答题二维码</a>
+        <!--<a slot="actions" @click="qrCode(item)">答题二维码</a>-->
+        <a slot="actions" @click="answerScale(item)">答题</a>
 
         <div v-if="qrCodeShowSwitch === item.reportId ">
           <a-modal title="请扫描下方二维码答题" v-model="visible" @ok="handleOk">
@@ -94,6 +95,18 @@ export default {
     qrCode(item) {
       this.qrCodeShowSwitch = item.reportId;
       this.visible = true;
+    },
+
+    // 直接点击"答题"跳转到答题页面
+    answerScale(item){
+      this.$router.push({
+        path:"./Idcard",
+        query:{reportId: item.reportId,doctorId:item.doctorId}
+      })
+
+      // var url = this.imgUrl + 'url=Home/IdCard&reportId=' + item.reportId +'&doctorId=' + item.doctorId
+      // window.open(url);
+      // this.$router.push({ path: url });
     },
 
     handleOk(e) {

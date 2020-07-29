@@ -165,6 +165,7 @@ Xrej5WAcEy7ThIi17wIDAQAB`; // 把之前生成的贴进来，实际开发过程�
                 if (response.data.retCode === "000001") {
                   localStorage.setItem("Token", response.data.data.token);
                   localStorage.setItem("identity", response.data.data.identity);
+                  localStorage.setItem("userName", response.data.data.loginName);
                   this.$router.push({ path: "/Home/MyReport" });
                 } else if (response.data.retCode === "100008") {
                   this.$message.error("验证码错误", 5);

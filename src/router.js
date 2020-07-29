@@ -21,6 +21,10 @@ export default new Router({
       component: resolve => require(['./views/Home'], resolve),
       // component: Home,
       children: [
+        { path: '/home/AnswerScale', name: 'AnswerScale', component: resolve => require(['./views/AnswerScale'], resolve) },
+        { path: '/home/ScaleListFirst', name: 'ScaleListFirst', component: resolve => require(['./views/ScaleListFirst'], resolve) },
+        { path: '/home/ScaleListNoFirst', name: 'scaleListNoFirst', component: resolve => require(['./views/ScaleListNoFirst'], resolve) },
+        { path: '/home/FollowUpInfo', name: 'FollowUpInfo', component: resolve => require(['./views/FollowUpInfo'], resolve) },
         { path: '/home/noCreate', name: 'noCreate', component: resolve => require(['./views/NoCreate'], resolve) },
         { path: '/home/addPatientInfo', name: 'addPatientInfo', component: resolve => require(['./views/AddPatientInfo'], resolve) },
         { path: '/home/createScale', name: 'createScale', component: resolve => require(['./views/CreateScale'], resolve) },
