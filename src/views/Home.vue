@@ -4,8 +4,6 @@
       <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
         <img src="../../public/homeLogo.png" class="homeLogo" />
         <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }">
-
-
           <a-menu-item key="1">
             <router-link to="/Home/MyReport">
               <i class="el-icon-notebook-2"></i>

@@ -5,7 +5,6 @@
       <a-row :gutter="10">
         <a-col :xs="1" :sm="1" :md="1" :lg="1" :xl="1"></a-col>
         <a-col :xs="22" :sm="22" :md="22" :lg="22" :xl="22">
-
           <a-card>
             <center>
               <strong>
@@ -23,29 +22,27 @@
                 :model="ruleForm.patientInfo"
                 :rules="rules"
                 :label-position="labelPosition"
-                label-width="90px"
+                label-width="230px"
                 ref="ruleForm"
               >
                 <!-- --------------------------------- ----------------------->
-
                 <a-row :gutter="10">
-                  <a-col :xs="18" :sm="18" :md="18" :lg="18" :xl="18">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <!-- 身份证号 -->
-                    <div :style="{marginTop:'15px'}">
+                      <el-form-item label="身份证号 :" >
                       <strong>
-                        <label>身份证号：{{ruleForm.patientInfo.idCard}}</label>
+                        <label>{{ruleForm.patientInfo.idCard}}</label>
                       </strong>
-                    </div>
+                      </el-form-item>
+
                   </a-col>
                 </a-row>
                 <!-- --------------------------------- ----------------------->
                 <a-row :gutter="10">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
 
-                  <!--病历号-->
-                  <a-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-
-                  <!-- 病历号 -->
-                    <el-form-item label="病历号 :" prop="medicalRecordNum" :style="{marginTop:'20px'}">
+                    <!-- 病历号 -->
+                    <el-form-item label="病历号 :" prop="medicalRecordNum" >
                       <el-input
                         v-model="ruleForm.patientInfo.medicalRecordNum"
                         type="text"
@@ -57,11 +54,13 @@
                       ></el-input>
                     </el-form-item>
                   </a-col>
+                </a-row>
+                <!-- --------------------------------- ----------------------->
+                <a-row :gutter="10">
 
-                  <a-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-
-                  <!-- 姓名 -->
-                    <el-form-item label="姓名 :" prop="name" :style="{marginTop:'20px'}">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <!-- 姓名 -->
+                    <el-form-item label="姓名 :" prop="name" >
                       <el-input
                         v-model="ruleForm.patientInfo.name"
                         type="text"
@@ -73,11 +72,14 @@
                       ></el-input>
                     </el-form-item>
                   </a-col>
+                </a-row>
 
-                  <a-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
 
-                  <!-- 出生年月 -->
-                    <el-form-item label="出生年月:" prop="birthday" :style="{marginTop:'20px'}">
+                <a-row :gutter="10">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+
+                    <!-- 出生年月 -->
+                    <el-form-item label="出生年月:" prop="birthday" >
                       <el-date-picker
                         size="medium"
                         type="date"
@@ -94,34 +96,107 @@
                 <!-- --------------------------------------------------------------------- -->
                 <a-row :gutter="10">
 
-                  <a-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="6" :xl="12">
                     <!-- 组别 -->
-                    <el-form-item label="组别 :" prop="patientGroup" style="width:100%;">
-                      <el-radio label="AD" v-model="ruleForm.patientInfo.patientGroup">AD组</el-radio>
-                      <el-radio label="MCI" v-model="ruleForm.patientInfo.patientGroup">MCI组</el-radio>
+                    <el-form-item label="组别 :" prop="patientGroup">
+                      <el-select
+                        v-model="ruleForm.patientInfo.patientGroup"
+                        placeholder="请选择"
+                        style="width:100%;"
+                        size="medium"
+                      >
+                        <el-option label value></el-option>
+                        <el-option label="AD组" value="AD"></el-option>
+                        <el-option label="MCI组" value="MCI"></el-option>
+                      </el-select>
                     </el-form-item>
                   </a-col>
+                </a-row>
+                <a-row :gutter="10">
 
-                  <a-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="6" :xl="12">
                     <!-- 性别 -->
-                    <el-form-item label="性别 :" prop="gender" style="width:100%;">
-                      <el-radio label="1" v-model="ruleForm.patientInfo.gender">男</el-radio>
-                      <el-radio label="0" v-model="ruleForm.patientInfo.gender">女</el-radio>
+                    <el-form-item label="性别 :" prop="gender">
+                      <el-select
+                        v-model="ruleForm.patientInfo.gender"
+                        placeholder="请选择"
+                        style="width:100%;"
+                        size="medium"
+                      >
+                        <el-option label value></el-option>
+                        <el-option label="男" value="1"></el-option>
+                        <el-option label="女" value="0"></el-option>
+                      </el-select>
                     </el-form-item>
                   </a-col>
-                  <!-- 民族 -->
-                  <a-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
-                    <el-form-item label="民族 :" style="width:100%;">
-                      <el-radio v-model="ruleForm.patientInfo.nation" label="汉族">汉族</el-radio>
-                      <el-radio v-model="ruleForm.patientInfo.nation" label="其他">其他</el-radio>
-                    </el-form-item>
-                  </a-col>
+                </a-row>
 
-                  <a-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
+                <a-row :gutter="10">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <!-- 联系电话 -->
+                    <el-form-item label="联系电话 :" prop="telephoneNumber">
+                      <el-input
+                        type="text"
+                        maxlength="11"
+                        show-word-limit
+                        style="width:100%;"
+                        v-model="ruleForm.patientInfo.telephoneNumber"
+                        size="medium"
+                        placeholder="请输入"
+                      ></el-input>
+                    </el-form-item>
+                  </a-col>
+                </a-row>
+
+                <a-row :gutter="10">
+
+                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <!-- 家庭地址 -->
+                    <el-form-item label="家庭地址 :" prop="familyAddress">
+                      <el-input
+                        :style="{width:'100%'}"
+                        type="text"
+                        maxlength="100"
+                        show-word-limit
+                        v-model="ruleForm.patientInfo.familyAddress"
+                        size="medium"
+                        placeholder="请输入"
+                      ></el-input>
+                    </el-form-item>
+                  </a-col>
+                </a-row>
+
+                <a-row :gutter="10">
+                  <!-- 民族 -->
+                  <a-col :xs="12" :sm="12" :md="12" :lg="6" :xl="12">
+                    <el-form-item label="民族 :">
+                      <el-select
+                        v-model="ruleForm.patientInfo.nation"
+                        placeholder="请选择"
+                        style="width:100%;"
+                        size="medium"
+                      >
+                        <el-option label value></el-option>
+                        <el-option label="汉族" value="汉族"></el-option>
+                        <el-option label="其他" value="其他"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </a-col>
+                </a-row>
+                <a-row :gutter="10">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="6" :xl="12">
                     <!-- 利手 -->
-                    <el-form-item label="利手 :" style="width:90%;">
-                      <el-radio v-model="ruleForm.patientInfo.hand" label="左">左</el-radio>
-                      <el-radio v-model="ruleForm.patientInfo.hand" label="右">右</el-radio>
+                    <el-form-item label="利手 :">
+                      <el-select
+                        v-model="ruleForm.patientInfo.hand"
+                        placeholder="请选择"
+                        style="width:100%;"
+                        size="medium"
+                      >
+                        <el-option label value></el-option>
+                        <el-option label="左" value="左"></el-option>
+                        <el-option label="右" value="右"></el-option>
+                      </el-select>
                     </el-form-item>
                   </a-col>
                 </a-row>
@@ -129,7 +204,7 @@
                 <!-- --------------------------------------------------------------------- -->
                 <a-row :gutter="10">
                   <!-- 婚姻 -->
-                  <a-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="6" :xl="12">
                     <el-form-item label="婚姻 :">
                       <el-select
                         v-model="ruleForm.patientInfo.marriageStatus"
@@ -145,27 +220,32 @@
                       </el-select>
                     </el-form-item>
                   </a-col>
+                </a-row>
+                <a-row :gutter="10">
                   <!-- 文化程度 -->
-                  <a-col :xs="6" :sm="6" :md="8" :lg="6" :xl="6">
-                  <el-form-item label="文化程度 :">
-                    <el-select
-                      v-model="ruleForm.patientInfo.educationLevel"
-                      placeholder="请选择"
-                      style="width:100%;"
-                      size="medium"
-                    >
-                      <el-option label value></el-option>
-                      <el-option label="未上学" value="未上学"></el-option>
-                      <el-option label="小学" value="小学"></el-option>
-                      <el-option label="初中" value="初中"></el-option>
-                      <el-option label="高中/中专" value="高中/中专"></el-option>
-                      <el-option label="大专/职大" value="大专/职大"></el-option>
-                      <el-option label="大学及以上" value="大学及以上"></el-option>
-                    </el-select>
-                  </el-form-item>
+                  <a-col :xs="12" :sm="12" :md="12" :lg="6" :xl="12">
+                    <el-form-item label="文化程度 :">
+                      <el-select
+                        v-model="ruleForm.patientInfo.educationLevel"
+                        placeholder="请选择"
+                        style="width:100%;"
+                        size="medium"
+                      >
+                        <el-option label value></el-option>
+                        <el-option label="未上学" value="未上学"></el-option>
+                        <el-option label="小学" value="小学"></el-option>
+                        <el-option label="初中" value="初中"></el-option>
+                        <el-option label="高中/中专" value="高中/中专"></el-option>
+                        <el-option label="大专/职大" value="大专/职大"></el-option>
+                        <el-option label="大学及以上" value="大学及以上"></el-option>
+                      </el-select>
+                    </el-form-item>
                   </a-col>
+                </a-row>
+
+                <a-row :gutter="10">
                   <!-- 居住方式 -->
-                  <a-col :xs="6" :sm="6" :md="6" :lg="8" :xl="6">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="6" :xl="12">
                     <el-form-item label="居住方式 :">
                       <el-select
                         v-model="ruleForm.patientInfo.livingWay"
@@ -183,8 +263,11 @@
                       </el-select>
                     </el-form-item>
                   </a-col>
+                </a-row>
 
-                  <a-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
+                <a-row :gutter="10">
+
+                  <a-col :xs="12" :sm="12" :md="12" :lg="6" :xl="12">
                     <!-- 是否有打呼噜 -->
                     <el-form-item label="打呼噜 :">
                       <el-select
@@ -200,12 +283,13 @@
                     </el-form-item>
                   </a-col>
 
+
                 </a-row>
 
                 <!-- --------------------------------------------------------------------- -->
                 <a-row :gutter="10">
                   <!-- 受教育年数-->
-                  <a-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <!-- 受教育年数 -->
                     <el-form-item label="教育年数 :">
                       <a-input-number
@@ -215,37 +299,8 @@
                       />
                     </el-form-item>
                   </a-col>
-
-                  <a-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                    <!-- 联系电话 -->
-                    <el-form-item label="联系电话 :" prop="telephoneNumber">
-                      <el-input
-                        type="text"
-                        maxlength="11"
-                        show-word-limit
-                        style="width:100%;"
-                        v-model="ruleForm.patientInfo.telephoneNumber"
-                        size="medium"
-                        placeholder="请输入"
-                      ></el-input>
-                    </el-form-item>
-                  </a-col>
-
-                  <a-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                    <!-- 家庭地址 -->
-                    <el-form-item label="家庭地址 :" prop="familyAddress">
-                      <el-input
-                        :style="{width:'100%'}"
-                        type="text"
-                        maxlength="100"
-                        show-word-limit
-                        v-model="ruleForm.patientInfo.familyAddress"
-                        size="medium"
-                        placeholder="请输入"
-                      ></el-input>
-                    </el-form-item>
-                  </a-col>
                 </a-row>
+
 
                 <!-- --------------------------------------------------------------------- -->
                 <a-row :gutter="10">
@@ -266,6 +321,26 @@
                       </el-select>
                     </el-form-item>
                   </a-col>
+                </a-row>
+
+                <!-- 如果是在职，输入职业 -->
+                <a-row :gutter="15">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="在职职业 :" v-if="showJob">
+                      <el-input
+                        type="text"
+                        maxlength="40"
+                        style="width:100%;"
+                        show-word-limit
+                        v-model="ruleForm.patientInfo.inServiceJob"
+                        size="medium"
+                        placeholder="请输入"
+                      ></el-input>
+                    </el-form-item>
+                  </a-col>
+                </a-row>
+
+                <a-row :gutter="10">
                   <!-- 既往病史 -->
                   <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="既往病史 :">
@@ -288,21 +363,9 @@
                 </a-row>
 
                 <!-- --------------------------------------------------------------------- -->
-                <!-- 如果是在职，输入职业 -->
-                <a-row :gutter="15">
-                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                    <el-form-item label="在职职业 :" v-if="showJob">
-                      <el-input
-                        type="text"
-                        maxlength="40"
-                        style="width:100%;"
-                        show-word-limit
-                        v-model="ruleForm.patientInfo.inServiceJob"
-                        size="medium"
-                        placeholder="请输入"
-                      ></el-input>
-                    </el-form-item>
-                  </a-col>
+
+
+                <a-row :gutter="10">
                   <!-- 其他病史 -->
                   <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="其他病史 :" v-if="showDisease">
@@ -318,6 +381,7 @@
                     </el-form-item>
                   </a-col>
                 </a-row>
+
 
                 <!-- --------------------------------------------------------------------- -->
                 <a-row :gutter="15">
@@ -338,7 +402,37 @@
                       </el-select>
                     </el-form-item>
                   </a-col>
+                </a-row>
 
+
+
+                <a-row :gutter="15">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <!-- 如果仍在吸烟 -->
+                    <el-form-item label="一天几支 :" v-if="showSmoke">
+                      <a-input-number
+                        v-model="ruleForm.patientInfo.smokingNumEachDay"
+                        placeholder="请输入数字值"
+                        style="width:100%;"
+                      />
+                    </el-form-item>
+                  </a-col>
+                </a-row>
+
+                <a-row :gutter="10">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <!-- 吸烟年数 -->
+                    <el-form-item label="吸烟年数 :" v-if="showSmoke">
+                      <a-input-number
+                        v-model="ruleForm.patientInfo.smokingYears"
+                        placeholder="请输入数字值"
+                        style="width:100%;"
+                      />
+                    </el-form-item>
+                  </a-col>
+                </a-row>
+
+                <a-row :gutter="10">
                   <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <!-- 饮酒史 -->
                     <el-form-item label="饮酒历史 :">
@@ -358,32 +452,9 @@
                   </a-col>
                 </a-row>
 
-                <a-row :gutter="15">
-                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                    <!-- 如果仍在吸烟 -->
-                    <el-form-item label="一天几支 :" v-if="showSmoke">
-                      <a-input-number
-                        v-model="ruleForm.patientInfo.smokingNumEachDay"
-                        placeholder="请输入数字值"
-                        style="width:100%;"
-                      />
-                    </el-form-item>
-                  </a-col>
-                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                    <!-- 吸烟年数 -->
-                    <el-form-item label="吸烟年数 :" v-if="showSmoke">
-                      <a-input-number
-                        v-model="ruleForm.patientInfo.smokingYears"
-                        placeholder="请输入数字值"
-                        style="width:100%;"
-                      />
-                    </el-form-item>
-                  </a-col>
-                </a-row>
-
                 <!-- --------------------------------------------------------------------- -->
                 <a-row :gutter="15">
-                  <a-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <!-- 饮酒史 -->
                     <el-form-item label="一天几两 :" v-if="showDrink">
                       <a-input-number
@@ -393,8 +464,9 @@
                       />
                     </el-form-item>
                   </a-col>
-
-                  <a-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                </a-row>
+                <a-row :gutter="10">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="喝酒年数 :" v-if="showDrink">
                       <a-input-number
                         v-model="ruleForm.patientInfo.drinkingYears"
@@ -403,8 +475,10 @@
                       />
                     </el-form-item>
                   </a-col>
+                </a-row>
 
-                  <a-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                <a-row :gutter="10">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="饮酒类型 :" v-if="showDrink">
                       <el-select
                         v-model="ruleForm.patientInfo.drinkingType"
@@ -422,20 +496,11 @@
                   </a-col>
 
                 </a-row>
-              </el-form>
 
-              <!------------------------------------------------------------------------->
-              <el-form
-                :label-position="labelPosition"
-                :model="ruleForm.patientInfo"
-                :rules="rules"
-                ref="ruleForm"
-                label-width="180px"
-              >
                 <!-- --------------------------------------------------------------------- -->
                 <a-row :gutter="10">
-                  <a-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                    <el-form-item label="有无精神疾病家族史 :" class="form-item-div">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="有无精神疾病家族史 :" >
                       <el-select
                         v-model="ruleForm.patientInfo.isMentalDiseaseFamilyHistory"
                         placeholder="请选择"
@@ -449,18 +514,20 @@
                       </el-select>
                     </el-form-item>
                   </a-col>
+                </a-row>
 
-                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                <a-row :gutter="10">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item
                       label="具体精神疾病家族史 :"
-                      class="form-item-div"
                       v-if="showMentalDisease"
+
                     >
                       <el-select
                         v-model="ruleForm.patientInfo.mentalDiseaseFamilyHistory"
                         placeholder="请选择"
-                        :style="{width:'97%'}"
                         size="medium"
+                        style="width:100%;"
                         @change="otherMentalDiseaseChange"
                       >
                         <el-option label value></el-option>
@@ -470,61 +537,62 @@
                         <el-option label="其他精神病史" value="其他精神病史"></el-option>
                       </el-select>
                     </el-form-item>
-                  </el-col>
+                  </a-col>
+                </a-row>
 
-                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                <a-row :gutter="10">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item
                       label="其他精神病史 :"
-                      class="form-item-div"
                       v-if="showOtherMentalDisease"
                     >
                       <el-input
                         v-model="ruleForm.patientInfo.otherMentalDiseaseFamilyHistory"
                         size="medium"
-                        :style="{width:'97%'}"
                         placeholder="请输入"
                         type="text"
                         maxlength="40"
                         show-word-limit
                       ></el-input>
                     </el-form-item>
-                  </el-col>
-
+                  </a-col>
                 </a-row>
 
                 <!------------------------------------------------------------------------->
+
+                <a-row :gutter="10">
+                  <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                  <el-form-item
+                    label="现病史（有无记忆下降）:"
+                  >
+                    <el-select
+                      v-model="ruleForm.patientInfo.currentMedicalHistoryMemoryLoss"
+                      placeholder="请选择"
+                      size="medium"
+                      style="width:100%;"
+                      @change="memoryChange"
+                    >
+                      <el-option label value></el-option>
+                      <el-option label="无" value="无记忆力下降"></el-option>
+                      <el-option label="有" value="有记忆力下降"></el-option>
+                    </el-select>
+                  </el-form-item>
+                  </a-col>
+                </a-row>
+
                 <el-row :gutter="10">
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                    <el-form-item label="现病史（有无记忆下降）:" class="form-item-div">
-                      <el-select
-                        v-model="ruleForm.patientInfo.currentMedicalHistoryMemoryLoss"
-                        placeholder="请选择"
-                        :style="{width:'97%'}"
+                    <el-form-item label="记忆力下降多久 :"  v-if="showMemory">
+                      <el-input
+                        type="text"
+                        maxlength="40"
+                        show-word-limit
+                        v-model="ruleForm.patientInfo.memoryLossTime"
                         size="medium"
-                        @change="memoryChange"
-                      >
-                        <el-option label value></el-option>
-                        <el-option label="无" value="无记忆力下降"></el-option>
-                        <el-option label="有" value="有记忆力下降"></el-option>
-                      </el-select>
+                        placeholder="请输入"
+                      ></el-input>
                     </el-form-item>
                   </el-col>
-
-
-                    <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                      <el-form-item label="记忆力下降多久 :" class="form-item-div" v-if="showMemory">
-                        <el-input
-                          type="text"
-                          :style="{width:'97%'}"
-                          maxlength="40"
-                          show-word-limit
-                          v-model="ruleForm.patientInfo.memoryLossTime"
-                          size="medium"
-                          placeholder="请输入"
-                        ></el-input>
-                      </el-form-item>
-                    </el-col>
-
                 </el-row>
 
                 <!-- --------------------------------------------------------------------- -->
@@ -533,7 +601,6 @@
                     <el-form-item label="体格检查（阳性发现） :">
                       <el-input
                         type="text"
-                        :style="{width:'97%'}"
                         maxlength="300"
                         show-word-limit
                         v-model="ruleForm.patientInfo.physicalExamination"
@@ -543,16 +610,17 @@
                     </el-form-item>
                   </el-col>
                 </el-row>
+
                 <!-- --------------------------------------------------------------------- -->
                 <el-row :gutter="10">
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                    <el-form-item label="是否合并使用促认知药物 :" class="form-item-div">
+                    <el-form-item label="是否合并使用促认知药物 :" >
                       <el-select
                         v-model="ruleForm.patientInfo.isUseCognitiveDrugs"
                         placeholder="请选择"
-                        :style="{width:'97%'}"
                         size="medium"
                         @change="cognitiveDrugChange"
+                        style="width:100%;"
                       >
                         <el-option label value></el-option>
                         <el-option label="无" value="无合并使用促认知药物"></el-option>
@@ -560,13 +628,14 @@
                       </el-select>
                     </el-form-item>
                   </el-col>
+                </el-row>
 
+                <el-row :gutter="10">
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="具体促认知药物、剂量、起始时间 :" v-if="showCognitiveDrug">
                       <el-input
                         type="text"
                         maxlength="40"
-                        :style="{width:'97%'}"
                         show-word-limit
                         v-model="ruleForm.patientInfo.drugsDosage "
                         size="medium"
@@ -574,31 +643,14 @@
                       ></el-input>
                     </el-form-item>
                   </el-col>
-
                 </el-row>
-                <!---->
-                <!--<el-row :gutter="10">-->
-                  <!--<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">-->
-                    <!--<el-form-item label="具体促认知药物剂量 :" v-if="showCognitiveDrug">-->
-                      <!--<el-input-->
-                        <!--type="text"-->
-                        <!--maxlength="40"-->
-                        <!--:style="{width:'97%'}"-->
-                        <!--show-word-limit-->
-                        <!--v-model="ruleForm.patientInfo.drugsDosage "-->
-                        <!--size="medium"-->
-                        <!--placeholder="请输入"-->
-                      <!--&gt;</el-input>-->
-                    <!--</el-form-item>-->
-                  <!--</el-col>-->
-                <!--</el-row>-->
               </el-form>
+
             </div>
 
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
               <el-form-item>
                 <div>
-
                   <el-button type="primary" v-on:click="next()">保存</el-button>
                 </div>
               </el-form-item>
@@ -733,23 +785,13 @@
     },
 
     methods: {
-      //受试者打钩
-      testChange() {
-        this.checked === "true";
-      },
-      rightChange() {
-        this.rightChecked === "true";
-      },
-      mainChange() {
-        this.mainChecked === "true";
-      },
-
       //   如果是在职，输入职业
       jobChange(value) {
         if (value == "在职") {
           this.showJob = true;
         } else {
           this.showJob = false;
+          this.ruleForm.patientInfo.inServiceJob = '';
         }
       },
       // 如果是其他疾病
@@ -758,6 +800,8 @@
           this.showDisease = true;
         } else {
           this.showDisease = false;
+          this.ruleForm.patientInfo.otherMedicalHistory = '';
+
         }
       },
       smokingChange(value) {
@@ -765,6 +809,8 @@
           this.showSmoke = true;
         } else {
           this.showSmoke = false;
+          this.ruleForm.patientInfo.smokingNumEachDay = "";
+          this.ruleForm.patientInfo.smokingYears = "";
         }
       },
       drinkingChange(value) {
@@ -772,6 +818,9 @@
           this.showDrink = true;
         } else {
           this.showDrink = false;
+          this.ruleForm.patientInfo.drinkingNumEachDay = "";
+          this.ruleForm.patientInfo.drinkingYears = "";
+          this.ruleForm.patientInfo.drinkingType ="";
         }
       },
       mentalDiseaseChange(value) {
@@ -780,6 +829,9 @@
         } else {
           this.showMentalDisease = false;
           this.showOtherMentalDisease = false;
+          this.ruleForm.patientInfo.mentalDiseaseFamilyHistory = '';
+          this.ruleForm.patientInfo.otherMentalDiseaseFamilyHistory = ''
+
         }
       },
       otherMentalDiseaseChange(value) {
@@ -787,6 +839,7 @@
           this.showOtherMentalDisease = true;
         } else {
           this.showOtherMentalDisease = false;
+          this.ruleForm.patientInfo.otherMentalDiseaseFamilyHistory = ''
         }
       },
       memoryChange(value) {
@@ -794,6 +847,8 @@
           this.showMemory = true;
         } else {
           this.showMemory = false;
+          this.ruleForm.patientInfo.memoryLossTime = ''
+
         }
       },
       cognitiveDrugChange(value) {
@@ -801,6 +856,8 @@
           this.showCognitiveDrug = true;
         } else {
           this.showCognitiveDrug = false;
+          this.ruleForm.patientInfo.drugsDosage = ''
+
         }
       },
 

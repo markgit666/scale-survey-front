@@ -125,23 +125,17 @@ import ACol from "ant-design-vue/es/grid/Col";
 
 const columns = [
   {
-    title: "报告表答卷编号",
-    dataIndex: "examinationPaperId",
-    // sorter: true,
-    width: "8%"
-  },
-  {
     title: "报告表名称",
     dataIndex: "reportName",
     // sorter: true,
-    width: "20%"
+    width: "15%"
   },
 
   {
     title: "被试者姓名",
     dataIndex: "patientName",
     // sorter: true,
-    width: "8%"
+    width: "10%"
   },
 
 
@@ -157,10 +151,19 @@ const columns = [
     dataIndex: "answerNum",
     width: "8%"
   },
-
   {
     title: "第N次测试",
     dataIndex: "answerSequence",
+    width: "8%"
+  },
+  {
+    title: "AE不良反应记录",
+    dataIndex: "adverseReactions",
+    width: "8%"
+  },
+  {
+    title: "是否合并使用促认知药物",
+    dataIndex: "medication",
     width: "8%"
   },
   {
@@ -171,7 +174,7 @@ const columns = [
 
   {
     title: "操作",
-    width: "20%",
+    width: "25%",
     dataIndex: "operation",
     scopedSlots: { customRender: "operation" }
   }

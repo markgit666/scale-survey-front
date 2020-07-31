@@ -2,7 +2,7 @@
   <div class="box">
     <a-card :bordered="false" :hoverable="true">
       <!--查找-->
-      <a-row>
+      <a-row :style="{marginTop:'20px'}">
         <a-col :span="12">
           <label>量表答卷名称：</label>
           <el-input
@@ -14,6 +14,8 @@
             v-model="answerResearchData.scaleName"
           ></el-input>
         </a-col>
+
+
         <!--<a-col :span="5">-->
         <!--<label>答题者：</label>-->
         <!--<el-input type="text" maxlength="10" show-word-limit :style="{width:'60%'}" size="small"-->
@@ -105,7 +107,7 @@ const columns = [
     title: "量表答卷编号",
     dataIndex: "scalePaperId",
     // sorter: true,
-    width: "8%"
+    width: "10%"
   },
   {
     title: "量表名称",
