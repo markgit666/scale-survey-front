@@ -3,7 +3,10 @@
   <div>
   <!--9张量表列表-->
   <a-card>
-    <el-divider content-position="left"><strong>2.量表列表</strong></el-divider>
+
+      ① 输入身份证号 --> ② 填写受试者临床基本资料 --> ③ 指导受试者完成量表 <br/><br/>
+
+    <el-divider content-position="left"><strong>3.量表列表</strong></el-divider>
     <a-table
       :columns="columns"
       :rowKey="record => record.scaleId"

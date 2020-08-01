@@ -4,6 +4,7 @@
       <a-col :xs="1" :sm="1" :md="1" :lg="1" :xl="1"></a-col>
       <a-col :xs="22" :sm="22" :md="22" :lg="22" :xl="22">
         <a-card>
+
           <center>
             <strong>
               <h2>基于经颅电刺激的认知障碍疾病综合康复研究</h2>

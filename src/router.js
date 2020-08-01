@@ -26,7 +26,6 @@ export default new Router({
         { path: '/home/ScaleListNoFirst', name: 'scaleListNoFirst', component: resolve => require(['./views/ScaleListNoFirst'], resolve) },
         { path: '/home/FollowUpInfo', name: 'FollowUpInfo', component: resolve => require(['./views/FollowUpInfo'], resolve) },
         { path: '/home/noCreate', name: 'noCreate', component: resolve => require(['./views/NoCreate'], resolve) },
-        { path: '/home/addPatientInfo', name: 'addPatientInfo', component: resolve => require(['./views/AddPatientInfo'], resolve) },
         { path: '/home/createScale', name: 'createScale', component: resolve => require(['./views/CreateScale'], resolve) },
         { path: '/home/myPatients', name: 'myPatients', component: resolve => require(['./views/MyPatients'], resolve) },
         { path: '/home/myScale', name: 'myScale', component: resolve => require(['./views/MyScale'], resolve) },
@@ -49,34 +48,12 @@ export default new Router({
       path: '/home/AnswerSteps', name
         :
         'answerSteps', component: resolve => require(['./views/AnswerSteps'], resolve)
-    }
-    ,
-    {
-      path: '/home/AnswerReport', name
-        :
-        'answerReport', component: resolve => require(['./views/AnswerReport'], resolve)
-    }
-    ,
+    },
     {
       path: '/home/IdCard', name
         :
         'IdCard', component: resolve => require(['./views/IdCard'], resolve)
-    }
-    ,
-
-    {
-      path: '/home/answerSubmitSuccess', name
-        :
-        'answerSubmitSuccess', component: resolve => require(['./views/AnswerSubmitSuccess'], resolve)
-    }
-    ,
-
-    {
-      path: '/home/myAnswer/judge', name
-        :
-        'judge', component: resolve => require(['./views/Judge'], resolve)
-    }
-    ,
+    },
     {
       path: '/home/myReportAnswer/myScaleAnswer/answerJudge', name
         :

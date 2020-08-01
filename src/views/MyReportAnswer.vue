@@ -238,7 +238,6 @@ export default {
     //继续答题
     contine(examinationPaperId){
       this.$router.push({path:"/home/ScaleListNoFirst",query:{examinationPaperId:examinationPaperId}})
-
     },
     // 删除报告表
     deleteReportAnswer(examinationPaperId) {
@@ -336,18 +335,6 @@ export default {
             that.loading = false;
             that.data = values.data.list;
             that.doctorId = values.data.content.doctorId;
-
-            // 当null时，显示未评定
-            // for (var i = 0; i < values.data.list.length; i++) {
-            // if (values.data.list[i].judgeStatus === '1') {
-            //   values.data.list[i].judgeStatus = '已评分'
-            // } else {
-            //   values.data.list[i].judgeStatus = '未评分'
-            // }
-            // 将秒数变成分钟
-            // values.data.list[i].useTime = (values.data.list[i].useTime / 60).toFixed(2);
-            // values.data.list[i].useTime = values.data.list[i].useTime + '分钟'
-            // }
           } else if (values.retCode === "100001") {
             if (localStorage.getItem("Token") === null) {
               this.$message.error("未登录，即将跳转至登录页面", 5);
@@ -360,9 +347,6 @@ export default {
             this.$message.error(values.retMsg, 5);
           }
         },
-        err => {
-          alert("网络异常，请检查是否连接上网络");
-        }
       );
     },
 

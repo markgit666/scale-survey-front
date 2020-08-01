@@ -2,7 +2,10 @@
   <!--随访信息页面-->
   <div>
   <a-card >
-    <el-divider content-position="left"><strong>1.随访时记录信息</strong></el-divider>
+
+    ① 输入身份证号 --> ② 填写随访信息<br/><br/>
+
+    <el-divider content-position="left" ><strong>2.随访时记录信息</strong></el-divider>
     <el-form
       :model="followInfo"
       :rules="rules"
@@ -91,7 +94,7 @@
         // 保存随访信息
         saveFollowInfo(followInfo){ //随访信息提交
           let that = this;
-          axios.post(this.serverUrl+"paper/commitFollowUpInfo",{
+          axios.post(this.serverUrl+"paper/patient/commitFollowUpInfo",{
             adverseReactions:followInfo.badRecord,
             medication:followInfo.cognitiveMedical,
             reportId:this.$route.query.reportId,

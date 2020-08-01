@@ -1,10 +1,13 @@
 <template>
   <div>
+
     <div>
       <a-row>
         <a-col :xs="1" :sm="1" :md="1" :lg="1" :xl="1"></a-col>
         <a-col :xs="22" :sm="22" :md="22" :lg="22" :xl="22">
           <a-card>
+
+              ① 输入身份证号 <br/><br/>
             <center>
               <strong>
                 <h2>基于经颅电刺激的认知障碍疾病综合康复研究</h2>
@@ -20,7 +23,7 @@
                         show-word-limit
                         maxlength="18"
                         size="small"
-                        placeholder="请输入"
+                        placeholder="请输入身份证号码"
                         v-model="ruleForm.idCard"
                         :style="{width:'100%'}"
                       ></el-input>

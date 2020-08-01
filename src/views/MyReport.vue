@@ -69,7 +69,7 @@ export default {
         if (res.retCode === "000000") {
           that.loading = false;
           that.data = res.data;
-        } else if (values.retCode === "100001") {
+        } else if (res.retCode === "100001") {
           if (localStorage.getItem("Token") === null) {
             this.$message.error("未登录，即将跳转至登录页面", 5);
             this.$router.push({ path: "/login" });

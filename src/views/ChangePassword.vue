@@ -145,6 +145,14 @@ Xrej5WAcEy7ThIi17wIDAQAB`; // 把之前生成的贴进来，实际开发过程�
                 if (response.data.retCode === "000000") {
                   this.$router.push({ path: "/Login" });
                   this.$message.success("修改成功", 5);
+                } else if (response.data.retCode === "100001") {
+                  if (localStorage.getItem("Token") === null) {
+                    this.$message.error("未登录，即将跳转至登录页面", 5);
+                    this.$router.push({ path: "/login" });
+                  } else {
+                    this.$message.error("登录超时", 5);
+                    this.$router.push({ path: "/login" });
+                  }
                 } else {
                   this.$message.error(response.data.retMsg, 5);
                 }

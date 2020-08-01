@@ -519,8 +519,16 @@ export default {
                 "/home/myReportAnswer/myScaleAnswer?examinationPaperId=" +
                 that.JudgeInfo.examinationPaperId;
               this.$router.push({ path: path });
+            } else if (res.data.retCode === "100001") {
+              if (localStorage.getItem("Token") === null) {
+                this.$message.error("未登录，即将跳转至登录页面", 5);
+                this.$router.push({ path: "/login" });
+              } else {
+                this.$message.error("登录超时", 5);
+                this.$router.push({ path: "/login" });
+              }
             } else {
-              this.$message.success(res.data.retMsg, 3);
+              this.$message.error(response.data.retMsg, 5);
             }
           },
           err => {

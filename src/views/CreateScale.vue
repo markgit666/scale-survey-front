@@ -788,7 +788,7 @@ export default {
                 this.$router.push({ path: "/login" });
               }
             } else {
-              this.$message.error(data.body.retMsg, 5);
+              this.$message.error(response.data.retMsg, 5);
             }
           },
           err => {

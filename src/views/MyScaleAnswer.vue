@@ -280,7 +280,6 @@ export default {
         contentType: "application/json"
       }).then(
         values => {
-          // that.examinationPaperId = that.$route.query.examinationPaperId
           if (values.retCode === "000000") {
             that.total = values.data.totalNum;
             that.current = params.pageNo;
@@ -292,8 +291,6 @@ export default {
               that.$route.query.examinationPaperId
             ); //存储examinationPaperId
 
-            // that.doctorId = values.data.list[0].patientInfo.doctorId
-            // 当null时，显示未评定
             for (var i = 0; i < values.data.list.length; i++) {
               if (values.data.list[i].judgeStatus === "1") {
                 values.data.list[i].judgeStatus = "已评分";

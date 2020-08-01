@@ -408,22 +408,6 @@ export default {
       }
     }
 
-    // 全部导出
-    // exportPatientInfoTotal () {
-    //   var form = $('<form>')
-    //   form.attr('style', 'display:none')
-    //   form.attr('target', '')
-    //   form.attr('method', 'post')
-    //   form.attr('action', this.serverUrl + 'excel/export/all/patient/info')
-    //   var input1 = $('<input>')
-    //   input1.attr('type', 'hidden')
-    //   input1.attr('name', 'doctorId')
-    //   input1.attr('value', this.doctorId)
-    //   $('body').append(form)
-    //   form.append(input1)
-    //   form.submit()
-    //   form.remove()
-    // }
   }
 };
 </script>

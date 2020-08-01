@@ -6,6 +6,9 @@
         <a-col :xs="1" :sm="1" :md="1" :lg="1" :xl="1"></a-col>
         <a-col :xs="22" :sm="22" :md="22" :lg="22" :xl="22">
           <a-card>
+
+             ① 输入身份证号 --> ② 填写受试者临床基本资料<br/><br/>
+
             <center>
               <strong>
                 <h2>基于经颅电刺激的认知障碍疾病综合康复研究</h2>
@@ -13,7 +16,7 @@
             </center>
 
             <el-divider content-position="left">
-              <strong>1.填写临床基本资料</strong></el-divider>
+              <strong>2.填写临床基本资料</strong></el-divider>
 
 
             <!-- 临床基本资料 -->
@@ -774,14 +777,6 @@
       this.ruleForm.patientInfo.idCard = sessionStorage.getItem("idCard");
       this.ruleForm.patientInfo.doctorId = this.$route.query.doctorId;
       this.reportId = this.$route.query.reportId;
-
-      let that = this;
-
-      axios.post(this.serverUrl + "eligible/list").then(response => {
-        if (response.data.retCode === "000000") {
-        that.eligibleInfoList = response.data.data;
-      }
-    });
     },
 
     methods: {
@@ -869,7 +864,6 @@
           this.reportId +
           "&doctorId=" +
           this.ruleForm.patientInfo.doctorId;
-        this.formatPatientRelationInfo();
         this.$http
           .post(this.serverUrl + "patient/relation/info/save", this.ruleForm)
           .then(
@@ -896,21 +890,6 @@
           alert("网络异常，请检查是否连接上网络");
       }
       );
-      },
-
-      formatPatientRelationInfo() {
-        var eligibleList = this.eligibleInfoList;
-        for (var i = 0; i < eligibleList.length; i++) {
-          var eligible = {
-            eligibleId: "",
-            answer: "",
-            remarks: ""
-          };
-          eligible.eligibleId = eligibleList[i].eligibleId;
-          eligible.answer = eligibleList[i].answer;
-          eligible.remarks = eligibleList[i].remarks;
-          this.ruleForm.patientEligibleList.push(eligible);
-        }
       },
 
       // 下一步
