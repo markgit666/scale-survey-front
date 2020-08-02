@@ -108,6 +108,10 @@
                     :key="itemId"
                     :style="{fontFamily:'SimHei'}"
                   >{{item}}&nbsp;&nbsp;</p>
+
+                  <p :style="{fontFamily:'SimHei'}">【插入】</p>
+                  {{oneQuestion.answer.insertContent}}
+
                 </el-col>
                 <!--评分-->
                 <el-col :lg="8" :md="8" :sm="8" :xl="8" :xs="8">
