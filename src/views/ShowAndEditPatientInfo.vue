@@ -451,26 +451,6 @@
           </a-col>
         </a-row>
 
-        <a-row :gutter="10">
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-            <el-form-item label="饮酒类型 :" v-if="ruleForm.drinkingHistory==='仍在喝'">
-              <el-select
-                v-model="ruleForm.drinkingType"
-                placeholder="请选择"
-                style="width:100%;"
-                size="medium"
-              >
-                <el-option label value></el-option>
-                <el-option label="啤酒" value="啤酒"></el-option>
-                <el-option label="黄酒" value="黄酒"></el-option>
-                <el-option label="白酒" value="白酒"></el-option>
-                <el-option label="葡萄酒" value="葡萄酒"></el-option>
-              </el-select>
-            </el-form-item>
-          </a-col>
-
-        </a-row>
-
         <!-- --------------------------------------------------------------------- -->
         <a-row :gutter="10">
           <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
