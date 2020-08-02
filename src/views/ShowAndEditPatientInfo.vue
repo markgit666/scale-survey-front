@@ -4,7 +4,7 @@
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="230px" :label-position="labelPosition">
 
         <a-row :gutter="10">
-       .<a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+       .<a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
           <!-- 身份证号 -->
           <el-form-item label="身份证号 :" prop="name" >
             <el-input
@@ -19,7 +19,7 @@
         </a-row>
 
         <a-row :gutter="10">
-         .<a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+         .<a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <!-- 病历号 -->
             <el-form-item label="病历号 :" prop="medicalRecordNum" >
               <el-input
@@ -35,7 +35,7 @@
         </a-row>
 
         <a-row :gutter="10">
-         .<a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+         .<a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <!-- 姓名 -->
             <el-form-item label="姓名 :" prop="name" >
               <el-input
@@ -52,7 +52,7 @@
         </a-row>
 
         <a-row :gutter="10">
-       .<a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+       .<a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
           <!-- 出生年月 -->
           <el-form-item label="出生年月:" prop="birthday" >
             <el-date-picker
@@ -70,7 +70,7 @@
 
 
         <a-row :gutter="10">
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <!-- 组别 -->
 
             <el-form-item label="组别 :" prop="patientGroup">
@@ -90,7 +90,7 @@
 
         <!-- --------------------------------------------------------------------- -->
         <a-row :gutter="10">
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <!-- 性别 -->
 
             <el-form-item label="性别 :" prop="gender">
@@ -109,7 +109,7 @@
         </a-row>
 
         <a-row :gutter="10">
-        <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+        <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
           <!-- 联系电话 -->
           <el-form-item label="联系电话 :" prop="telephoneNumber">
             <el-input
@@ -126,7 +126,7 @@
         </a-row>
 
         <a-row :gutter="10">
-        <a-col :xs="12" :sm="12" :md="12" :lg="24" :xl="12">
+        <a-col :xs="24" :sm="24" :md="12" :lg="24" :xl="12">
           <!-- 家庭地址 -->
           <el-form-item label="家庭地址 :" prop="familyAddress">
             <el-input
@@ -144,7 +144,7 @@
 
         <a-row :gutter="10">
           <!-- 民族 -->
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
 
             <el-form-item label="民族 :" prop="gender">
               <el-select
@@ -164,7 +164,7 @@
         <!-- --------------------------------------------------------------------- -->
 
         <a-row :gutter="10">
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <!-- 利手 -->
             <el-form-item label="利手 :">
               <el-select
@@ -183,7 +183,7 @@
 
           <!-- 婚姻 -->
         <a-row :gutter="10">
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <el-form-item label="婚姻 :">
               <el-select
                 v-model="ruleForm.marriageStatus"
@@ -203,7 +203,7 @@
 
         <!-- --------------------------------------------------------------------- -->
         <a-row :gutter="10">
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <!-- 文化程度 -->
             <el-form-item label="文化程度 :">
               <el-select
@@ -226,7 +226,7 @@
 
         <a-row :gutter="10">
           <!-- 居住方式 -->
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <el-form-item label="居住方式 :">
               <el-select
                 v-model="ruleForm.livingWay"
@@ -247,7 +247,7 @@
         </a-row>
 
         <a-row :gutter="10">
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <!-- 是否有打呼噜 -->
             <el-form-item label="打呼噜 :">
               <el-select
@@ -267,7 +267,7 @@
         <!-- --------------------------------------------------------------------- -->
         <a-row :gutter="10">
           <!-- 受教育年数-->
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <!-- 受教育年数 -->
             <el-form-item label="教育年数 :">
               <a-input-number
@@ -281,7 +281,7 @@
 
         <!-- --------------------------------------------------------------------- -->
         <a-row :gutter="10">
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <!-- 职业 -->
             <el-form-item label="职业 :">
               <el-select
@@ -302,7 +302,7 @@
 
         <!-- 如果是在职，输入职业 -->
         <a-row :gutter="15">
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <el-form-item label="在职职业 :" v-if="ruleForm.workStatus==='在职'">
               <el-input
                 type="text"
@@ -319,7 +319,7 @@
 
           <!-- 既往病史 -->
         <a-row :gutter="10">
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <el-form-item label="既往病史 :">
               <el-select
                 v-model="ruleForm.medicalHistory"
@@ -341,7 +341,7 @@
 
         <!-- 其他病史 -->
         <a-row :gutter="10">
-        <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+        <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
           <el-form-item label="其他病史 :" v-if="ruleForm.medicalHistory==='其他疾病'">
             <el-input
               style="width:100%;"
@@ -357,7 +357,7 @@
         </a-row>
 
         <a-row :gutter="15">
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <!-- 吸烟史 -->
             <el-form-item label=" 吸烟历史 :">
               <el-select
@@ -377,7 +377,7 @@
         </a-row>
 
         <a-row :gutter="15">
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <!-- 如果仍在吸烟 -->
             <el-form-item label="一天几支 :" v-if="ruleForm.smokingHistory==='仍在吸'">
               <a-input-number
@@ -390,7 +390,7 @@
         </a-row>
 
         <a-row :gutter="15">
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <!-- 吸烟年数 -->
             <el-form-item label="吸烟年数 :" v-if="ruleForm.smokingHistory==='仍在吸'">
               <a-input-number
@@ -407,7 +407,7 @@
         <!-- --------------------------------------------------------------------- -->
 
         <a-row :gutter="15">
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <!-- 饮酒史 -->
             <el-form-item label="饮酒历史 :">
               <el-select
@@ -427,7 +427,7 @@
         </a-row>
 
         <a-row :gutter="15">
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <!-- 饮酒史 -->
             <el-form-item label="一天几两 :" v-if="ruleForm.drinkingHistory==='仍在喝'">
               <a-input-number
@@ -440,7 +440,7 @@
         </a-row>
 
         <a-row :gutter="15">
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <el-form-item label="喝酒年数 :" v-if="ruleForm.drinkingHistory==='仍在喝'">
               <a-input-number
                 v-model="ruleForm.drinkingYears"
@@ -453,7 +453,7 @@
 
         <!-- --------------------------------------------------------------------- -->
         <a-row :gutter="10">
-          <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <el-form-item label="饮酒类型 :" v-if="showDrink">
               <el-select
                 v-model="ruleForm.drinkingType"
@@ -476,7 +476,7 @@
 
         <!-- --------------------------------------------------------------------- -->
         <a-row :gutter="10">
-         <a-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+         <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
           <el-form-item label="有无精神疾病家族史 :" >
             <el-select
               v-model="ruleForm.isMentalDiseaseFamilyHistory"
@@ -495,12 +495,12 @@
 
         <!-- --------------------------------------------------------------------- -->
         <el-row :gutter="10">
-          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <el-form-item label="具体精神疾病家族史 :" v-if="ruleForm.isMentalDiseaseFamilyHistory==='有'">
               <el-select
                 v-model="ruleForm.mentalDiseaseFamilyHistory"
                 placeholder="请选择"
-                :style="{width:'97%'}"
+                :style="{width:'100%'}"
                 size="medium"
                 @change="otherMentalDiseaseChange"
               >
@@ -516,12 +516,12 @@
 
         <!-- --------------------------------------------------------------------- -->
         <el-row :gutter="10">
-          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <el-form-item label="其他精神病史 :" v-if="ruleForm.mentalDiseaseFamilyHistory==='其他精神病史'">
               <el-input
                 v-model="ruleForm.otherMentalDiseaseFamilyHistory"
                 size="medium"
-                :style="{width:'97%'}"
+                :style="{width:'100%'}"
                 placeholder="请输入"
                 type="text"
                 maxlength="40"
@@ -533,7 +533,7 @@
 
         <!------------------------------------------------------------------------->
         <el-row :gutter="10">
-          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <el-form-item label="现病史（有无记忆下降）:" >
               <el-select
                 v-model="ruleForm.currentMedicalHistoryMemoryLoss"
@@ -552,7 +552,7 @@
 
         <!-- --------------------------------------------------------------------- -->
         <el-row :gutter="10">
-          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <el-form-item
               label="记忆力下降多久 :"
               v-if="ruleForm.currentMedicalHistoryMemoryLoss==='有记忆力下降'"
@@ -571,11 +571,11 @@
 
         <!-- --------------------------------------------------------------------- -->
         <el-row :gutter="10">
-          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <el-form-item label="体格检查（阳性发现） :">
               <el-input
                 type="text"
-                :style="{width:'97%'}"
+                :style="{width:'100%'}"
                 maxlength="300"
                 show-word-limit
                 v-model="ruleForm.physicalExamination"
@@ -587,12 +587,12 @@
         </el-row>
         <!-- --------------------------------------------------------------------- -->
         <el-row :gutter="10">
-          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <el-form-item label="是否合并使用促认知药物 :">
               <el-select
                 v-model="ruleForm.isUseCognitiveDrugs"
                 placeholder="请选择"
-                :style="{width:'97%'}"
+                :style="{width:'100%'}"
                 size="medium"
                 @change="cognitiveDrugChange"
               >
@@ -606,12 +606,12 @@
 
         <!-- --------------------------------------------------------------------- -->
         <el-row :gutter="10">
-          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <el-form-item label="具体促认知药物、剂量、起始时间 :" v-if="ruleForm.isUseCognitiveDrugs==='有合并使用促认知药物'">
               <el-input
                 type="text"
                 maxlength="40"
-                :style="{width:'97%'}"
+                :style="{width:'100%'}"
                 show-word-limit
                 v-model="ruleForm.drugsDosage "
                 size="medium"

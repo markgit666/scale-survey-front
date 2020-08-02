@@ -14,7 +14,7 @@
           <a-menu-item key="2">
             <router-link to="/Home/MyPatients">
               <i class="el-icon-user"></i>
-              被试者基本资料
+              受试者基本资料
             </router-link>
           </a-menu-item>
 

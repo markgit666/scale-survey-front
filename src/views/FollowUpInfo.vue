@@ -2,10 +2,7 @@
   <!--随访信息页面-->
   <div>
   <a-card >
-
-    ① 输入身份证号 --> ② 填写随访信息<br/><br/>
-
-    <el-divider content-position="left" ><strong>2.随访时记录信息</strong></el-divider>
+    <el-divider content-position="left" ><strong>2.填写随访信息</strong></el-divider>
     <el-form
       :model="followInfo"
       :rules="rules"
