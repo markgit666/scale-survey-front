@@ -1,13 +1,11 @@
 <template>
   <div>
-
     <div>
       <a-row>
         <a-col :xs="1" :sm="1" :md="1" :lg="1" :xl="1"></a-col>
         <a-col :xs="22" :sm="22" :md="22" :lg="22" :xl="22">
           <a-card>
             <el-divider content-position="left"><strong>1.输入身份证号</strong></el-divider>
-
             <center>
               <strong>
                 <h2>基于经颅电刺激的认知障碍疾病综合康复研究</h2>
@@ -90,7 +88,8 @@ export default {
               this.serverUrl + "paper/patient/report/status/check",
               {
                 reportId: this.$route.query.reportId,
-                idCard: this.ruleForm.idCard
+                idCard: this.ruleForm.idCard,
+                doctorId:localStorage.getItem("doctorId")
               },
               {
                 headers: {

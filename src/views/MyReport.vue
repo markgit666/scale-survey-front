@@ -69,6 +69,7 @@ export default {
         if (res.retCode === "000000") {
           that.loading = false;
           that.data = res.data;
+          localStorage.setItem("doctorId", res.data[0].doctorId);
         } else if (res.retCode === "100001") {
           if (localStorage.getItem("Token") === null) {
             this.$message.error("未登录，即将跳转至登录页面", 5);
