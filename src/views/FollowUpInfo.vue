@@ -20,7 +20,7 @@
           <el-input
             v-model="followInfo.badRecord"
             type="text"
-            maxlength="18"
+            maxlength="512"
             show-word-limit
             size="medium"
             style="width:100%;"
@@ -37,7 +37,7 @@
           <el-input
             v-model="followInfo.cognitiveMedical"
             type="text"
-            maxlength="18"
+            maxlength="512"
             show-word-limit
             size="medium"
             style="width:100%;"
@@ -90,6 +90,15 @@
 
         // 保存随访信息
         saveFollowInfo(followInfo){ //随访信息提交
+          if (this.followInfo.badRecord === "") {
+            this.$message.warning("AE不良反应记录不能为空，请检查！");
+            return;
+          }
+          if (this.followInfo.cognitiveMedical === "") {
+            this.$message.warning("是否合并使用促认知药物不能为空，请检查！");
+            return;
+          }
+
           let that = this;
           axios.post(this.serverUrl+"paper/patient/commitFollowUpInfo",{
             adverseReactions:followInfo.badRecord,

@@ -4,7 +4,7 @@
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="230px" :label-position="labelPosition">
 
         <a-row :gutter="10">
-       .<a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+        <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
           <!-- 身份证号 -->
           <el-form-item label="身份证号 :" prop="name" >
             <el-input
@@ -19,7 +19,7 @@
         </a-row>
 
         <a-row :gutter="10">
-         .<a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <!-- 病历号 -->
             <el-form-item label="病历号 :" prop="medicalRecordNum" >
               <el-input
@@ -35,7 +35,7 @@
         </a-row>
 
         <a-row :gutter="10">
-         .<a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <!-- 姓名 -->
             <el-form-item label="姓名 :" prop="name" >
               <el-input
@@ -52,7 +52,7 @@
         </a-row>
 
         <a-row :gutter="10">
-       .<a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+        <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
           <!-- 出生年月 -->
           <el-form-item label="出生年月:" prop="birthday" >
             <el-date-picker
