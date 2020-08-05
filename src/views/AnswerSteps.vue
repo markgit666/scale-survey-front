@@ -344,27 +344,35 @@
                   <!-- 既往病史 -->
                   <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
                     <el-form-item label="既往病史 :">
-                      <el-select
-                        v-model="ruleForm.patientInfo.medicalHistory"
-                        placeholder="请选择"
+                      <el-input
                         style="width:100%;"
+                        type="text"
+                        maxlength="40"
+                        show-word-limit
+                        v-model="ruleForm.patientInfo.medicalHistory"
                         size="medium"
-                        @change="diseaseChange"
-                      >
-                        <el-option label value></el-option>
-                        <el-option label="高血压" value="高血压"></el-option>
-                        <el-option label="糖尿病" value="糖尿病"></el-option>
-                        <el-option label="冠心病" value="冠心病"></el-option>
-                        <el-option label="脑中风/脑梗" value="脑中风/脑梗"></el-option>
-                        <el-option label="其他疾病" value="其他疾病"></el-option>
-                      </el-select>
+                        placeholder="请输入"
+                      ></el-input>
+
+                      <!--<el-select-->
+                        <!--v-model="ruleForm.patientInfo.medicalHistory"-->
+                        <!--placeholder="请选择"-->
+                        <!--style="width:100%;"-->
+                        <!--size="medium"-->
+                        <!--@change="diseaseChange"-->
+                      <!--&gt;-->
+                        <!--<el-option label value></el-option>-->
+                        <!--<el-option label="高血压" value="高血压"></el-option>-->
+                        <!--<el-option label="糖尿病" value="糖尿病"></el-option>-->
+                        <!--<el-option label="冠心病" value="冠心病"></el-option>-->
+                        <!--<el-option label="脑中风/脑梗" value="脑中风/脑梗"></el-option>-->
+                        <!--<el-option label="其他疾病" value="其他疾病"></el-option>-->
+                      <!--</el-select>-->
                     </el-form-item>
                   </a-col>
                 </a-row>
 
                 <!-- --------------------------------------------------------------------- -->
-
-
                 <a-row :gutter="10">
                   <!-- 其他病史 -->
                   <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
@@ -787,15 +795,15 @@
         }
       },
       // 如果是其他疾病
-      diseaseChange(value) {
-        if (value == "其他疾病") {
-          this.showDisease = true;
-        } else {
-          this.showDisease = false;
-          this.ruleForm.patientInfo.otherMedicalHistory = '';
-
-        }
-      },
+      // diseaseChange(value) {
+      //   if (value == "其他疾病") {
+      //     this.showDisease = true;
+      //   } else {
+      //     this.showDisease = false;
+      //     this.ruleForm.patientInfo.otherMedicalHistory = '';
+      //
+      //   }
+      // },
       smokingChange(value) {
         if (value == "仍在吸") {
           this.showSmoke = true;
