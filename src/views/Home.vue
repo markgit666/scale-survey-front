@@ -66,7 +66,7 @@
       <!--      尾部-->
       <a-layout-footer
         :style="{ textAlign: 'center', background: '#F0F2F5', padding:'24px 10px' }"
-      >中国科学院深圳先进技术研究院脑所 ©2019</a-layout-footer>
+      >中国科学院深圳先进技术研究院脑所 ©2020</a-layout-footer>
     </a-layout>
   </div>
 </template>
