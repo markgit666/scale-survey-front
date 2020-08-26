@@ -27,21 +27,6 @@
             placeholder="请输入数字值"
           ></a-input-number>
         </a-col>
-
-        <!--<a-col :span="6">-->
-        <!--<label>是否评分：</label>-->
-        <!--<el-select-->
-        <!--v-model="answerResearchData.judgeStatus"-->
-        <!--style="width:60%;"-->
-        <!--size="small"-->
-        <!--&gt;-->
-        <!--<el-option label="" value=""></el-option>-->
-        <!--<el-option label="已评分" value="1"></el-option>-->
-        <!--<el-option label="未评分" value="0"></el-option>-->
-
-        <!--</el-select>-->
-
-        <!--</a-col>-->
         <a-col :span="2">
           <a-button
             type="primary"
@@ -77,10 +62,15 @@
         <template slot="operation" slot-scope="text, record, index">
           <div class="editable-row-operations">
             <span v-if="data[index].isNeedContinueAnswer ==='1'"><a @click="() =>contine(record.examinationPaperId)">继续答题</a></span>
+            <span v-if="data[index].answerSequence !='1'">
+              <el-divider direction="vertical"></el-divider>
+              <a @click="() =>alterFollowInfo(index, record.examinationPaperId)">修改随访</a>
+            </span>
+
             <span>
 
                <el-divider direction="vertical"></el-divider>
-              <a @click="() =>seeDetails(record.examinationPaperId)">查看详情</a>
+              <a @click="() =>seeDetails(record.examinationPaperId)">查看量表</a>
               <el-divider direction="vertical"></el-divider>
               <a-popconfirm
                 :style="{color:'red'}"
@@ -94,8 +84,32 @@
               </a-popconfirm>
             </span>
           </div>
+
+          <!--对话框-->
+          <div>
+          <el-dialog title="修改随访信息" :visible.sync="dialogFormVisible">
+            <el-form :model="form">
+              <el-form-item label="AE不良反应记录：" :label-width="formLabelWidth">
+                <el-input v-model="form.adverseReactions" autocomplete="off"   type="text"
+                          maxlength="512"
+                          show-word-limit></el-input>
+              </el-form-item>
+              <el-form-item label="是否合并使用促认知药物：" :label-width="formLabelWidth">
+                <el-input v-model="form.medication" autocomplete="off" type="text"
+                          maxlength="512"
+                          show-word-limit></el-input>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="cancelDialogue()">取 消</el-button>
+              <el-button type="primary" @click="confirmDialogue()">确 定</el-button>
+            </div>
+          </el-dialog>
+          </div>
+
         </template>
         <!-- 操作 结束 -->
+
       </a-table>
 
       <!--      分页-->
@@ -115,6 +129,9 @@
         </a-pagination>
       </template>
     </a-card>
+
+
+
   </div>
 </template>
 <script>
@@ -128,7 +145,7 @@ const columns = [
     title: "报告表名称",
     dataIndex: "reportName",
     // sorter: true,
-    width: "15%"
+    width: "10%"
   },
 
   {
@@ -143,13 +160,13 @@ const columns = [
     title: "量表总数",
     dataIndex: "scaleNum",
     // sorter: true,
-    width: "8%"
+    width: "5%"
   },
 
   {
     title: "已答张数",
     dataIndex: "answerNum",
-    width: "8%"
+    width: "5%"
   },
   {
     title: "第N次测试",
@@ -174,7 +191,7 @@ const columns = [
 
   {
     title: "操作",
-    width: "25%",
+    width: "30%",
     dataIndex: "operation",
     scopedSlots: { customRender: "operation" }
   }
@@ -198,6 +215,13 @@ export default {
   },
   data() {
     return {
+      formLabelWidth: '200px',
+      form:{
+        adverseReactions:'',
+        medication:'',
+        examinationPaperId:''
+      },
+      dialogFormVisible:false,
       // 分页变量
       pageSizeOptions: ["10", "20", "30", "40", "50"],
       current: 1,
@@ -235,6 +259,42 @@ export default {
     }
   },
   methods: {
+
+    // 修改随访
+    alterFollowInfo(index,examinationPaperId){
+      this.dialogFormVisible =true
+      if (this.data[index].examinationPaperId === examinationPaperId){
+        this.form.adverseReactions = this.data[index].adverseReactions
+        this.form.medication = this.data[index].medication
+        this.form.examinationPaperId = examinationPaperId
+      }
+    },
+
+    // 取消对话框
+    cancelDialogue(){
+        this.dialogFormVisible = false
+    },
+    // 确认对话框
+    confirmDialogue(){
+      let that = this
+        axios.post(this.serverUrl + "paper/patient/modifyFollowUpInfo", {
+          examinationPaperId: that.form.examinationPaperId,
+          adverseReactions: that.form.adverseReactions,
+          medication: that.form.medication
+        }).then(response => {
+          if (response.data.retCode ==='000000'){
+            this.dialogFormVisible = false
+            this.fetch({ pageNo: this.current, pageSize: this.pageSize });
+            this.$message.success("修改随访信息成功")
+
+          }else {
+            this.$message.error(response.data.retMsg)
+          }
+
+        })
+
+
+    },
     //继续答题
     contine(examinationPaperId){
       this.$router.push({path:"/home/ScaleListNoFirst",query:{examinationPaperId:examinationPaperId}})
