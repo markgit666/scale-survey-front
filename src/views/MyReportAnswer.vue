@@ -1,8 +1,13 @@
 <template>
   <div class="box">
-    <a-card :bordered="false" :hoverable="true">
-      <a-row>
 
+    <a-card :bordered="false" :hoverable="true">
+
+      <el-divider content-position="left" ><strong >查看报告表</strong></el-divider>
+
+      <br/>
+
+      <a-row>
         <a-col :span="8">
           <label>被试者姓名：</label>
           <el-input
@@ -139,6 +144,7 @@ import axios from "axios";
 import reqwest from "reqwest";
 import $ from "jquery";
 import ACol from "ant-design-vue/es/grid/Col";
+import ARow from "ant-design-vue/es/grid/Row";
 
 const columns = [
   {
@@ -198,7 +204,7 @@ const columns = [
 ];
 
 export default {
-  components: { ACol },
+  components: {ARow, ACol },
   mounted() {
     this.fetch({ pageNo: this.current, pageSize: this.pageSize });
   },

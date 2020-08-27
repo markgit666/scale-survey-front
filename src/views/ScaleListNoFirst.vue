@@ -1,9 +1,17 @@
 <template>
   <!--非第一次答题的9张量表list-->
   <div>
+
     <!--9张量表列表-->
     <a-card>
-      <el-divider content-position="left"><strong>3.受试者作答量表</strong></el-divider>
+
+      <div>
+        <el-button type="primary" icon="el-icon-back"   :style="{float:'left'}" size="small" @click="backMyReportAnswer">返回</el-button>
+      </div>
+      <div >
+        <br/> <br/>
+      <el-divider content-position="left" ><strong >3.受试者作答量表</strong></el-divider>
+      </div>
       <a-table
         :columns="columns"
         :rowKey="record => record.scaleId"
@@ -102,6 +110,10 @@
       answerSomeOneAnswer(scaleId){
         this.$router.push({path:"/home/AnswerScale",query:{scaleId:scaleId, examinationPaperId:this.$route.query.examinationPaperId}})
       },
+
+      backMyReportAnswer(){
+        this.$router.push({path:"/home/MyReportAnswer"})
+      }
 
     }
   }

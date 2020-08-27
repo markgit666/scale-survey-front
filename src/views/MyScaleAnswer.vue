@@ -1,6 +1,14 @@
 <template>
   <div class="box">
     <a-card :bordered="false" :hoverable="true">
+
+      <div>
+        <el-button type="primary" icon="el-icon-back"   :style="{float:'left'}" size="small" @click="backMyReportAnswer">返回</el-button>
+      </div>
+      <br/><br/>
+
+      <el-divider content-position="left" ><strong >查看已答完的量表</strong></el-divider>
+
       <!--查找-->
       <a-row :style="{marginTop:'20px'}">
         <a-col :span="12">
@@ -15,27 +23,6 @@
           ></el-input>
         </a-col>
 
-
-        <!--<a-col :span="5">-->
-        <!--<label>答题者：</label>-->
-        <!--<el-input type="text" maxlength="10" show-word-limit :style="{width:'60%'}" size="small"-->
-        <!--v-model="answerResearchData.patientName"></el-input>-->
-        <!--</a-col>-->
-
-        <!--<a-col :span="6">-->
-        <!--<label>是否评分：</label>-->
-        <!--<el-select-->
-        <!--v-model="answerResearchData.judgeStatus"-->
-        <!--style="width:60%;"-->
-        <!--size="small"-->
-        <!--&gt;-->
-        <!--<el-option label="" value=""></el-option>-->
-        <!--<el-option label="已评分" value="1"></el-option>-->
-        <!--<el-option label="未评分" value="0"></el-option>-->
-
-        <!--</el-select>-->
-
-        <!--</a-col>-->
         <a-col :span="2">
           <a-button
             type="primary"
@@ -212,6 +199,16 @@ export default {
     }
   },
   methods: {
+
+    backMyReportAnswer(){
+      this.$router.push({path:"/home/MyReportAnswer"})
+    },
+
+    backAnswer(){
+      debugger
+      this.$router.push({path:"/home/MyReportAnswer"})
+    },
+
     // 选择一页几条数据
     onShowSizeChange(current, pageSize) {
       this.pageSize = pageSize;
@@ -341,7 +338,7 @@ export default {
           // judgeStatus: this.answerResearchData.judgeStatus
         }
       });
-    }
+    },
   }
 };
 </script>

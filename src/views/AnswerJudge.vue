@@ -6,6 +6,15 @@
       <a-col :lg="1" :md="1" :sm="1" :xl="1" :xs="1"></a-col>
       <a-col :lg="22" :md="22" :sm="22" :xl="22" :xs="22">
         <a-card>
+
+          <div>
+            <el-button type="primary" icon="el-icon-back" :style="{float:'left'}" size="small" @click="backMyScaleAnswer">返回</el-button>
+          </div>
+        <br/>
+        <br/>
+
+          <el-divider content-position="left" ><strong >查看已答完的量表具体答案</strong></el-divider>
+
           <h2>
             <p
               :style="{fontFamily:'SimHei',fontWeight:'bold',textAlign:'center' }"
@@ -440,6 +449,14 @@ export default {
   },
 
   methods: {
+
+    backMyScaleAnswer() {
+     var examinationPaperId=  sessionStorage.getItem("examinationPaperId")
+      var path = "/Home/myReportAnswer/myScaleAnswer/?examinationPaperId=" + examinationPaperId
+      this.$router.push({
+        path: path
+      });
+    },
 
     // 评分-----拿到数据
     fetch() {
