@@ -303,7 +303,7 @@ export default {
     },
     //继续答题
     contine(examinationPaperId){
-      this.$router.push({path:"/home/ScaleListNoFirst",query:{examinationPaperId:examinationPaperId}})
+      this.$router.push({path:"/home/AnswerScaleList",query:{examinationPaperId:examinationPaperId}})
     },
     // 删除报告表
     deleteReportAnswer(examinationPaperId) {

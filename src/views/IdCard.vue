@@ -100,18 +100,11 @@ export default {
             .then(response => {
               if (response.data.retCode === "000000") {
                 var urlFirst =
-                  "/home/AnswerSteps" +
+                  "/home/AddPatientInfo" +
                   "?reportId=" +
                   this.$route.query.reportId +
                   "&doctorId=" +
                   "that.$route.query.doctorId";
-                // var urlNotFirst =
-                //   "/home/AnswerReport" +
-                //   "?reportId=" +
-                //   this.$route.query.reportId +
-                //   "&doctorId=" +
-                //   "that.$route.query.doctorId";
-
             var urlNotFirst =
               "/home/followUpInfo" +
               "?reportId=" +

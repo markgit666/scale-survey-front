@@ -699,12 +699,14 @@
           rightMember: "1", // 法定代表
           mainTest: "1" // 主试者
         },
-        reportId: "",
         patientId: "",
+        examinationPaperId:'',
         patientIdShow: true,
 
         // 被试基本资料
         ruleForm: {
+          // 报告表编号
+          reportId:'',
           // 被试者基本资料
           patientInfo: {
             idCard: "",
@@ -724,7 +726,6 @@
             inServiceJob: "", // 在职职业
             educationLevel: "",
             educationYears: "",
-            isSnoring: "",
             livingWay: "",
             medicalHistory: "", // 既往病史
             otherMedicalHistory: "", // 其他既往病史
@@ -781,7 +782,7 @@
       // 获取IdCard.vue文件传过来的IdCard值
       this.ruleForm.patientInfo.idCard = sessionStorage.getItem("idCard");
       this.ruleForm.patientInfo.doctorId = this.$route.query.doctorId;
-      this.reportId = this.$route.query.reportId;
+      this.ruleForm.reportId = this.$route.query.reportId;
     },
 
     methods: {
@@ -863,26 +864,21 @@
 
       //保存个人信息
       saveInfo() {
-        var url =
-          "/home/ScaleListFirst" +
-          "?reportId=" +
-          this.reportId +
-          "&doctorId=" +
-          this.ruleForm.patientInfo.doctorId;
         this.$http
           .post(this.serverUrl + "patient/relation/info/save", this.ruleForm)
           .then(
             function(data) {
               if (data.body.retCode === "000000") {
                 this.patientId = data.body.data.patientId;
+                this.examinationPaperId = data.body.data.examinationPaperId;
                 sessionStorage.setItem("patientId", this.patientId); //存储patientId
                 this.$message.success("保存成功！", 5);
-                this.$router.push({
-                  path: url,
+                this.$router.push({ //保存被试者信息成功后，跳转至量表答题界面
+                  path: "/Home/AnswerScaleList",
                   query: {
-                    reportId: this.$route.query.reportId,
+                    examinationPaperId: this.examinationPaperId,
                   }
-                }); //保存成功跳转至答题页面，并且得到IdCard.vue页面传过来的reportId，再传到答题界面
+                });
               } else {
                 this.$message.error(data.body.retMsg, 5);
                 this.ruleForm.patientEligibleList.splice(

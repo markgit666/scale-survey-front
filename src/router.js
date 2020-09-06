@@ -22,8 +22,7 @@ export default new Router({
       // component: Home,
       children: [
         { path: '/home/AnswerScale', name: 'AnswerScale', component: resolve => require(['./views/AnswerScale'], resolve) },
-        { path: '/home/ScaleListFirst', name: 'ScaleListFirst', component: resolve => require(['./views/ScaleListFirst'], resolve) },
-        { path: '/home/ScaleListNoFirst', name: 'scaleListNoFirst', component: resolve => require(['./views/ScaleListNoFirst'], resolve) },
+        { path: '/home/AnswerScaleList', name: 'AnswerScaleList', component: resolve => require(['./views/AnswerScaleList'], resolve) },
         { path: '/home/FollowUpInfo', name: 'FollowUpInfo', component: resolve => require(['./views/FollowUpInfo'], resolve) },
         { path: '/home/noCreate', name: 'noCreate', component: resolve => require(['./views/NoCreate'], resolve) },
         { path: '/home/createScale', name: 'createScale', component: resolve => require(['./views/CreateScale'], resolve) },
@@ -45,9 +44,9 @@ export default new Router({
     },
 
     {
-      path: '/home/AnswerSteps', name
+      path: '/home/AddPatientInfo', name
         :
-        'answerSteps', component: resolve => require(['./views/AnswerSteps'], resolve)
+        'AddPatientInfo', component: resolve => require(['./views/AddPatientInfo'], resolve)
     },
     {
       path: '/home/IdCard', name

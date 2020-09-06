@@ -109,7 +109,7 @@
             if (res.data.retCode==="000000"){
               console.log(res)
               that.examinationPaperId = res.data.data.examinationPaperId
-              this.$router.push({path:"/Home/ScaleListNoFirst",query:{examinationPaperId:that.examinationPaperId}})
+              this.$router.push({path:"/Home/AnswerScaleList",query:{examinationPaperId:that.examinationPaperId}})
               this.$message.success(res.data.retMsg,2)
             } else {
               this.$message.warning(res.data.retMsg)

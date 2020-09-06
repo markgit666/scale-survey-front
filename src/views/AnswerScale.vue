@@ -789,30 +789,6 @@
           }
         },
 
-        // 获取报告表
-        getReportInfo() {
-          let that = this; //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定
-          (this.reportId = this.$route.query.reportId),
-            (this.doctorId = this.$route.query.doctorId),
-            (this.answer.reportId = this.reportId),
-            axios
-              .post(this.serverUrl + "paper/patient/blank/get", {
-                reportId: this.reportId,
-                patientId: sessionStorage.getItem("patientId")
-              })
-              .then(response => {
-                if (response.data.retCode === "000000") {
-                  that.scaleIdList = response.data.data.reportInfoVO.scaleIdList;
-                  that.answer.examinationPaperId =
-                    response.data.data.examinationPaperId;
-                  that.newActive = 0;
-                  that.getScaleInfo(0); //默认显示第一章量表
-                } else {
-                  this.$message.error(response.retCode);
-                }
-              });
-        },
-
         //获取量表
         getScaleInfo() {
           let that = this;
@@ -866,7 +842,7 @@
             .then(res => {
               if (res.data.retCode === "000000") {
                 that.answer.answerList.splice(0, this.answer.answerList.length);
-                this.$router.push({ path: "/home/ScaleListNoFirst",query:{
+                this.$router.push({ path: "/home/AnswerScaleList",query:{
                     examinationPaperId:this.$route.query.examinationPaperId
 
                   }});
