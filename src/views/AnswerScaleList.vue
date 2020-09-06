@@ -10,7 +10,7 @@
       </div>
       <div >
         <br/> <br/>
-      <el-divider content-position="left" ><strong >3.受试者作答量表</strong></el-divider>
+      <el-divider content-position="left" ><strong >受试者作答量表</strong></el-divider>
       </div>
       <a-table
         :columns="columns"

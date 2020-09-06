@@ -5,12 +5,13 @@
         <a-col :xs="1" :sm="1" :md="1" :lg="1" :xl="1"></a-col>
         <a-col :xs="22" :sm="22" :md="22" :lg="22" :xl="22">
           <a-card>
-            <el-divider content-position="left"><strong>1.输入身份证号</strong></el-divider>
             <center>
               <strong>
-                <h2>基于经颅电刺激的认知障碍疾病综合康复研究</h2>
+                <h2>{{reportName}}</h2>
               </strong>
             </center>
+            <br/>
+            <el-divider content-position="left"><strong>1.输入身份证号</strong></el-divider>
             <div>
               <el-row :gutter="10">
                 <el-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
@@ -61,6 +62,7 @@ export default {
       }
     };
     return {
+      reportName:'报告表',
       serverUrl: this.GLOBAL.serverUrl,
       ruleForm: {
         idCard: ""
@@ -73,6 +75,20 @@ export default {
         ]
       }
     };
+  },
+
+  mounted(){
+
+    axios.post(this.serverUrl +"paper/patient/getReportInfo",{
+      reportId: this.$route.query.reportId
+    }).then(response =>{
+      if (response.data.retCode==='000000'){
+        this.reportName = response.data.data.reportName
+      }else {
+        this.$message.warning(response.data.retMsg, 2);
+      }
+    })
+
   },
 
   methods: {
