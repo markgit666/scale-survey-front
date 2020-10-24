@@ -66,7 +66,7 @@
       <!--      尾部-->
       <a-layout-footer
         :style="{ textAlign: 'center', background: '#F0F2F5', padding:'24px 10px' }"
-      >中国科学院深圳先进技术研究院脑所 ©2020</a-layout-footer>
+      >中国科学院深圳先进技术研究院脑所 ©{{getSystemTime()}}</a-layout-footer>
     </a-layout>
   </div>
 </template>
@@ -81,7 +81,7 @@ export default {
       admin: "",
       dialogVisible: false,
       serverUrl: this.GLOBAL.serverUrl,
-      userName:""
+      userName:"",
     };
   },
 
@@ -104,6 +104,10 @@ export default {
           alert("网络异常，请检查是否连接上网络");
         }
       );
+    },
+
+    getSystemTime(){
+      return new Date().getFullYear();
     },
 
     // 退出

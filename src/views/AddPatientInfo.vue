@@ -102,6 +102,7 @@
                         <el-option label value></el-option>
                         <el-option label="AD组" value="AD"></el-option>
                         <el-option label="MCI组" value="MCI"></el-option>
+                        <el-option label="TD组" value="TD"></el-option>
                       </el-select>
                     </el-form-item>
                   </a-col>
